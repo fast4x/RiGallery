@@ -1,7 +1,7 @@
 # Gallery
 > An Android Gallery
 > 
-> The goal of this project is to create and bring the Gallery app everyone wants, with the features everyone needs. FOSS
+> The goal of  this project is to create and bring the Gallery app everyone wants, with the features everyone needs. FOSS
 
 ![Downloads](https://img.shields.io/github/downloads/IacobIonut01/Gallery/total?color=%23247EE0&label=Downloads)
 [![CI](https://github.com/IacobIonut01/Gallery/actions/workflows/nightly.yml/badge.svg?branch=main)](https://github.com/IacobIonut01/Gallery/actions/workflows/nightly.yml)
