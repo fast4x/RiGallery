@@ -1,5 +1,5 @@
 # Gallery
-> An Android Gallery app built with Jetpack Compose.
+> An Android Gallery
 > 
 > The goal of this project is to create and bring the Gallery app everyone wants, with the features everyone needs. FOSS
 
