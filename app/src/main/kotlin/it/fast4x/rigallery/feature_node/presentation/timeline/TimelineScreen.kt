@@ -17,6 +17,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.res.stringResource
+import it.fast4x.rigallery.BuildConfig
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
@@ -30,7 +31,7 @@ import it.fast4x.rigallery.feature_node.presentation.timeline.components.Timelin
 inline fun <reified T: Media> TimelineScreen(
     paddingValues: PaddingValues,
     albumId: Long = -1L,
-    albumName: String = stringResource(R.string.app_name),
+    albumName: String =  BuildConfig.applicationName,
     handler: MediaHandleUseCase,
     mediaState: State<MediaState<T>>,
     albumsState: State<AlbumState>,

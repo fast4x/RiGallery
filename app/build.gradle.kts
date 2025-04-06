@@ -25,12 +25,15 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1"
+        val applicationName = "RiGallery"
+        buildConfigField("String", "applicationName", "\"$applicationName\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        base.archivesName.set("RiGallery-${versionName}" + mapsApiApplicationPrefix)
+
+        base.archivesName.set("$applicationName-${versionName}" + mapsApiApplicationPrefix)
     }
 
     lint.baseline = file("lint-baseline.xml")

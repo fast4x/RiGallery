@@ -272,7 +272,7 @@ fun NavigationComp(
                     }
                 )
             ) { backStackEntry ->
-                val appName = stringResource(id = R.string.app_name)
+                val appName = _root_ide_package_.it.fast4x.rigallery.BuildConfig.applicationName
                 val argumentAlbumName = remember(backStackEntry) {
                     backStackEntry.arguments?.getString("albumName") ?: appName
                 }
