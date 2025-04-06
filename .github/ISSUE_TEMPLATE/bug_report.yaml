@@ -21,7 +21,7 @@ body:
       description: >-
         Before we start, please specify which version of RiGallery you were using
         when the bug occurs.
-      placeholder: 0.1
+      placeholder: "0.1"
     validations:
       required: true
   - type: dropdown
