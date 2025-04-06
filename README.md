@@ -1,8 +1,7 @@
 # Gallery
-> An Android Gallery
-> 
-> The goal of  this project is to create and bring the Gallery app everyone wants, with the features everyone needs. FOSS
+> An FOSS Android Gallery
 
+<!--
 ![Downloads](https://img.shields.io/github/downloads/IacobIonut01/Gallery/total?color=%23247EE0&label=Downloads)
 [![CI](https://github.com/IacobIonut01/Gallery/actions/workflows/nightly.yml/badge.svg?branch=main)](https://github.com/IacobIonut01/Gallery/actions/workflows/nightly.yml)
 ![License](https://img.shields.io/github/license/IacobIonut01/Gallery?color=%23247EE0)
@@ -46,3 +45,4 @@
 - Will you add [X] feature?
     - Please open a new feature request under 'Issues' tab and if the feature will be considered useful and possible can be added.
 
+-->
