@@ -30,7 +30,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        base.archivesName.set("RiGallery-${versionName}-$versionCode" + mapsApiApplicationPrefix)
+        base.archivesName.set("RiGallery-${versionName}" + mapsApiApplicationPrefix)
     }
 
     lint.baseline = file("lint-baseline.xml")
@@ -185,7 +185,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.process)
     runtimeOnly(libs.androidx.profileinstaller)
     implementation(project(":libs:cropper"))
-    //"baselineProfile"(project(mapOf("path" to ":baselineprofile")))
 
     // Core
     implementation(libs.androidx.core.ktx)
