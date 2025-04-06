@@ -16,7 +16,7 @@ dependencyResolutionManagement {
         mavenLocal()
     }
 }
-rootProject.name = "Gallery"
+rootProject.name = "RiGallery"
 include(":app")
 include(":baselineprofile")
 include(":libs:gesture")

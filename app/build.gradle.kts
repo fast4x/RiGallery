@@ -21,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dot.gallery"
-        minSdk = 30
+        minSdk = 26
         targetSdk = 35
         versionCode = 31209
         versionName = "3.1.2"
@@ -30,7 +30,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        base.archivesName.set("Gallery-${versionName}-$versionCode" + mapsApiApplicationPrefix)
+        base.archivesName.set("RiGallery-${versionName}-$versionCode" + mapsApiApplicationPrefix)
     }
 
     lint.baseline = file("lint-baseline.xml")
@@ -154,7 +154,7 @@ android {
     applicationVariants.all {
         outputs.forEach { output ->
             (output as BaseVariantOutputImpl).outputFileName =
-                "Gallery-${versionName}-$versionCode-${productFlavors[0].name}" + mapsApiApplicationPrefix + ".apk"
+                "RiGallery-${versionName}-$versionCode-${productFlavors[0].name}" + mapsApiApplicationPrefix + ".apk"
         }
     }
 }

@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.smarttoolfactory.gesture"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 30
+        minSdk = 26
     }
 
     buildTypes {

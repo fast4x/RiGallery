@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.smarttoolfactory.cropper"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 30
+        minSdk = 26
     }
 
     buildTypes {
