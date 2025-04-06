@@ -1,0 +1,65 @@
+name: 🐛 Bug report
+description: Something isn't working, uh?
+title: Short description
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        # Please complete the form to the best of your ability
+
+
+        > Indepth details provide us foundation to fix your problem as fast as
+        possible
+
+
+        <h3 align="center">Required fields are marked with <b>*</b></h3>
+  - type: input
+    id: bug_occurs_in_version
+    attributes:
+      label: Version of RiGallery
+      description: >-
+        Before we start, please specify which version of RiGallery you were using
+        when the bug occurs.
+      placeholder: 0.1
+    validations:
+      required: true
+  - type: dropdown
+    id: android_version
+    attributes:
+      label: Android version
+      description: What version of Android is your phone
+      options:
+        - '7.0'
+        - 7.1 - 7.1.2
+        - '8.0'
+        - '8.1'
+        - '9'
+        - '10'
+        - '11'
+        - '12'
+        - '13'
+        - '14'
+        - '15'
+    validations:
+      required: true
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Tell us how you trigger this bug
+      description: 'Each step should be on its own line. You can use simple sentences like:'
+      value: |-
+        1. Open RiGalleryfeature_request.yaml
+        2. Click on A 
+        3. Click on B
+        4. Boom! Crash happens
+    validations:
+      required: true
+  - type: input
+    id: expected_behavior
+    attributes:
+      label: What was your expectation?
+      description: What did you expect after completing those steps
+      placeholder: I clicked on next so obviously it plays random. DUH!!
+    validations:
+      required: true

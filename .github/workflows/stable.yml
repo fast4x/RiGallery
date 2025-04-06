@@ -44,7 +44,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
       - uses: actions/upload-artifact@v4
         with:
-          name: Gallery Release (No Maps)
+          name: RiGallery Release (No Maps)
           path: app/build/**/*.apk
 
   build_maps:
@@ -90,7 +90,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
       - uses: actions/upload-artifact@v4
         with:
-          name: Gallery Release (Maps)
+          name: RiGallery Release (Maps)
           path: app/build/**/*.apk
       - name: Apply Google Play patch
         id: gplay_patcher

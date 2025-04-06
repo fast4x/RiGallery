@@ -47,7 +47,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
       - uses: actions/upload-artifact@v4
         with:
-          name: Gallery Release (No Maps)
+          name: RiGallery Release (No Maps)
           path: app/build/**/*.apk 
 
   build_maps:
@@ -93,7 +93,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
       - uses: actions/upload-artifact@v4
         with:
-          name: Gallery Release (Maps)
+          name: RiGallery Release (Maps)
           path: app/build/**/*.apk
 
   release:
@@ -102,12 +102,12 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: Gallery Release (No Maps)
+          name: RiGallery Release (No Maps)
       - uses: actions/download-artifact@v4
         with:
-          name: Gallery Release (Maps)
+          name: RiGallery Release (Maps)
       - name: Generate SHA256
-        run: echo "### Checksums" >> ${{ needs.build_maps.outputs.versionName }}-${{ needs.build_maps.outputs.versionCode }}-nightly-changelog.txt && find . -name "Gallery-*.apk" -type f -print0 | sort -z | xargs -r0 sha256sum | awk '{gsub(".*/", "", $2); print "**"$2"**:", "`"$1"`"} ' >> ${{ needs.build_maps.outputs.versionName }}-${{ needs.build_maps.outputs.versionCode }}-nightly-changelog.txt
+        run: echo "### Checksums" >> ${{ needs.build_maps.outputs.versionName }}-${{ needs.build_maps.outputs.versionCode }}-nightly-changelog.txt && find . -name "RiGallery-*.apk" -type f -print0 | sort -z | xargs -r0 sha256sum | awk '{gsub(".*/", "", $2); print "**"$2"**:", "`"$1"`"} ' >> ${{ needs.build_maps.outputs.versionName }}-${{ needs.build_maps.outputs.versionCode }}-nightly-changelog.txt
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -118,6 +118,6 @@ jobs:
           tag_name: ${{ needs.build_maps.outputs.versionName }}-${{ needs.build_maps.outputs.versionCode }}-nightly
           target_commitish: ${{ github.sha }}
           files: |
-            ./**/Gallery-*.apk
+            ./**/RiGallery-*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
