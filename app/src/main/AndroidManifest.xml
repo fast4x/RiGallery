@@ -187,7 +187,7 @@
             android:exported="false"
             tools:node="remove">
             <meta-data
-                android:name="com.dot.gallery.ui.ComposeInitializer"
+                android:name="it.fast4x.rigallery.ui.ComposeInitializer"
                 android:value="androidx.startup"
                 />
         </provider>

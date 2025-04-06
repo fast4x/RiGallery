@@ -16,15 +16,15 @@ plugins {
 }
 
 android {
-    namespace = "com.dot.gallery"
+    namespace = "it.fast4x.rigallery"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.dot.gallery"
+        applicationId = "it.fast4x.rigallery"
         minSdk = 26
         targetSdk = 35
-        versionCode = 31209
-        versionName = "3.1.2"
+        versionCode = 1
+        versionName = "0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -49,17 +49,17 @@ android {
             buildConfigField("String", "MAPS_TOKEN", getApiKey())
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            manifestPlaceholders["appProvider"] = "com.dot.gallery.debug.media_provider"
+            manifestPlaceholders["appProvider"] = "it.fast4x.rigallery.debug.media_provider"
             buildConfigField("Boolean", "ALLOW_ALL_FILES_ACCESS", allowAllFilesAccess)
             buildConfigField(
                 "String",
                 "CONTENT_AUTHORITY",
-                "\"com.dot.gallery.debug.media_provider\""
+                "\"it.fast4x.rigallery.debug.media_provider\""
             )
         }
         getByName("release") {
             manifestPlaceholders += mapOf(
-                "appProvider" to "com.dot.gallery.media_provider"
+                "appProvider" to "it.fast4x.rigallery.media_provider"
             )
             isMinifyEnabled = true
             isShrinkResources = true
@@ -72,21 +72,21 @@ android {
             signingConfig = signingConfigs.getByName("release")
             buildConfigField("Boolean", "ALLOW_ALL_FILES_ACCESS", allowAllFilesAccess)
             buildConfigField("String", "MAPS_TOKEN", getApiKey())
-            buildConfigField("String", "CONTENT_AUTHORITY", "\"com.dot.gallery.media_provider\"")
+            buildConfigField("String", "CONTENT_AUTHORITY", "\"it.fast4x.rigallery.media_provider\"")
         }
-        create("staging") {
-            initWith(getByName("release"))
-            isMinifyEnabled = false
-            isShrinkResources = false
-            applicationIdSuffix = ".staging"
-            versionNameSuffix = "-staging"
-            manifestPlaceholders["appProvider"] = "com.dot.staging.debug.media_provider"
-            buildConfigField(
-                "String",
-                "CONTENT_AUTHORITY",
-                "\"com.dot.staging.debug.media_provider\""
-            )
-        }
+//        create("staging") {
+//            initWith(getByName("release"))
+//            isMinifyEnabled = false
+//            isShrinkResources = false
+//            applicationIdSuffix = ".staging"
+//            versionNameSuffix = "-staging"
+//            manifestPlaceholders["appProvider"] = "com.dot.staging.debug.media_provider"
+//            buildConfigField(
+//                "String",
+//                "CONTENT_AUTHORITY",
+//                "\"com.dot.staging.debug.media_provider\""
+//            )
+//        }
     }
 
     compileOptions {
@@ -122,48 +122,70 @@ android {
         includeInApk = false
     }
 
-    flavorDimensions += listOf("abi")
-    productFlavors {
-        create("arm64-v8a") {
-            dimension = "abi"
-            versionCode = 4 + (android.defaultConfig.versionCode ?: 0) * 10
-            ndk.abiFilters.add("arm64-v8a")
-        }
-        create("armeabi-v7a") {
-            dimension = "abi"
-            versionCode = 3 + (android.defaultConfig.versionCode ?: 0) * 10
-            ndk.abiFilters.add("armeabi-v7a")
-        }
-        create("x86_64") {
-            dimension = "abi"
-            versionCode = 2 + (android.defaultConfig.versionCode ?: 0) * 10
-            ndk.abiFilters.add("x86_64")
-        }
-        create("x86") {
-            dimension = "abi"
-            versionCode = 1 + (android.defaultConfig.versionCode ?: 0) * 10
-            ndk.abiFilters.add("x86")
-        }
-        create("universal") {
-            dimension = "abi"
-            versionCode = 0 + (android.defaultConfig.versionCode ?: 0) * 10
-            ndk.abiFilters.addAll(listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a"))
+    splits {
+
+        // Configures multiple APKs based on ABI.
+        abi {
+
+            // Enables building multiple APKs per ABI.
+            isEnable = true
+
+            // By default all ABIs are included, so use reset() and include to specify that you only
+            // want APKs for x86 and x86_64.
+
+            // Resets the list of ABIs for Gradle to create APKs for to none.
+            reset()
+
+            // Specifies a list of ABIs for Gradle to create APKs for.
+            include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+
+            // Specifies that you don't want to also generate a universal APK that includes all ABIs.
+            isUniversalApk = true
         }
     }
 
-    applicationVariants.all {
-        outputs.forEach { output ->
-            (output as BaseVariantOutputImpl).outputFileName =
-                "RiGallery-${versionName}-$versionCode-${productFlavors[0].name}" + mapsApiApplicationPrefix + ".apk"
-        }
-    }
+//    flavorDimensions += listOf("abi")
+//    productFlavors {
+//        create("arm64-v8a") {
+//            dimension = "abi"
+//            versionCode = 4 + (android.defaultConfig.versionCode ?: 0) * 10
+//            ndk.abiFilters.add("arm64-v8a")
+//        }
+//        create("armeabi-v7a") {
+//            dimension = "abi"
+//            versionCode = 3 + (android.defaultConfig.versionCode ?: 0) * 10
+//            ndk.abiFilters.add("armeabi-v7a")
+//        }
+//        create("x86_64") {
+//            dimension = "abi"
+//            versionCode = 2 + (android.defaultConfig.versionCode ?: 0) * 10
+//            ndk.abiFilters.add("x86_64")
+//        }
+//        create("x86") {
+//            dimension = "abi"
+//            versionCode = 1 + (android.defaultConfig.versionCode ?: 0) * 10
+//            ndk.abiFilters.add("x86")
+//        }
+//        create("universal") {
+//            dimension = "abi"
+//            versionCode = 0 + (android.defaultConfig.versionCode ?: 0) * 10
+//            ndk.abiFilters.addAll(listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a"))
+//        }
+//    }
+//
+//    applicationVariants.all {
+//        outputs.forEach { output ->
+//            (output as BaseVariantOutputImpl).outputFileName =
+//                "RiGallery-${versionName}-$versionCode-${productFlavors[0].name}" + mapsApiApplicationPrefix + ".apk"
+//        }
+//    }
 }
 
 dependencies {
     implementation(libs.androidx.lifecycle.process)
     runtimeOnly(libs.androidx.profileinstaller)
     implementation(project(":libs:cropper"))
-    "baselineProfile"(project(mapOf("path" to ":baselineprofile")))
+    //"baselineProfile"(project(mapOf("path" to ":baselineprofile")))
 
     // Core
     implementation(libs.androidx.core.ktx)
@@ -322,7 +344,6 @@ val allowAllFilesAccess: String
         }
     }
 
-@Suppress("UnstableApiUsage")
 val gitHeadVersion: String
     get() {
         return providers.exec {
