@@ -26,7 +26,7 @@ android {
         versionCode = 1
         versionName = "0.1"
         val applicationName = "RiGallery"
-        buildConfigField("String", "applicationName", "\"$applicationName\"")
+        buildConfigField("String", "APPLICATION_NAME", "\"$applicationName\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

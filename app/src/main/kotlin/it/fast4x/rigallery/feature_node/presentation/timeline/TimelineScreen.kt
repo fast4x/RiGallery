@@ -31,7 +31,7 @@ import it.fast4x.rigallery.feature_node.presentation.timeline.components.Timelin
 inline fun <reified T: Media> TimelineScreen(
     paddingValues: PaddingValues,
     albumId: Long = -1L,
-    albumName: String =  BuildConfig.applicationName,
+    albumName: String =  BuildConfig.APPLICATION_NAME,
     handler: MediaHandleUseCase,
     mediaState: State<MediaState<T>>,
     albumsState: State<AlbumState>,

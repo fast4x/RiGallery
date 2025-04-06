@@ -51,7 +51,7 @@ fun SetupScreen(
         firstLaunch = false
         permissionGranted = it.all { item -> item.value }
     }
-    val appName = "${_root_ide_package_.it.fast4x.rigallery.BuildConfig.applicationName} v${_root_ide_package_.it.fast4x.rigallery.BuildConfig.VERSION_NAME}"
+    val appName = "${_root_ide_package_.it.fast4x.rigallery.BuildConfig.APPLICATION_NAME} v${_root_ide_package_.it.fast4x.rigallery.BuildConfig.VERSION_NAME}"
     LaunchedEffect(permissionGranted) {
         if (permissionGranted) {
             onPermissionGranted()
