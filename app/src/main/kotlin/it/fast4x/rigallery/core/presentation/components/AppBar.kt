@@ -239,12 +239,12 @@ fun GalleryNavBar(
 ) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 32.dp, vertical = 32.dp)
+            .padding(all = 5.dp)
             .then(modifier)
             .height(64.dp)
             .background(
                 color = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp),
-                shape = RoundedCornerShape(percent = 100)
+                shape = RoundedCornerShape(percent = 12)
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
