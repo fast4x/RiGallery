@@ -23,6 +23,7 @@ import com.github.panpf.sketch.request.supportPauseLoadWhenScrolling
 import com.github.panpf.sketch.request.supportSaveCellularTraffic
 import com.github.panpf.sketch.util.appCacheDirectory
 import dagger.hilt.android.HiltAndroidApp
+import it.fast4x.rigallery.core.util.isAtLeastAndroid11
 import okio.FileSystem
 import javax.inject.Inject
 
@@ -36,7 +37,8 @@ class GalleryApp : Application(), SingletonSketch.Factory, Configuration.Provide
             supportSvg()
             supportVideoFrame()
             supportAnimatedWebp()
-            //supportAnimatedHeif()
+            if (isAtLeastAndroid11)
+                supportAnimatedHeif()
             supportHeifDecoder()
             supportJxlDecoder()
             supportVaultDecoder()
