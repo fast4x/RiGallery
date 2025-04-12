@@ -1,5 +1,5 @@
 # Gallery
-> A FOSS Android Gallery
+> A FOSS Android Media Gallery
 
 <!--
 ![Downloads](https://img.shields.io/github/downloads/IacobIonut01/Gallery/total?color=%23247EE0&label=Downloads)
