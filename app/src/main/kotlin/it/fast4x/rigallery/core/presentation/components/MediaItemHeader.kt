@@ -6,7 +6,9 @@
 package it.fast4x.rigallery.core.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,8 +24,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.smarttoolfactory.cropper.crop
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 
@@ -38,19 +43,28 @@ fun MediaItemHeader(
 ) {
     val smallModifier = modifier
         .padding(
-            horizontal = 16.dp,
+            horizontal = 0.dp,
             vertical = 24.dp
         )
         .fillMaxWidth()
     val bigModifier = modifier
-        .padding(horizontal = 16.dp)
+        .padding(horizontal = 0.dp)
         .padding(top = 80.dp)
-    val bigTextStyle = MaterialTheme.typography.headlineMedium.copy(
-        fontWeight = FontWeight.Bold
-    )
-    val smallTextStyle = MaterialTheme.typography.titleMedium
+//    val bigTextStyle = MaterialTheme.typography.headlineLarge.copy(
+//        fontWeight = FontWeight.Bold
+//    )
+    val bigTextStyle = MaterialTheme.typography.headlineLarge
+    //val smallTextStyle = MaterialTheme.typography.titleMedium
+    val smallTextStyle = MaterialTheme.typography.titleLarge
+//    val smallTextStyle = MaterialTheme.typography.titleLarge.copy(
+//        fontWeight = FontWeight.Bold
+//    )
     Row(
-        modifier = if (showAsBig) bigModifier else smallModifier,
+        modifier = (if (showAsBig) bigModifier else smallModifier)
+            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
+                MaterialTheme.shapes.medium)
+            .padding(start = 10.dp)
+            .padding(vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

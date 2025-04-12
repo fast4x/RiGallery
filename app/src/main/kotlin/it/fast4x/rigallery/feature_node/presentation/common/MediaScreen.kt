@@ -187,6 +187,8 @@ fun <T: Media> MediaScreen(
                     enableStickyHeaders = enableStickyHeaders,
                     paddingValues = remember(paddingValues, it) {
                         PaddingValues(
+                            start = 5.dp,
+                            end = 5.dp,
                             top = it.calculateTopPadding(),
                             bottom = paddingValues.calculateBottomPadding() + 128.dp
                         )

@@ -23,7 +23,6 @@ import com.github.panpf.sketch.request.supportPauseLoadWhenScrolling
 import com.github.panpf.sketch.request.supportSaveCellularTraffic
 import com.github.panpf.sketch.util.appCacheDirectory
 import dagger.hilt.android.HiltAndroidApp
-import it.fast4x.rigallery.core.util.isAtLeastAndroid11
 import okio.FileSystem
 import javax.inject.Inject
 
@@ -37,15 +36,14 @@ class GalleryApp : Application(), SingletonSketch.Factory, Configuration.Provide
             supportSvg()
             supportVideoFrame()
             supportAnimatedWebp()
-            if (isAtLeastAndroid11)
-                supportAnimatedHeif()
+            supportAnimatedHeif()
             supportHeifDecoder()
             supportJxlDecoder()
             supportVaultDecoder()
         }
         val diskCache = DiskCache.Builder(context, FileSystem.SYSTEM)
             .directory(context.appCacheDirectory())
-            .maxSize(150 * 1024 * 1024).build()
+            .maxSize(300 * 1024 * 1024).build()
 
         resultCache(diskCache)
         downloadCache(diskCache)

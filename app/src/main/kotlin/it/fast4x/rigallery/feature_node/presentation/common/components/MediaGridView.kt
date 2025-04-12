@@ -11,11 +11,19 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -160,26 +169,46 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
                     exit = exitAnimation
                 ) {
                     val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier
-                            .background(
-                                Brush.verticalGradient(
-                                    listOf(
-                                        // 3.dp is the elevation the LargeTopAppBar use
-                                        MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                            3.dp
-                                        ),
-                                        Color.Transparent
-                                    )
-                                )
+
+                    Row(
+                        modifier = Modifier.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
+                            .padding(horizontal = 5.dp)
+                            .background(MaterialTheme.colorScheme.inverseOnSurface)
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
+                                    MaterialTheme.shapes.medium)
+                                .padding(start = 10.dp)
+                                .padding(vertical = 5.dp)
+                                //.background(MaterialTheme.colorScheme.background)
+                                .fillMaxWidth()
+                        ){
+                            Text(
+                                text = text,
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier
+//                                .background(
+//                                    Brush.verticalGradient(
+//                                        listOf(
+//                                            // 3.dp is the elevation the LargeTopAppBar use
+//                                            MaterialTheme.colorScheme.surfaceColorAtElevation(
+//                                                3.dp
+//                                            ),
+//                                            Color.Transparent
+//                                        )
+//                                    )
+//                                )
+                                    //.padding(horizontal = 16.dp)
+                                    //.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
+//                                    .fillMaxWidth()
                             )
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
-                            .fillMaxWidth()
-                    )
+                        }
+
+                    }
+
+
                 }
             }
         ) {
