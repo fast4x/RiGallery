@@ -155,61 +155,62 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
             searchBarOffset = { if (showSearchBar) 28.roundSpToPx(density) + searchBarPaddingPx else 0 },
             toolbarOffset = { if (showSearchBar) 0 else 64.roundDpToPx(density) + searchBarHeightPx },
             stickyHeader = {
-                val show by remember(
-                    mediaState,
-                    stickyHeaderItem
-                ) {
-                    derivedStateOf {
-                        mediaState.value.media.isNotEmpty() && stickyHeaderItem != null
-                    }
-                }
-                AnimatedVisibility(
-                    visible = show,
-                    enter = enterAnimation,
-                    exit = exitAnimation
-                ) {
-                    val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
-
-                    Row(
-                        modifier = Modifier.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
-                            .padding(horizontal = 5.dp)
-                            .background(MaterialTheme.colorScheme.inverseOnSurface)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
-                                    MaterialTheme.shapes.medium)
-                                .padding(start = 10.dp)
-                                .padding(vertical = 5.dp)
-                                //.background(MaterialTheme.colorScheme.background)
-                                .fillMaxWidth()
-                        ){
-                            Text(
-                                text = text,
-                                style = MaterialTheme.typography.titleLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier
-//                                .background(
-//                                    Brush.verticalGradient(
-//                                        listOf(
-//                                            // 3.dp is the elevation the LargeTopAppBar use
-//                                            MaterialTheme.colorScheme.surfaceColorAtElevation(
-//                                                3.dp
-//                                            ),
-//                                            Color.Transparent
-//                                        )
-//                                    )
-//                                )
-                                    //.padding(horizontal = 16.dp)
-                                    //.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
-//                                    .fillMaxWidth()
-                            )
-                        }
-
-                    }
-
-
-                }
+                // TODO MEDIAGRID STICKY HEADER FOR GROUP ITEM
+//                val show by remember(
+//                    mediaState,
+//                    stickyHeaderItem
+//                ) {
+//                    derivedStateOf {
+//                        mediaState.value.media.isNotEmpty() && stickyHeaderItem != null
+//                    }
+//                }
+//                AnimatedVisibility(
+//                    visible = show,
+//                    enter = enterAnimation,
+//                    exit = exitAnimation
+//                ) {
+//                    val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
+//
+//                    Row(
+//                        modifier = Modifier.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
+//                            .padding(horizontal = 5.dp)
+//                            .background(MaterialTheme.colorScheme.inverseOnSurface)
+//                    ) {
+//                        Box(
+//                            modifier = Modifier
+//                                .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
+//                                    MaterialTheme.shapes.medium)
+//                                .padding(start = 10.dp)
+//                                .padding(vertical = 5.dp)
+//                                //.background(MaterialTheme.colorScheme.background)
+//                                .fillMaxWidth()
+//                        ){
+//                            Text(
+//                                text = text,
+//                                style = MaterialTheme.typography.titleLarge,
+//                                color = MaterialTheme.colorScheme.onSurface,
+//                                modifier = Modifier
+////                                .background(
+////                                    Brush.verticalGradient(
+////                                        listOf(
+////                                            // 3.dp is the elevation the LargeTopAppBar use
+////                                            MaterialTheme.colorScheme.surfaceColorAtElevation(
+////                                                3.dp
+////                                            ),
+////                                            Color.Transparent
+////                                        )
+////                                    )
+////                                )
+//                                    //.padding(horizontal = 16.dp)
+//                                    //.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
+////                                    .fillMaxWidth()
+//                            )
+//                        }
+//
+//                    }
+//
+//
+//                }
             }
         ) {
             MediaGrid(
