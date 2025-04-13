@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HideSource
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Photo
@@ -87,6 +88,7 @@ import it.fast4x.rigallery.feature_node.presentation.common.components.OptionShe
 import it.fast4x.rigallery.feature_node.presentation.util.NavigationItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.rememberAppBottomSheetState
+import it.fast4x.rigallery.ui.core.icons.Encrypted
 import kotlinx.coroutines.launch
 
 @Composable
@@ -165,7 +167,7 @@ fun AppBarContainer(
             ),
             OptionItem(
                 text = context.getString(R.string.vault),
-                icon = Icons.Filled.Verified,
+                icon = it.fast4x.rigallery.ui.core.Icons.Encrypted,
                 onClick = {
                     navController.navigate(Screen.VaultScreen.route)
                     expandedDropDown.value = false
