@@ -648,7 +648,18 @@ fun <T : Media> MediaViewScreen(
                                 enabled = showUI,
                                 deleteMedia = deleteMedia,
                                 restoreMedia = restoreMedia,
-                                currentVault = currentVault
+                                currentVault = currentVault,
+                                infoMedia = {
+                                    scope.launch {
+                                        if (showUI) {
+                                            if (sheetState.currentDetent == imageOnlyDetent) {
+                                                sheetState.animateTo(FullyExpanded)
+                                            } else {
+                                                sheetState.animateTo(imageOnlyDetent)
+                                            }
+                                        }
+                                    }
+                                }
                             )
                         }
                     }

@@ -44,6 +44,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.GpsOff
 import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.RestoreFromTrash
@@ -687,6 +688,7 @@ fun <T : Media> MediaViewActions2(
     enabled: Boolean,
     deleteMedia: ((Vault, T, () -> Unit) -> Unit)?,
     restoreMedia: ((Vault, T, () -> Unit) -> Unit)?,
+    infoMedia: () -> Unit,
     currentVault: Vault?
 ) {
     if (currentMedia != null) {
@@ -716,6 +718,8 @@ fun <T : Media> MediaViewActions2(
                 }
             }
         } else {
+            // Info Component
+            InfoButton(currentMedia, enabled = enabled, onInfoClick = infoMedia )
             // Share Component
             ShareButton(currentMedia, enabled = enabled)
             // Favorite Component
@@ -905,6 +909,25 @@ fun <T : Media> ShareButton(
             context.shareMedia(media = it)
         }
     }
+}
+
+@Composable
+fun <T : Media> InfoButton(
+    media: T,
+    enabled: Boolean,
+    followTheme: Boolean = false,
+    onInfoClick: (() -> Unit)? = null
+) {
+    BottomBarColumn(
+        currentMedia = media,
+        imageVector = Icons.Outlined.Info,
+        followTheme = followTheme,
+        title = stringResource(R.string.media_info),
+        enabled = enabled,
+        onItemClick = {
+            onInfoClick?.invoke()
+        }
+    )
 }
 
 @Composable
