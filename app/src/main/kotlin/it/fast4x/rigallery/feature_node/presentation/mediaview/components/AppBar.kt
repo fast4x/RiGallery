@@ -91,23 +91,24 @@ fun MediaViewAppBar(
                         textAlign = TextAlign.End
                     )
                 }
-                AnimatedVisibility(
-                    visible = showInfo,
-                    enter = enterAnimation,
-                    exit = exitAnimation
-                ) {
-                    IconButton(
-                        onClick = onShowInfo
-                    ) {
-                        Image(
-                            imageVector = Icons.Outlined.Info,
-                            colorFilter = ColorFilter.tint(Color.White),
-                            contentDescription = "info",
-                            modifier = Modifier
-                                .height(48.dp)
-                        )
-                    }
-                }
+                //TODO Temporally removed info on media app bar
+//                AnimatedVisibility(
+//                    visible = showInfo,
+//                    enter = enterAnimation,
+//                    exit = exitAnimation
+//                ) {
+//                    IconButton(
+//                        onClick = onShowInfo
+//                    ) {
+//                        Image(
+//                            imageVector = Icons.Outlined.Info,
+//                            colorFilter = ColorFilter.tint(Color.White),
+//                            contentDescription = "info",
+//                            modifier = Modifier
+//                                .height(48.dp)
+//                        )
+//                    }
+//                }
             }
         }
     }
