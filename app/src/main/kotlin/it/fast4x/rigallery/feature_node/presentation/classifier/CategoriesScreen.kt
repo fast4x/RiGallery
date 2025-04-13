@@ -207,6 +207,7 @@ fun CategoriesScreen(
                                             },
                                             onClick = {
                                                 if (!isRunning) viewModel.startClassification()
+                                                else viewModel.stopClassification()
                                             }
                                         )
                                 )
