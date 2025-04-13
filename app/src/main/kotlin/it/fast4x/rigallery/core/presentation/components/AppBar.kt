@@ -31,7 +31,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Photo
+import androidx.compose.material.icons.outlined.PhotoAlbum
 import androidx.compose.material.icons.outlined.PhotoLibrary
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -70,13 +72,13 @@ import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideNavBar
 import it.fast4x.rigallery.core.Settings.Misc.rememberOldNavbar
 import it.fast4x.rigallery.feature_node.presentation.util.NavigationItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
-import it.fast4x.rigallery.ui.core.icons.Albums
 
 @Composable
 fun rememberNavigationItems(): List<NavigationItem> {
     val timelineTitle = stringResource(R.string.nav_timeline)
     val albumsTitle = stringResource(R.string.nav_albums)
     val libraryTitle = stringResource(R.string.library)
+    val settingsTitle = stringResource(R.string.settings_title)
     return remember {
         mutableListOf(
             NavigationItem(
@@ -87,12 +89,17 @@ fun rememberNavigationItems(): List<NavigationItem> {
             NavigationItem(
                 name = albumsTitle,
                 route = Screen.AlbumsScreen.route,
-                icon = it.fast4x.rigallery.ui.core.Icons.Albums,
+                icon = Icons.Outlined.PhotoAlbum,
             ),
             NavigationItem(
                 name = libraryTitle,
                 route = Screen.LibraryScreen(),
                 icon = Icons.Outlined.PhotoLibrary
+            ),
+            NavigationItem(
+                name = settingsTitle,
+                route = Screen.SettingsScreen(),
+                icon = Icons.Outlined.Settings
             )
         )
     }

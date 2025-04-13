@@ -207,13 +207,14 @@ fun MainSearchBar(
                         }
                     },
                     trailingIcon = {
-                        Row {
-                            androidx.compose.animation.AnimatedVisibility(
-                                visible = !activeState.value,
-                            ) {
-                                menuItems?.invoke(this@Row)
-                            }
-                        }
+                        // TODO ICON ACTION IN THE SEARCH BAR
+//                        Row {
+//                            androidx.compose.animation.AnimatedVisibility(
+//                                visible = !activeState.value,
+//                            ) {
+//                                menuItems?.invoke(this@Row)
+//                            }
+//                        }
                     },
                     interactionSource = remember { MutableInteractionSource() },
                 )

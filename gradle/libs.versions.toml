@@ -16,36 +16,36 @@ jxlCoder = "2.1.10"
 kotlin = "2.1.10"
 kotlinCoroutinesVersion = "1.10.1"
 ksp = "2.1.10-1.0.29"
-core-ktx = "1.15.0"
+core-ktx = "1.16.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.2.1"
-espresso-core = "3.6.1"
+#espresso-core = "3.6.1"
 lazycolumnscrollbar = "2.2.0"
 lifecycle-runtime = "2.8.7"
 activity-compose = "1.10.1"
 hilt = "2.55"
 hiltCommon = "1.2.0"
 material = "1.12.0"
-material3 = "1.3.1"
+material3 = "1.3.2"
 media3Exoplayer = "1.6.0"
 navigation-runtime-ktx = "2.8.9"
 pinchzoomgrid = "0.0.5"
 profileinstaller = "1.4.1"
-room = "2.6.1"
+room = "2.7.0"
 accompanist = "0.37.0"
 datastore = "1.1.4"
-securityCrypto = "1.1.0-alpha06"
-sketch = "4.0.2"
+securityCrypto = "1.1.0-alpha07"
+sketch = "4.0.5"
 startupRuntime = "1.2.0"
 tensorflowLite = "2.16.1"
 tensorflowLiteTaskVision = "0.4.4"
 tensorflowLiteGpu = "2.16.1"
-uiautomator = "2.3.0"
-composealpha = "1.8.0-rc02"
+#uiautomator = "2.3.0"
+composealpha = "1.8.0-rc03"
 kotlinxSerializationJson = "1.8.0"
 workRuntimeKtx = "2.10.0"
 zoomimageViewSketch = "1.1.1"
-rules = "1.6.1"
+#rules = "1.6.1"
 lifecycleProcess = "2.8.7"
 
 [libraries]
@@ -54,7 +54,7 @@ aire = { module = "com.github.awxkee:aire", version.ref = "aire" }
 androidx-adaptive = { module = "androidx.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
 androidx-adaptive-layout = { module = "androidx.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
 androidx-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
-androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+#androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
@@ -73,7 +73,7 @@ androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstall
 # Coil
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
-androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
+#androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "uiautomator" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 avif-coder-coil = { module = "com.github.awxkee:avif-coder-coil", version.ref = "avifCoderCoil" }
 
@@ -145,14 +145,14 @@ fuzzywuzzy = { module = "me.xdrop:fuzzywuzzy", version.ref = "fuzzywuzzy" }
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+#espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteTaskVision" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 zoomimage-sketch = { module = "io.github.panpf.zoomimage:zoomimage-compose-sketch4", version.ref = "zoomimageViewSketch" }
-androidx-rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
+#androidx-rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycleProcess" }
 
 [plugins]
