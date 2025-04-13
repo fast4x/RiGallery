@@ -131,26 +131,38 @@ fun OptionButton(
         .alpha(if (enabled) 1f else 0.4f)
         .padding(16.dp)
     if (summaryContainer != null) {
-        Column(
+        Row(
             modifier = mod,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            ProvideTextStyle(
-                value = MaterialTheme.typography.labelLarge.copy(
-                    color = contentColor,
-                    fontWeight = FontWeight.Bold
+            if (icon != null)
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = contentColor
                 )
+            Column(
+                modifier = mod,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                textContainer()
-            }
-            ProvideTextStyle(
-                value = MaterialTheme.typography.labelMedium.copy(
-                    color = contentColor,
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Normal
-                )
-            ) {
-                summaryContainer()
+                ProvideTextStyle(
+                    value = MaterialTheme.typography.labelLarge.copy(
+                        color = contentColor,
+                        fontWeight = FontWeight.Bold
+                    )
+                ) {
+                    textContainer()
+                }
+                ProvideTextStyle(
+                    value = MaterialTheme.typography.labelMedium.copy(
+                        color = contentColor,
+                        fontFamily = FontFamily.Monospace,
+                        fontWeight = FontWeight.Normal
+                    )
+                ) {
+                    summaryContainer()
+                }
             }
         }
     } else {

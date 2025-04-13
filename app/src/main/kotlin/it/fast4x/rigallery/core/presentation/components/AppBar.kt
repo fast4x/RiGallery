@@ -94,7 +94,6 @@ fun rememberNavigationItems(): List<NavigationItem> {
     val timelineTitle = stringResource(R.string.nav_timeline)
     val albumsTitle = stringResource(R.string.nav_albums)
     val libraryTitle = stringResource(R.string.library)
-    val settingsTitle = stringResource(R.string.settings_title)
     return remember {
         mutableListOf(
             NavigationItem(
