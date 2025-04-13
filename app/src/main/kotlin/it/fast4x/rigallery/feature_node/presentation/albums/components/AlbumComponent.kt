@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.SdCard
 import androidx.compose.material3.Icon
@@ -88,6 +89,7 @@ fun AlbumComponent(
                         containerColor = primaryContainer,
                         contentColor = onPrimaryContainer,
                         enabled = onMoveAlbumToTrash != null,
+                        icon = Icons.Filled.Delete,
                         onClick = {
                             scope.launch {
                                 appBottomSheetState.hide()

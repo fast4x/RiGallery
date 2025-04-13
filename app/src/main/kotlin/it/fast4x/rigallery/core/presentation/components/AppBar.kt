@@ -16,6 +16,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.HideSource
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material.icons.outlined.PhotoAlbum
 import androidx.compose.material.icons.outlined.PhotoLibrary
@@ -48,11 +56,14 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,13 +76,18 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideNavBar
 import it.fast4x.rigallery.core.Settings.Misc.rememberOldNavbar
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionItem
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionSheet
 import it.fast4x.rigallery.feature_node.presentation.util.NavigationItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
+import it.fast4x.rigallery.feature_node.presentation.util.rememberAppBottomSheetState
+import kotlinx.coroutines.launch
 
 @Composable
 fun rememberNavigationItems(): List<NavigationItem> {
@@ -95,11 +111,6 @@ fun rememberNavigationItems(): List<NavigationItem> {
                 name = libraryTitle,
                 route = Screen.LibraryScreen(),
                 icon = Icons.Outlined.PhotoLibrary
-            ),
-            NavigationItem(
-                name = settingsTitle,
-                route = Screen.SettingsScreen(),
-                icon = Icons.Outlined.Settings
             )
         )
     }
@@ -123,6 +134,93 @@ fun AppBarContainer(
         mutableStateOf(windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact)
     }
     val useOldNavbar by rememberOldNavbar()
+
+//
+    val scope = rememberCoroutineScope()
+    val expandedDropDown = remember { mutableStateOf(false) }
+    val appBottomSheetState = rememberAppBottomSheetState()
+    LaunchedEffect(appBottomSheetState.isVisible, expandedDropDown.value) {
+        scope.launch {
+            if (expandedDropDown.value) appBottomSheetState.show()
+            else appBottomSheetState.hide()
+        }
+    }
+
+    val optionList = remember {
+        mutableListOf(
+            OptionItem(
+                text = context.getString(R.string.favorites),
+                icon = Icons.Filled.Favorite,
+                onClick = {
+                    navController.navigate(Screen.FavoriteScreen.route)
+                    expandedDropDown.value = false
+                }
+            ),
+            OptionItem(
+                text = context.getString(R.string.ignored),
+                icon = Icons.Filled.VisibilityOff,
+                onClick = {
+                    navController.navigate(Screen.IgnoredScreen.route)
+                    expandedDropDown.value = false
+                }
+            ),
+            OptionItem(
+                text = context.getString(R.string.vault),
+                icon = Icons.Filled.Verified,
+                onClick = {
+                    navController.navigate(Screen.VaultScreen.route)
+                    expandedDropDown.value = false
+                }
+            ),
+            OptionItem(
+                text = context.getString(R.string.trash),
+                icon = Icons.Filled.Delete,
+                onClick = {
+                    navController.navigate(Screen.TrashedScreen.route)
+                    expandedDropDown.value = false
+                }
+            )
+        )
+    }
+    val tertiaryContainer = MaterialTheme.colorScheme.tertiaryContainer
+    val onTertiaryContainer = MaterialTheme.colorScheme.onTertiaryContainer
+    val settingsOption = remember {
+        mutableStateListOf(
+            OptionItem(
+                text = context.getString(R.string.settings_title),
+                icon = Icons.Filled.Settings,
+                containerColor = tertiaryContainer,
+                contentColor = onTertiaryContainer,
+                onClick = {
+                    navController.navigate(Screen.SettingsScreen.route)
+                    expandedDropDown.value = false
+                }
+            )
+        )
+    }
+
+    OptionSheet(
+        headerContent = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Text(
+                    text = stringResource(id = R.string.navigation),
+                    style = MaterialTheme.typography.titleLarge,
+                )
+            }
+
+        },
+        state = appBottomSheetState,
+        onDismiss = {
+            expandedDropDown.value = false
+        },
+        optionList = arrayOf(optionList, settingsOption)
+    )
+
+//
 
     AnimatedVisibility(
         visible = useOldNavbar,
@@ -186,6 +284,7 @@ fun AppBarContainer(
         enter = enterAnimation,
         exit = exitAnimation
     ) {
+
         Box(modifier = Modifier.fillMaxSize()) {
             content()
             val hideNavBarSetting by rememberAutoHideNavBar()
@@ -213,7 +312,10 @@ fun AppBarContainer(
                         modifier = modifier,
                         backStackEntry = backStackEntry,
                         navigationItems = bottomNavItems,
-                        onClick = { navigate(navController, it) }
+                        onClick = { navigate(navController, it) },
+                        onCustomItemClick = {
+                            expandedDropDown.value = true
+                        }
                     )
                 }
             )
@@ -243,6 +345,7 @@ fun GalleryNavBar(
     backStackEntry: NavBackStackEntry?,
     navigationItems: List<NavigationItem>,
     onClick: (route: String) -> Unit,
+    onCustomItemClick: (msg: String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -265,6 +368,18 @@ fun GalleryNavBar(
                 onClick = onClick
             )
         }
+
+        // Dummy item to link the shortcuts sheet
+        GalleryNavBarItem(
+            navItem = NavigationItem(
+                name = stringResource(R.string.app_name),
+                route = "", // no route needed,
+                icon = Icons.Outlined.MoreVert
+            ),
+            isSelected = false,
+            onClick = onCustomItemClick
+        )
+
     }
 }
 

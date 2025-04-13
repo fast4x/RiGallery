@@ -6,10 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
@@ -19,8 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.core.presentation.components.ModalSheet
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionPosition.ALONE
@@ -74,8 +81,13 @@ fun OptionLayout(
             }
             OptionButton(
                 modifier = Modifier.fillMaxWidth(),
+                icon = item.icon,
                 textContainer = {
-                    Text(text = item.text)
+                    Text(
+                        text = item.text,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2
+                    )
                 },
                 summaryContainer = summary,
                 enabled = item.enabled,
@@ -95,6 +107,7 @@ fun OptionLayout(
 @Composable
 fun OptionButton(
     modifier: Modifier = Modifier,
+    icon: ImageVector? = Icons.Default.ChevronRight,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     textContainer: @Composable () -> Unit,
@@ -141,10 +154,18 @@ fun OptionButton(
             }
         }
     } else {
-        Box(
+        Row(
             modifier = mod,
-            contentAlignment = Alignment.Center
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            if (icon != null)
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = contentColor
+                )
+
             ProvideTextStyle(
                 value = MaterialTheme.typography.bodyMedium.copy(color = contentColor)
             ) {
@@ -157,6 +178,7 @@ fun OptionButton(
 data class OptionItem(
     val text: String,
     val summary: String? = null,
+    val icon: ImageVector? = null,
     val onClick: (summary: String) -> Unit,
     val enabled: Boolean = true,
     val containerColor: Color? = null,

@@ -8,14 +8,18 @@ package it.fast4x.rigallery.core.presentation.components
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +53,8 @@ import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewMode
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewScreen
 import it.fast4x.rigallery.feature_node.presentation.common.ChanneledViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionItem
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionSheet
 import it.fast4x.rigallery.feature_node.presentation.dateformat.DateFormatScreen
 import it.fast4x.rigallery.feature_node.presentation.favorites.FavoriteScreen
 import it.fast4x.rigallery.feature_node.presentation.ignored.IgnoredScreen
@@ -60,8 +66,10 @@ import it.fast4x.rigallery.feature_node.presentation.setup.SetupScreen
 import it.fast4x.rigallery.feature_node.presentation.timeline.TimelineScreen
 import it.fast4x.rigallery.feature_node.presentation.trashed.TrashedGridScreen
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
+import it.fast4x.rigallery.feature_node.presentation.util.rememberAppBottomSheetState
 import it.fast4x.rigallery.feature_node.presentation.vault.VaultScreen
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Stable
