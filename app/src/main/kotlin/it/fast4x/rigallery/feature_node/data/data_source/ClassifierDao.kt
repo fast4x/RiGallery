@@ -44,7 +44,7 @@ interface ClassifierDao {
     @Query("SELECT category FROM classified_media WHERE category IS NOT NULL AND category != 'null' GROUP BY category ORDER BY COUNT(*) DESC LIMIT 1")
     suspend fun getCategoryWithMostClassifiedMedia(): String?
 
-    @Query("SELECT * FROM classified_media WHERE category IN (SELECT category FROM classified_media WHERE category IS NOT NULL AND category != 'null' GROUP BY category ORDER BY COUNT(*) DESC LIMIT 3)")
+    @Query("SELECT * FROM classified_media WHERE category IN (SELECT category FROM classified_media WHERE category IS NOT NULL AND category != 'null' GROUP BY category ORDER BY COUNT(*) DESC LIMIT 10)")
     fun getClassifiedMediaByMostPopularCategoryFlow(): Flow<List<ClassifiedMedia>>
 
     @Query("SELECT * FROM classified_media WHERE id IN (SELECT MAX(id) FROM classified_media WHERE category IS NOT NULL AND category != 'null' GROUP BY category)")

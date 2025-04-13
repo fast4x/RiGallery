@@ -150,80 +150,83 @@ fun LibraryScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item(
-                    span = { GridItemSpan(maxLineSpan) },
-                    key = "headerButtons"
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .animateItem()
-                            .fillMaxWidth()
-                            .pinchItem(key = "headerButtons")
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 32.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(
-                                16.dp,
-                                Alignment.CenterHorizontally
-                            )
-                        ) {
-                            LibrarySmallItem(
-                                title = stringResource(R.string.trash),
-                                icon = Icons.Outlined.DeleteOutline,
-                                contentColor = MaterialTheme.colorScheme.primary,
-                                useIndicator = true,
-                                indicatorCounter = indicatorState.trashCount,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .clickable {
-                                        navigate(Screen.TrashedScreen.route)
-                                    }
-                            )
-                            LibrarySmallItem(
-                                title = stringResource(R.string.favorites),
-                                icon = Icons.Outlined.FavoriteBorder,
-                                contentColor = MaterialTheme.colorScheme.error,
-                                useIndicator = true,
-                                indicatorCounter = indicatorState.favoriteCount,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .clickable {
-                                        navigate(Screen.FavoriteScreen.route)
-                                    }
-                            )
-                        }
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(
-                                16.dp,
-                                Alignment.CenterHorizontally
-                            )
-                        ) {
-                            LibrarySmallItem(
-                                title = stringResource(R.string.vault),
-                                icon = GalleryIcons.Encrypted,
-                                contentColor = MaterialTheme.colorScheme.secondary,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .clickable {
-                                        navigate(Screen.VaultScreen())
-                                    },
-                                contentDescription = stringResource(R.string.vault)
-                            )
-                            LibrarySmallItem(
-                                title = stringResource(R.string.ignored),
-                                icon = Icons.Outlined.VisibilityOff,
-                                contentColor = MaterialTheme.colorScheme.tertiary,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .clickable {
-                                        navigate(Screen.IgnoredScreen())
-                                    }
-                            )
-                        }
-                    }
-                }
+                //Remove temporally  small button in library
+//                item(
+//                    span = { GridItemSpan(maxLineSpan) },
+//                    key = "headerButtons"
+//                ) {
+//                    Column(
+//                        modifier = Modifier
+//                            .animateItem()
+//                            .fillMaxWidth()
+//                            .pinchItem(key = "headerButtons")
+//                            .padding(horizontal = 16.dp)
+//                            .padding(top = 32.dp),
+//                        verticalArrangement = Arrangement.spacedBy(16.dp)
+//                    ) {
+//                        Row(
+//                            horizontalArrangement = Arrangement.spacedBy(
+//                                16.dp,
+//                                Alignment.CenterHorizontally
+//                            )
+//                        ) {
+//
+//                            LibrarySmallItem(
+//                                title = stringResource(R.string.trash),
+//                                icon = Icons.Outlined.DeleteOutline,
+//                                contentColor = MaterialTheme.colorScheme.primary,
+//                                useIndicator = true,
+//                                indicatorCounter = indicatorState.trashCount,
+//                                modifier = Modifier
+//                                    .weight(1f)
+//                                    .clickable {
+//                                        navigate(Screen.TrashedScreen.route)
+//                                    }
+//                            )
+//                            LibrarySmallItem(
+//                                title = stringResource(R.string.favorites),
+//                                icon = Icons.Outlined.FavoriteBorder,
+//                                contentColor = MaterialTheme.colorScheme.error,
+//                                useIndicator = true,
+//                                indicatorCounter = indicatorState.favoriteCount,
+//                                modifier = Modifier
+//                                    .weight(1f)
+//                                    .clickable {
+//                                        navigate(Screen.FavoriteScreen.route)
+//                                    }
+//                            )
+//                        }
+//                        Row(
+//                            horizontalArrangement = Arrangement.spacedBy(
+//                                16.dp,
+//                                Alignment.CenterHorizontally
+//                            )
+//                        ) {
+//                            LibrarySmallItem(
+//                                title = stringResource(R.string.vault),
+//                                icon = GalleryIcons.Encrypted,
+//                                contentColor = MaterialTheme.colorScheme.secondary,
+//                                modifier = Modifier
+//                                    .weight(1f)
+//                                    .clickable {
+//                                        navigate(Screen.VaultScreen())
+//                                    },
+//                                contentDescription = stringResource(R.string.vault)
+//                            )
+//                            LibrarySmallItem(
+//                                title = stringResource(R.string.ignored),
+//                                icon = Icons.Outlined.VisibilityOff,
+//                                contentColor = MaterialTheme.colorScheme.tertiary,
+//                                modifier = Modifier
+//                                    .weight(1f)
+//                                    .clickable {
+//                                        navigate(Screen.IgnoredScreen())
+//                                    }
+//                            )
+//                        }
+//                    }
+//                }
+
                 if (!noClassification) {
                     if (!noCategoriesFound) {
                         item(
@@ -351,7 +354,7 @@ fun LibraryScreen(
                                     .padding(16.dp)
                             ) {
                                 viewModel.startClassification()
-                                navigate(Screen.CategoriesScreen())
+                                //navigate(Screen.CategoriesScreen())
                             }
                         }
                         item(

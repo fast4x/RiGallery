@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material.icons.outlined.PhotoAlbum
@@ -112,6 +113,11 @@ fun rememberNavigationItems(): List<NavigationItem> {
                 name = libraryTitle,
                 route = Screen.LibraryScreen(),
                 icon = Icons.Outlined.PhotoLibrary
+            ),
+            NavigationItem(
+                name = libraryTitle,
+                route = Screen.CategoriesScreen(),
+                icon = Icons.Outlined.ImageSearch
             )
         )
     }
