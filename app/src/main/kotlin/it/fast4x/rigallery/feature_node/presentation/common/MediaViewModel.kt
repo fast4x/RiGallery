@@ -79,6 +79,8 @@ open class MediaViewModel @Inject constructor(
 //            TimelineSettings()
 //        )
 
+    // Get groupByMonth from app settings, not necessary to get from db
+
     var groupByMonth =
         repository.getSetting(Settings.Misc.TIMELINE_GROUP_BY_MONTH, true)
             .stateIn(viewModelScope, SharingStarted.Eagerly, true)
