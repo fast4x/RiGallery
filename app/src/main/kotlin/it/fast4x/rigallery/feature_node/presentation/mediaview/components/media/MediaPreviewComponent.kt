@@ -34,6 +34,8 @@ fun <T: Media> MediaPreviewComponent(
     playWhenReady: State<Boolean>,
     onItemClick: () -> Unit,
     onSwipeDown: () -> Unit,
+    onSwipeUp: () -> Unit = {},
+    onLongpress: () -> Unit = {},
     offset: IntOffset,
     videoController: @Composable (ExoPlayer, MutableState<Boolean>, MutableLongState, Long, Int, Float) -> Unit,
 ) {
@@ -67,7 +69,9 @@ fun <T: Media> MediaPreviewComponent(
                     media = media,
                     uiEnabled = uiEnabled,
                     onItemClick = onItemClick,
-                    onSwipeDown = onSwipeDown
+                    onSwipeDown = onSwipeDown,
+                    onSwipeUp = onSwipeUp,
+                    onLongPress = onLongpress
                 )
             }
         }

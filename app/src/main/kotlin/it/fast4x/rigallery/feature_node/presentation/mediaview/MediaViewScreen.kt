@@ -437,6 +437,17 @@ fun <T : Media> MediaViewScreen(
                                 windowInsetsController.toggleSystemBars(show = true)
                                 navigateUp()
                             },
+                            onSwipeUp = {
+                                scope.launch {
+                                    if (showUI) {
+                                        if (sheetState.currentDetent == imageOnlyDetent) {
+                                            sheetState.animateTo(FullyExpanded)
+                                        } else {
+                                            sheetState.animateTo(imageOnlyDetent)
+                                        }
+                                    }
+                                }
+                            },
                             offset = offset,
                             onItemClick = {
                                 if (sheetState.currentDetent == imageOnlyDetent) {

@@ -20,7 +20,8 @@ import kotlin.math.roundToInt
 fun Modifier.swipe(
     enabled: Boolean = true,
     onOffset: (IntOffset) -> Unit = {},
-    onSwipeDown: () -> Unit
+    onSwipeDown: () -> Unit = {},
+    onSwipeUp: () -> Unit = {}
 ): Modifier {
     var delta by remember { mutableFloatStateOf(0f) }
     var isDragging by remember { mutableStateOf(false) }
@@ -49,12 +50,20 @@ fun Modifier.swipe(
                             }
                             change.consume()
                         }
+                        if (delta == 0f) {
+                            feedbackManager.vibrate()
+                            isVibrating = true
+                            change.consume()
+                        }
                     },
                     onDragEnd = {
                         isVibrating = false
                         isDragging = false
                         if (delta == 400f) {
                             onSwipeDown()
+                        }
+                        if (delta == 0f) {
+                            onSwipeUp()
                         }
                         delta = 0f
                     },

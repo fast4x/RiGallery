@@ -60,7 +60,9 @@ fun <T: Media> ZoomablePagerImage(
     media: T,
     uiEnabled: Boolean,
     onItemClick: () -> Unit,
-    onSwipeDown: () -> Unit
+    onSwipeDown: () -> Unit,
+    onSwipeUp: () -> Unit = {},
+    onLongPress: () -> Unit = {},
 ) {
     val feedbackManager = rememberFeedbackManager()
     var isRotating by rememberSaveable { mutableStateOf(false) }
@@ -127,7 +129,8 @@ fun <T: Media> ZoomablePagerImage(
             modifier = Modifier
                 .fillMaxSize()
                 .swipe(
-                    onSwipeDown = onSwipeDown
+                    onSwipeDown = onSwipeDown,
+                    onSwipeUp = onSwipeUp
                 )
                 .graphicsLayer {
                     rotationZ = if (isRotating) rotationAnimation else 0f
@@ -142,6 +145,7 @@ fun <T: Media> ZoomablePagerImage(
                     zoomState.zoomable.rotate(currentRotation)
                     isRotating = false
                 }
+                onLongPress()
             },
             alignment = Alignment.Center,
             contentDescription = media.label
@@ -163,7 +167,8 @@ fun <T: Media> ZoomablePagerImage(
             modifier = Modifier
                 .fillMaxSize()
                 .swipe(
-                    onSwipeDown = onSwipeDown
+                    onSwipeDown = onSwipeDown,
+                    onSwipeUp = onSwipeUp
                 )
                 .graphicsLayer {
                     rotationZ = if (isRotating) rotationAnimation else 0f
