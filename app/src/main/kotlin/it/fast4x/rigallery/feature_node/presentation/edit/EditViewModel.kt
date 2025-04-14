@@ -226,6 +226,8 @@ class EditViewModel @Inject constructor(
     private fun setOriginalBitmap(context: Context) {
         viewModelScope.launch(Dispatchers.IO) {
             val request = ImageRequest(context, activeMedia.value?.uri.toString()) {
+                crossfade()
+                resizeOnDraw()
                 size(Size.Origin)
                 setExtra(
                     key = "mediaKey",

@@ -290,6 +290,8 @@ fun <T: Media> TrashDialog(
                             AsyncImage(
                                 modifier = Modifier.fillMaxSize(),
                                 request = ComposableImageRequest(it.getUri().toString()) {
+                                    crossfade()
+                                    resizeOnDraw()
                                     scale(Scale.CENTER_CROP)
                                     setExtra(
                                         key = "mediaKey",

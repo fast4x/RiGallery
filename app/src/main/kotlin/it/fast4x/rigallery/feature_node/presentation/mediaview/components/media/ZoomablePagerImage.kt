@@ -86,6 +86,8 @@ fun <T: Media> ZoomablePagerImage(
                     .alpha(blurAlpha)
                     .blur(100.dp),
                 request = ComposableImageRequest(media.getUri().toString()) {
+                    crossfade()
+                    resizeOnDraw()
                     size(Size.parseSize("600x600"))
                     setExtra(
                         key = "mediaKey",
@@ -106,6 +108,7 @@ fun <T: Media> ZoomablePagerImage(
         val painter = rememberAsyncImagePainter(
             request = ComposableImageRequest(media.getUri().toString()) {
                 crossfade()
+                resizeOnDraw()
                 setExtra(
                     key = "mediaKey",
                     value = media.toString(),

@@ -89,6 +89,8 @@ class ClassifierWorker @AssistedInject constructor(
                 printWarning("ClassifierWorker Processing item $index")
                 setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
                 val request = ImageRequest(appContext, item.uri.toString()) {
+                    crossfade()
+                    resizeOnDraw()
                     colorSpace(BitmapColorSpace(ColorSpace.Named.SRGB))
                 }
                 val result = sketch.execute(request)

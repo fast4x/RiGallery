@@ -127,6 +127,8 @@ fun <T: Media> MediaImage(
                 modifier = Modifier
                     .fillMaxSize(),
                 request = ComposableImageRequest(media.getUri().toString()) {
+                    crossfade()
+                    resizeOnDraw()
                     scale(Scale.CENTER_CROP)
                     setExtra(
                         key = "mediaKey",

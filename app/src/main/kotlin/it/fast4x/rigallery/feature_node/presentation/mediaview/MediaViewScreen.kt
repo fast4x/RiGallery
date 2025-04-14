@@ -331,6 +331,8 @@ fun <T : Media> MediaViewScreen(
                     printWarning("Trying to set HDR mode for page $it")
                     if (currentMedia?.isImage == true) {
                         val request = ImageRequest(context, currentMedia?.getUri().toString()) {
+                            crossfade()
+                            resizeOnDraw()
                             setExtra(
                                 key = "mediaKey",
                                 value = currentMedia.toString(),
