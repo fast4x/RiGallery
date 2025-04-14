@@ -147,6 +147,7 @@ fun NavigationComp(
         albumsViewModel.albumsFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
 
     val timelineViewModel = hiltViewModel<MediaViewModel>()
+
     timelineViewModel.CollectDatabaseUpdates()
 
     val timelineState =
@@ -158,9 +159,9 @@ fun NavigationComp(
         timelineViewModel.updatePermissionState(permissionState)
     }
 
-    LaunchedEffect(groupTimelineByMonth) {
-        timelineViewModel.groupByMonth = groupTimelineByMonth
-    }
+//    LaunchedEffect(Unit, groupTimelineByMonth) {
+//        timelineViewModel.groupByMonth.value = groupTimelineByMonth
+//    }
     SharedTransitionLayout {
         NavHost(
             navController = navController,

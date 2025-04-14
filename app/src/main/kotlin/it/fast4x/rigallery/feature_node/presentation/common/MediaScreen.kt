@@ -69,7 +69,7 @@ fun <T: Media> MediaScreen(
     selectedMedia: SnapshotStateList<T>,
     toggleSelection: (Int) -> Unit,
     allowHeaders: Boolean = true,
-    showMonthlyHeader: Boolean = false,
+    showMonthlyHeader: Boolean = true,
     enableStickyHeaders: Boolean = true,
     allowNavBar: Boolean = false,
     customDateHeader: String? = null,

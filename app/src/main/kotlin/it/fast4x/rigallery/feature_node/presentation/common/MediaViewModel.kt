@@ -30,6 +30,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.mapMediaToItem
 import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
 import it.fast4x.rigallery.feature_node.presentation.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,22 +62,26 @@ open class MediaViewModel @Inject constructor(
     var target: String? = null
     var category: String? = null
 
-    var groupByMonth: Boolean
-        get() = settingsFlow.value?.groupTimelineByMonth ?: false
-        set(value) {
-            viewModelScope.launch(Dispatchers.IO) {
-                settingsFlow.value?.copy(groupTimelineByMonth = value)?.let {
-                    repository.updateTimelineSettings(it)
-                }
-            }
-        }
+//    var groupByMonth: Boolean
+//        get() = settingsFlow.value?.groupTimelineByMonth ?: false
+//        set(value) {
+//            viewModelScope.launch(Dispatchers.IO) {
+//                settingsFlow.value?.copy(groupTimelineByMonth = value)?.let {
+//                    repository.updateTimelineSettings(it)
+//                }
+//            }
+//        }
 
-    private val settingsFlow = repository.getTimelineSettings()
-        .stateIn(
-            viewModelScope,
-            started = SharingStarted.Eagerly,
-            TimelineSettings()
-        )
+//    private val settingsFlow = repository.getTimelineSettings()
+//        .stateIn(
+//            viewModelScope,
+//            started = SharingStarted.Eagerly,
+//            TimelineSettings()
+//        )
+
+    var groupByMonth =
+        repository.getSetting(Settings.Misc.TIMELINE_GROUP_BY_MONTH, true)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, true)
 
     private val blacklistedAlbums = repository.getBlacklistedAlbums()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
@@ -98,7 +103,7 @@ open class MediaViewModel @Inject constructor(
     val mediaFlow by lazy {
         combine(
             repository.mediaFlow(albumId, target),
-            settingsFlow,
+            groupByMonth,
             blacklistedAlbums,
             combine(
                 defaultDateFormat,
@@ -108,7 +113,7 @@ open class MediaViewModel @Inject constructor(
                 Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
             },
             permissionState
-        ) { result, settings, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat), hasPermission ->
+        ) { result, groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat), hasPermission ->
             if (result is Resource.Error) return@combine MediaState(
                 error = result.message ?: "",
                 isLoading = false
@@ -120,7 +125,7 @@ open class MediaViewModel @Inject constructor(
                 },
                 error = result.message ?: "",
                 albumId = albumId,
-                groupByMonth = settings?.groupTimelineByMonth == true,
+                groupByMonth = groupedByMonth,
                 defaultDateFormat = defaultDateFormat,
                 extendedDateFormat = extendedDateFormat,
                 weeklyDateFormat = weeklyDateFormat
@@ -212,7 +217,7 @@ open class MediaViewModel @Inject constructor(
                     data = mediaFlow.value.media.parseQuery(query),
                     error = mediaFlow.value.error,
                     albumId = albumId,
-                    groupByMonth = groupByMonth,
+                    groupByMonth = groupByMonth.value,
                     defaultDateFormat = defaultDateFormat.value,
                     extendedDateFormat = extendedDateFormat.value,
                     weeklyDateFormat = weeklyDateFormat.value

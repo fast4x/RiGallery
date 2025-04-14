@@ -79,7 +79,7 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
     canScroll: Boolean = true,
     allowHeaders: Boolean = true,
     enableStickyHeaders: Boolean = false,
-    showMonthlyHeader: Boolean = false,
+    showMonthlyHeader: Boolean = true,
     aboveGridContent: @Composable (() -> Unit)? = null,
     isScrolling: MutableState<Boolean>,
     emptyContent: @Composable () -> Unit,
@@ -91,6 +91,8 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
         (if (showMonthlyHeader) mediaState.value.mappedMediaWithMonthly
         else mediaState.value.mappedMedia).toMutableStateList()
     }
+
+    println("MediaGridView: showMonthlyHeader = $showMonthlyHeader, mappedData = $mappedData")
 
     BackHandler(
         enabled = selectionState.value && allowSelection,
