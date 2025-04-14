@@ -67,7 +67,8 @@ android {
         }
         getByName("release") {
             manifestPlaceholders += mapOf(
-                "appProvider" to "it.fast4x.rigallery.media_provider"
+                "appProvider" to "it.fast4x.rigallery.media_provider",
+                "appName" to applicationName
             )
             isMinifyEnabled = true
             isShrinkResources = true
