@@ -162,6 +162,7 @@ fun NavigationComp(
 //    LaunchedEffect(Unit, groupTimelineByMonth) {
 //        timelineViewModel.groupByMonth.value = groupTimelineByMonth
 //    }
+    // not necessary
     SharedTransitionLayout {
         NavHost(
             navController = navController,
