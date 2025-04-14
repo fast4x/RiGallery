@@ -19,13 +19,15 @@ android {
     namespace = "it.fast4x.rigallery"
     compileSdk = 35
 
+    val applicationName = "RiGallery"
+
     defaultConfig {
         applicationId = "it.fast4x.rigallery"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
         versionName = "0.1"
-        val applicationName = "RiGallery"
+
         buildConfigField("String", "APPLICATION_NAME", "\"$applicationName\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -52,7 +54,10 @@ android {
             buildConfigField("String", "MAPS_TOKEN", getApiKey())
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
-            manifestPlaceholders["appProvider"] = "it.fast4x.rigallery.debug.media_provider"
+            manifestPlaceholders += mapOf(
+                "appProvider" to "it.fast4x.rigallery.debug.media_provider",
+                "appName" to "$applicationName-Debug"
+            )
             buildConfigField("Boolean", "ALLOW_ALL_FILES_ACCESS", allowAllFilesAccess)
             buildConfigField(
                 "String",
@@ -66,6 +71,7 @@ android {
             )
             isMinifyEnabled = true
             isShrinkResources = true
+            vcsInfo.include = false
             setProguardFiles(
                 listOf(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -109,6 +115,9 @@ android {
             ComposeFeatureFlag.OptimizeNonSkippingGroups
         )
         includeSourceInformation = true
+        stabilityConfigurationFiles = listOf (
+            rootProject.layout.projectDirectory.file("compose_compiler_config.conf")
+        )
     }
     packaging {
         resources {
