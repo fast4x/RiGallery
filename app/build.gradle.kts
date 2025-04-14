@@ -282,6 +282,7 @@ dependencies {
 
     // Datastore Preferences
     implementation(libs.datastore.prefs)
+    implementation(libs.datastore.ext)
 
     // Fuzzy Search
     implementation(libs.fuzzywuzzy)
