@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,6 +34,10 @@ import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.feature_node.domain.model.LocationData
+import it.fast4x.rigallery.feature_node.domain.model.rememberLocationData
+import it.fast4x.rigallery.feature_node.presentation.util.rememberExifInterface
+import it.fast4x.rigallery.feature_node.presentation.util.rememberExifMetadata
 import it.fast4x.rigallery.ui.theme.BlackScrim
 
 @Composable
@@ -43,7 +49,8 @@ fun MediaViewAppBar(
     currentDate: String,
     paddingValues: PaddingValues,
     onGoBack: () -> Unit,
-    onShowInfo: () -> Unit
+    onShowInfo: () -> Unit,
+    locationData: LocationData? = null
 ) {
     AnimatedVisibility(
         visible = showUI,
@@ -91,24 +98,24 @@ fun MediaViewAppBar(
                         textAlign = TextAlign.End
                     )
                 }
-                //TODO Temporally removed info on media app bar
-//                AnimatedVisibility(
-//                    visible = showInfo,
-//                    enter = enterAnimation,
-//                    exit = exitAnimation
-//                ) {
-//                    IconButton(
-//                        onClick = onShowInfo
-//                    ) {
-//                        Image(
-//                            imageVector = Icons.Outlined.Info,
-//                            colorFilter = ColorFilter.tint(Color.White),
-//                            contentDescription = "info",
-//                            modifier = Modifier
-//                                .height(48.dp)
-//                        )
-//                    }
-//                }
+                
+                AnimatedVisibility(
+                    visible = locationData?.location?.isEmpty() == false,
+                    enter = enterAnimation,
+                    exit = exitAnimation
+                ) {
+                    IconButton(
+                        onClick = onShowInfo
+                    ) {
+                        Image(
+                            imageVector = Icons.Outlined.LocationOn,
+                            colorFilter = ColorFilter.tint(Color.White),
+                            contentDescription = "info",
+                            modifier = Modifier
+                                .height(48.dp)
+                        )
+                    }
+                }
             }
         }
     }

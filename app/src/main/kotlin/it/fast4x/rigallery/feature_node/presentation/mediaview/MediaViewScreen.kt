@@ -105,7 +105,10 @@ import it.fast4x.rigallery.ui.theme.BlackScrim
 import com.github.panpf.sketch.BitmapImage
 import com.github.panpf.sketch.request.ImageRequest
 import com.github.panpf.sketch.sketch
+import it.fast4x.rigallery.feature_node.domain.model.rememberLocationData
 import it.fast4x.rigallery.feature_node.presentation.util.ViewScreenConstants.FullyExpanded
+import it.fast4x.rigallery.feature_node.presentation.util.rememberExifInterface
+import it.fast4x.rigallery.feature_node.presentation.util.rememberExifMetadata
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -559,6 +562,9 @@ fun <T : Media> MediaViewScreen(
                     }
                 }
             }
+            val exifInterface = rememberExifInterface(currentMedia as T, true)
+            val exifMetadata = rememberExifMetadata(currentMedia as T, exifInterface)
+            val locationData = rememberLocationData(exifMetadata, currentMedia as T)
             MediaViewAppBar(
                 modifier = Modifier.padding(
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
@@ -590,7 +596,8 @@ fun <T : Media> MediaViewScreen(
                             navigateUp()
                         }
                     }
-                }
+                },
+                locationData = locationData
             )
             LaunchedEffect(showUI) {
                 if (!showUI && (sheetState.currentDetent == FullyExpanded || sheetState.targetDetent == FullyExpanded)) {
