@@ -135,7 +135,9 @@ import it.fast4x.rigallery.feature_node.presentation.util.writeRequest
 import it.fast4x.rigallery.feature_node.presentation.vault.components.SelectVaultSheet
 import it.fast4x.rigallery.ui.theme.Shapes
 import com.github.panpf.sketch.AsyncImage
+import com.github.panpf.sketch.AsyncImageState
 import com.github.panpf.sketch.rememberAsyncImagePainter
+import it.fast4x.rigallery.feature_node.presentation.util.OpenStreetMapUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -495,7 +497,6 @@ fun DateHeader(
     )
 }
 
-@Suppress("KotlinConstantConditions")
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun LocationItem(
@@ -571,15 +572,28 @@ fun LocationItem(
                         .aspectRatio(1f)
                         .clip(Shapes.large),
                     visible = remember(connection) {
-                        connection.isConnected() && _root_ide_package_.it.fast4x.rigallery.BuildConfig.MAPS_TOKEN != "DEBUG"
+                        connection.isConnected()  // && _root_ide_package_.it.fast4x.rigallery.BuildConfig.MAPS_TOKEN != "DEBUG"
                     }
                 ) {
+
+                    val mapUrl = OpenStreetMapUrl(
+                        latitude = locationData.latitude,
+                        longitude = locationData.longitude
+                    )
+                    println("OpenStreetMap url $mapUrl")
+
+
+
                     AsyncImage(
-                        uri = MapBoxURL(
+                        uri = OpenStreetMapUrl(
                             latitude = locationData.latitude,
-                            longitude = locationData.longitude,
-                            darkTheme = isSystemInDarkTheme()
+                            longitude = locationData.longitude
                         ),
+//                        uri = MapBoxURL(
+//                            latitude = locationData.latitude,
+//                            longitude = locationData.longitude,
+//                            darkTheme = isSystemInDarkTheme()
+//                        ),
                         contentScale = ContentScale.Crop,
                         contentDescription = stringResource(R.string.location_map_cd),
                         modifier = Modifier
