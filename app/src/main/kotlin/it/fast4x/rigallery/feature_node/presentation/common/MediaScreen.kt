@@ -37,8 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
-import com.dokar.pinchzoomgrid.PinchZoomGridLayout
-import com.dokar.pinchzoomgrid.rememberPinchZoomGridState
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
@@ -93,23 +91,14 @@ fun <T: Media> MediaScreen(
         canScroll = { canScroll },
         flingAnimationSpec = null
     )
-    var lastCellIndex by rememberGridSize()
-
-    val pinchState = rememberPinchZoomGridState(
-        cellsList = cellsList,
-        initialCellsIndex = lastCellIndex
-    )
-
-    LaunchedEffect(pinchState.isZooming) {
-        canScroll = !pinchState.isZooming
-        lastCellIndex = cellsList.indexOf(pinchState.currentCells)
-    }
 
     LaunchedEffect(selectionState.value) {
         if (allowNavBar) {
             toggleNavbar(!selectionState.value)
         }
     }
+
+
 
     Box(
         modifier = Modifier
@@ -176,7 +165,7 @@ fun <T: Media> MediaScreen(
                 }
             }
         ) { it ->
-            PinchZoomGridLayout(state = pinchState) {
+            //PinchZoomGridLayout(state = pinchState) {
                 MediaGridView(
                     mediaState = mediaState,
                     allowSelection = true,
@@ -215,7 +204,7 @@ fun <T: Media> MediaScreen(
                         customViewingNavigation(it)
                     }
                 }
-            }
+            //}
         }
         if (target != TARGET_TRASH) {
             SelectionSheet(

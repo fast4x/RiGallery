@@ -26,6 +26,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
@@ -51,7 +53,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.dokar.pinchzoomgrid.PinchZoomGridScope
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
@@ -65,9 +66,10 @@ import it.fast4x.rigallery.feature_node.presentation.util.roundSpToPx
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun <T : Media> PinchZoomGridScope.MediaGridView(
+fun <T : Media> MediaGridView(
     mediaState: State<MediaState<T>>,
     paddingValues: PaddingValues = PaddingValues(0.dp),
     searchBarPaddingTop: Dp = 0.dp,
@@ -106,16 +108,18 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
      * Workaround for a small bug
      * That shows the grid at the bottom after content is loaded
      */
-    val lastLoadingState by remember { mutableStateOf(mediaState.value.isLoading) }
-    LaunchedEffect(gridState, mediaState.value) {
-        snapshotFlow { mediaState.value.isLoading }
-            .distinctUntilChanged()
-            .collectLatest { isLoading ->
-                if (!isLoading && lastLoadingState) {
-                    gridState.scrollToItem(0)
-                }
-            }
-    }
+//    val lastLoadingState by remember { mutableStateOf(mediaState.value.isLoading) }
+//    LaunchedEffect(gridState, mediaState.value) {
+//        snapshotFlow { mediaState.value.isLoading }
+//            .distinctUntilChanged()
+//            .collectLatest { isLoading ->
+//                if (!isLoading && lastLoadingState) {
+//                    gridState.scrollToItem(0)
+//                }
+//            }
+//    }
+
+    val gridState = rememberLazyGridState()
 
     AnimatedVisibility(
         visible = enableStickyHeaders
@@ -123,11 +127,11 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
         val headers by rememberedDerivedState(mediaState.value) {
             mediaState.value.headers.toMutableStateList()
         }
-        val stickyHeaderItem by rememberStickyHeaderItem(
-            gridState = gridState,
-            headers = headers,
-            mappedData = mappedData
-        )
+//        val stickyHeaderItem by rememberStickyHeaderItem(
+//            gridState = gridState,
+//            headers = headers,
+//            mappedData = mappedData
+//        )
 
         val hideSearchBarSetting by rememberAutoHideSearchBar()
         val searchBarPadding by animateDpAsState(
@@ -149,6 +153,8 @@ fun <T : Media> PinchZoomGridScope.MediaGridView(
         val searchBarPaddingPx by remember(density, searchBarPadding) {
             derivedStateOf { with(density) { searchBarPadding.roundToPx() } }
         }
+
+
 
         StickyHeaderGrid(
             state = gridState,

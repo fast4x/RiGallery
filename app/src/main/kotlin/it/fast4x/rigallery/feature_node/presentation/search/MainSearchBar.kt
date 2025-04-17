@@ -60,8 +60,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dokar.pinchzoomgrid.PinchZoomGridLayout
-import com.dokar.pinchzoomgrid.rememberPinchZoomGridState
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
@@ -273,20 +271,7 @@ fun MainSearchBar(
                             bottom = bottomPadding + 16.dp
                         )
                         var canScroll by rememberSaveable { mutableStateOf(true) }
-                        var lastCellIndex by rememberGridSize()
-                        val pinchState = rememberPinchZoomGridState(
-                            cellsList = cellsList,
-                            initialCellsIndex = lastCellIndex
-                        )
 
-                        LaunchedEffect(pinchState.currentCells) {
-                            lastCellIndex = cellsList.indexOf(pinchState.currentCells)
-                        }
-                        LaunchedEffect(pinchState.isZooming) {
-                            canScroll = !pinchState.isZooming
-                        }
-
-                        PinchZoomGridLayout(state = pinchState) {
                             MediaGridView(
                                 mediaState = state,
                                 paddingValues = pd,
@@ -306,7 +291,7 @@ fun MainSearchBar(
                             ) {
                                 LoadingMedia()
                             }
-                        }
+
 
                     }
                 }

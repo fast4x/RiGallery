@@ -61,8 +61,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCoerceAtLeast
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.dokar.pinchzoomgrid.PinchZoomGridLayout
-import com.dokar.pinchzoomgrid.rememberPinchZoomGridState
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
@@ -121,23 +119,11 @@ fun VaultDisplay(
         }
     }
 
-    var lastCellIndex by rememberGridSize()
-
-    val pinchState = rememberPinchZoomGridState(
-        cellsList = cellsList,
-        initialCellsIndex = lastCellIndex
-    )
-
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         state = rememberTopAppBarState(),
         canScroll = { canScroll },
     )
-
-    LaunchedEffect(pinchState.isZooming) {
-        canScroll = !pinchState.isZooming
-        lastCellIndex = cellsList.indexOf(pinchState.currentCells)
-    }
 
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberAppBottomSheetState()
@@ -297,7 +283,7 @@ fun VaultDisplay(
             )
         }
     ) {
-        PinchZoomGridLayout(state = pinchState) {
+
             MediaGridView(
                 mediaState = mediaState,
                 allowSelection = true,
@@ -416,7 +402,7 @@ fun VaultDisplay(
                 sharedTransitionScope = sharedTransitionScope,
                 animatedContentScope = animatedContentScope
             )
-        }
+
     }
 
 }

@@ -290,9 +290,6 @@ dependencies {
     // Aire
     implementation(libs.aire)
 
-    // Pinch to zoom
-    implementation(libs.pinchzoomgrid)
-
     // Subsampling
     implementation(libs.zoomimage.sketch)
 
