@@ -165,7 +165,7 @@ fun <T: Media> MediaScreen(
                 }
             }
         ) { it ->
-            //PinchZoomGridLayout(state = pinchState) {
+
                 MediaGridView(
                     mediaState = mediaState,
                     allowSelection = true,
@@ -204,7 +204,7 @@ fun <T: Media> MediaScreen(
                         customViewingNavigation(it)
                     }
                 }
-            //}
+
         }
         if (target != TARGET_TRASH) {
             SelectionSheet(
