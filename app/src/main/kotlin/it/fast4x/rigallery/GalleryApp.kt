@@ -62,7 +62,7 @@ class GalleryApp : Application(), SingletonSketch.Factory, Configuration.Provide
             .build()
 
         val memoryCache = MemoryCache.Builder(context)
-            .maxSizePercent(6.5)
+            .maxSizePercent(0.5)
             .build()
 
         memoryCache(memoryCache)
