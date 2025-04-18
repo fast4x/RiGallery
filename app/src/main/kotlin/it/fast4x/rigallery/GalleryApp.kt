@@ -24,11 +24,25 @@ import com.github.panpf.sketch.request.supportPauseLoadWhenScrolling
 import com.github.panpf.sketch.request.supportSaveCellularTraffic
 import com.github.panpf.sketch.util.appCacheDirectory
 import dagger.hilt.android.HiltAndroidApp
+import it.fast4x.rigallery.core.util.CaptureCrash
 import okio.FileSystem
 import javax.inject.Inject
 
 @HiltAndroidApp
 class GalleryApp : Application(), SingletonSketch.Factory, Configuration.Provider {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        /***** CRASH LOG ALWAYS ENABLED *****/
+        val dir = filesDir.resolve("logs").also {
+            if (it.exists()) return@also
+            it.mkdir()
+        }
+
+        Thread.setDefaultUncaughtExceptionHandler(CaptureCrash(dir.absolutePath, "${BuildConfig.APPLICATION_NAME}_crash_log.txt"))
+        /***** CRASH LOG ALWAYS ENABLED *****/
+    }
 
     override fun createSketch(context: PlatformContext): Sketch = Sketch.Builder(this).apply {
         components {
@@ -48,7 +62,7 @@ class GalleryApp : Application(), SingletonSketch.Factory, Configuration.Provide
             .build()
 
         val memoryCache = MemoryCache.Builder(context)
-            .maxSizePercent(0.5)
+            .maxSizePercent(6.5)
             .build()
 
         memoryCache(memoryCache)
