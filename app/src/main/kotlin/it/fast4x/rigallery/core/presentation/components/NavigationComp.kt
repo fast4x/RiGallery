@@ -67,7 +67,9 @@ import it.fast4x.rigallery.feature_node.presentation.timeline.TimelineScreen
 import it.fast4x.rigallery.feature_node.presentation.trashed.TrashedGridScreen
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.rememberAppBottomSheetState
+import it.fast4x.rigallery.feature_node.presentation.util.restartApplication
 import it.fast4x.rigallery.feature_node.presentation.vault.VaultScreen
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -95,7 +97,7 @@ fun NavigationComp(
             LocalLifecycleOwner.current,
             context = Dispatchers.Main.immediate
         )
-    val groupTimelineByMonth by rememberTimelineGroupByMonth()
+    //val groupTimelineByMonth by rememberTimelineGroupByMonth()
 
     val context = LocalContext.current
     var permissionState = rememberSaveable { context.permissionGranted(Constants.PERMISSIONS) }
@@ -180,6 +182,7 @@ fun NavigationComp(
                 }
                 SetupScreen {
                     permissionState = true
+                    context.restartApplication()
                     navPipe.navigate(Screen.TimelineScreen())
                 }
             }
