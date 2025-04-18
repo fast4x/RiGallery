@@ -329,6 +329,17 @@ fun rememberSettingsList(
         )
     }
 
+    var useStaggeredGrid by Settings.Misc.rememberStaggeredGrid()
+    val useStaggeredGridPref = remember(useStaggeredGrid) {
+        SettingsEntity.SwitchPreference(
+            title = "Staggered Grid",
+            summary = "Show items in a staggered grid",
+            isChecked = useStaggeredGrid,
+            onCheck = { useStaggeredGrid = it },
+            screenPosition = Position.Middle
+        )
+    }
+
     var showOldNavbar by Settings.Misc.rememberOldNavbar()
     val showOldNavbarPref = remember(showOldNavbar) {
         SettingsEntity.SwitchPreference(
@@ -514,6 +525,7 @@ fun rememberSettingsList(
             add(dateHeaderPref)
             add(groupByMonthPref)
             add(allowBlurPref)
+            add(useStaggeredGridPref)
             add(hideTimelineOnAlbumPref)
             add(forcedLastScreenPref)
             add(audioFocusPref)

@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.core.util.toRange
 import it.fast4x.rigallery.core.Constants.Animation
 import it.fast4x.rigallery.core.presentation.components.CheckBox
 import it.fast4x.rigallery.feature_node.domain.model.Media
@@ -51,6 +53,7 @@ import com.github.panpf.sketch.request.ComposableImageRequest
 import com.github.panpf.sketch.resize.Scale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 @Composable
 fun <T: Media> MediaImage(
@@ -59,6 +62,7 @@ fun <T: Media> MediaImage(
     selectionState: MutableState<Boolean>,
     selectedMedia: SnapshotStateList<T>,
     canClick: Boolean,
+    staggered: Boolean = false,
     onItemClick: (T) -> Unit,
     onItemLongClick: (T) -> Unit,
 ) {
@@ -87,6 +91,15 @@ fun <T: Media> MediaImage(
         targetValue = if (isSelected) primaryContainerColor else Color.Transparent,
         label = "strokeColor"
     )
+
+    val aspectRatio = remember(media) {
+        mutableFloatStateOf(
+            if (staggered)
+                Random.nextFloat() * (1.5f - 0.5f) + 0.5f
+            else 1f
+         )
+    }
+
     Box(
         modifier = Modifier
             .combinedClickable(
@@ -104,13 +117,13 @@ fun <T: Media> MediaImage(
                     }
                 },
             )
-            .aspectRatio(1f)
+            .aspectRatio(aspectRatio.floatValue)
             .then(modifier)
     ) {
         Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .aspectRatio(1f)
+                .aspectRatio(aspectRatio.floatValue)
                 .padding(selectedSize)
                 .clip(RoundedCornerShape(selectedShapeSize))
                 .background(

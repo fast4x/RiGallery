@@ -17,13 +17,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.FullLine
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.LaunchedEffect
@@ -48,6 +50,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.common.collect.Iterables.removeIf
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
@@ -72,11 +75,11 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun <T: Media> MediaGrid(
-    gridState: LazyGridState,
+fun <T: Media> MediaStaggeredGrid(
+    gridState: LazyStaggeredGridState,
     mediaState: State<MediaState<T>>,
     mappedData: SnapshotStateList<MediaItem<T>>,
-    paddingValues: PaddingValues,
+    paddingValues: PaddingValues = PaddingValues(5.dp),
     allowSelection: Boolean,
     selectionState: MutableState<Boolean>,
     selectedMedia: SnapshotStateList<T>,
@@ -98,11 +101,11 @@ fun <T: Media> MediaGrid(
         }
     }
 
-    val topContent: LazyGridScope.() -> Unit = remember(aboveGridContent) {
+    val topContent: LazyStaggeredGridScope.() -> Unit = remember(aboveGridContent) {
         {
             if (aboveGridContent != null) {
-                item(
-                    span = { GridItemSpan(maxLineSpan) },
+                item (
+                    span = FullLine,
                     key = "aboveGrid"
                 ) {
                     aboveGridContent.invoke()
@@ -110,10 +113,10 @@ fun <T: Media> MediaGrid(
             }
         }
     }
-    val bottomContent: LazyGridScope.() -> Unit = remember {
+    val bottomContent: LazyStaggeredGridScope.() -> Unit = remember {
         {
             item(
-                span = { GridItemSpan(maxLineSpan) },
+                span = FullLine,
                 key = "loading"
             ) {
                 AnimatedVisibility(
@@ -126,7 +129,7 @@ fun <T: Media> MediaGrid(
             }
 
             item(
-                span = { GridItemSpan(maxLineSpan) },
+                span = FullLine,
                 key = "empty"
             ) {
                 AnimatedVisibility(
@@ -138,7 +141,7 @@ fun <T: Media> MediaGrid(
                 }
             }
             item(
-                span = { GridItemSpan(maxLineSpan) },
+                span = FullLine,
                 key = "error"
             ) {
                 AnimatedVisibility(visible = mediaState.value.error.isNotEmpty()) {
@@ -157,10 +160,9 @@ fun <T: Media> MediaGrid(
             enter = scaleIn() + fadeIn(),
             exit = scaleOut() + fadeOut()
         ) {
-            MediaGridContentWithHeaders(
+            MediaStaggeredGridContentWithHeaders(
                 mediaState = mediaState,
                 gridState = gridState,
-                gridCells = GridCells.Fixed(3),
                 mappedData = mappedData,
                 paddingValues = paddingValues,
                 allowSelection = allowSelection,
@@ -181,10 +183,9 @@ fun <T: Media> MediaGrid(
             enter = scaleIn() + fadeIn(),
             exit = scaleOut() + fadeOut()
         ) {
-            MediaGridContentWithHeaders(
+            MediaStaggeredGridContentWithHeaders(
                 mediaState = mediaState,
                 gridState = gridState,
-                gridCells = GridCells.Fixed(3),
                 mappedData = mappedData,
                 paddingValues = paddingValues,
                 allowSelection = allowSelection,
@@ -205,10 +206,9 @@ fun <T: Media> MediaGrid(
             enter = scaleIn() + fadeIn(),
             exit = scaleOut() + fadeOut()
         ) {
-            MediaGridContentWithHeaders(
+            MediaStaggeredGridContentWithHeaders(
                 mediaState = mediaState,
                 gridState = gridState,
-                gridCells = GridCells.Fixed(3),
                 mappedData = mappedData,
                 paddingValues = paddingValues,
                 allowSelection = allowSelection,
@@ -229,10 +229,9 @@ fun <T: Media> MediaGrid(
             enter = scaleIn() + fadeIn(),
             exit = scaleOut() + fadeOut()
         ) {
-            MediaGridContentWithHeaders(
+            MediaStaggeredGridContentWithHeaders(
                 mediaState = mediaState,
                 gridState = gridState,
-                gridCells = GridCells.Fixed(3),
                 mappedData = mappedData,
                 paddingValues = paddingValues,
                 allowSelection = allowSelection,
@@ -253,10 +252,10 @@ fun <T: Media> MediaGrid(
     AnimatedVisibility(
         visible = !allowHeaders
     ) {
-        MediaGridContent(
+        MediaStaggeredGridContent(
             mediaState = mediaState,
             gridState = gridState,
-            gridCells = GridCells.Fixed(3),
+            gridCells = StaggeredGridCells.Fixed(3),
             paddingValues = paddingValues,
             allowSelection = allowSelection,
             selectionState = selectionState,
@@ -273,14 +272,12 @@ fun <T: Media> MediaGrid(
 
 }
 
-
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun <T: Media> MediaGridContentWithHeaders(
+private fun <T: Media> MediaStaggeredGridContentWithHeaders(
     mediaState: State<MediaState<T>>,
-    gridState: LazyGridState,
+    gridState: LazyStaggeredGridState,
     mappedData: SnapshotStateList<MediaItem<T>>,
-    gridCells: GridCells,
     paddingValues: PaddingValues,
     allowSelection: Boolean,
     selectionState: MutableState<Boolean>,
@@ -288,8 +285,8 @@ private fun <T: Media> MediaGridContentWithHeaders(
     toggleSelection: @DisallowComposableCalls (Int) -> Unit,
     canScroll: Boolean,
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
-    topContent: LazyGridScope.() -> Unit,
-    bottomContent: LazyGridScope.() -> Unit,
+    topContent: LazyStaggeredGridScope.() -> Unit,
+    bottomContent: LazyStaggeredGridScope.() -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
@@ -316,11 +313,13 @@ private fun <T: Media> MediaGridContentWithHeaders(
             .padding(vertical = 32.dp),
         mappedData = mappedData,
         headers = headers,
-        state = gridState,
+        state = rememberLazyGridState(),
     ) {
-        LazyVerticalGrid(
+        LazyVerticalStaggeredGrid(
             state = gridState,
-            modifier = Modifier.fillMaxSize().testTag("media_grid")
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("media_grid")
                 .pointerInput(Unit) {
                     detectPinchGestures(
                         pass = PointerEventPass.Initial,
@@ -341,11 +340,11 @@ private fun <T: Media> MediaGridContentWithHeaders(
                     scaleX = zoomTransition
                     scaleY = zoomTransition
                 },
-            columns = GridCells.Fixed(columns),
+            columns = StaggeredGridCells.Fixed(columns),
             contentPadding = paddingValues,
             userScrollEnabled = canScroll,
             horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
+            verticalItemSpacing = 5.dp
         ) {
             topContent()
 
@@ -353,9 +352,6 @@ private fun <T: Media> MediaGridContentWithHeaders(
                 items = mappedData,
                 key = { item -> item.key },
                 contentType = { item -> item.key.startsWith("media_") },
-                span = { item ->
-                    GridItemSpan(if (item.key.isHeaderKey) maxLineSpan else 1)
-                }
             ) { it ->
                 if (it is MediaItem.Header) {
                     val isChecked = rememberSaveable { mutableStateOf(false) }
@@ -376,7 +372,6 @@ private fun <T: Media> MediaGridContentWithHeaders(
                             .animateItem(
                                 fadeInSpec = null
                             ),
-                            //.pinchItem(key = it.key),
                         date = remember {
                             it.text
                                 .replace("Today", stringToday)
@@ -418,8 +413,8 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 .animateItem(
                                     fadeInSpec = null
                                 ),
-                                //.pinchItem(key = it.key),
                             media = it.media,
+                            staggered = true,
                             selectionState = selectionState,
                             selectedMedia = selectedMedia,
                             canClick = canScroll,
@@ -439,7 +434,6 @@ private fun <T: Media> MediaGridContentWithHeaders(
                 }
             }
 
-
             bottomContent()
         }
     }
@@ -448,10 +442,10 @@ private fun <T: Media> MediaGridContentWithHeaders(
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun <T: Media> MediaGridContent(
+private fun <T: Media> MediaStaggeredGridContent(
     mediaState: State<MediaState<T>>,
-    gridState: LazyGridState,
-    gridCells: GridCells,
+    gridState: LazyStaggeredGridState,
+    gridCells: StaggeredGridCells,
     paddingValues: PaddingValues,
     allowSelection: Boolean,
     selectionState: MutableState<Boolean>,
@@ -459,22 +453,21 @@ private fun <T: Media> MediaGridContent(
     toggleSelection: @DisallowComposableCalls (Int) -> Unit,
     canScroll: Boolean,
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
-    topContent: LazyGridScope.() -> Unit,
-    bottomContent: LazyGridScope.() -> Unit,
+    topContent: LazyStaggeredGridScope.() -> Unit,
+    bottomContent: LazyStaggeredGridScope.() -> Unit,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
 
 
     val feedbackManager = rememberFeedbackManager()
-    LazyVerticalGrid(
+    LazyVerticalStaggeredGrid(
         state = gridState,
         modifier = Modifier.fillMaxSize(),
         columns = gridCells,
         contentPadding = paddingValues,
         userScrollEnabled = canScroll,
         horizontalArrangement = Arrangement.spacedBy(1.dp),
-        verticalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         topContent()
 
@@ -493,8 +486,8 @@ private fun <T: Media> MediaGridContent(
                         .animateItem(
                             fadeInSpec = null
                         ),
-                        //.pinchItem(key = media.toString()),
                     media = media,
+                    staggered = true,
                     selectionState = selectionState,
                     selectedMedia = selectedMedia,
                     canClick = canScroll,

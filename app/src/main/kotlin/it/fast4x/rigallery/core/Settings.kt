@@ -259,6 +259,11 @@ object Settings {
         @Composable
         fun rememberAllowBlur() = rememberPreference(key = ALLOW_BLUR, defaultValue = true)
 
+        private val USE_STAGGERED_GRID = booleanPreferencesKey("use_staggered_grid")
+
+        @Composable
+        fun rememberStaggeredGrid() = rememberPreference(key = USE_STAGGERED_GRID, defaultValue = false)
+
         private val OLD_NAVBAR = booleanPreferencesKey("old_navbar")
 
         @Composable

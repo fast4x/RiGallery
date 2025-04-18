@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBarDefaults
@@ -43,6 +44,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -55,6 +57,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
@@ -71,7 +74,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 @Composable
 fun <T : Media> MediaGridView(
     mediaState: State<MediaState<T>>,
-    paddingValues: PaddingValues = PaddingValues(0.dp),
+    paddingValues: PaddingValues = PaddingValues(5.dp),
     searchBarPaddingTop: Dp = 0.dp,
     showSearchBar: Boolean = remember { false },
     allowSelection: Boolean = remember { false },
@@ -120,6 +123,7 @@ fun <T : Media> MediaGridView(
 //    }
 
     val gridState = rememberLazyGridState()
+    val useStaggeredGrid by Settings.Misc.rememberStaggeredGrid()
 
     AnimatedVisibility(
         visible = enableStickyHeaders
@@ -153,8 +157,6 @@ fun <T : Media> MediaGridView(
         val searchBarPaddingPx by remember(density, searchBarPadding) {
             derivedStateOf { with(density) { searchBarPadding.roundToPx() } }
         }
-
-
 
         StickyHeaderGrid(
             state = gridState,
@@ -221,6 +223,69 @@ fun <T : Media> MediaGridView(
 //                }
             }
         ) {
+            if (useStaggeredGrid)
+                MediaStaggeredGrid(
+                    gridState = rememberLazyStaggeredGridState(),
+                    mediaState = mediaState,
+                    mappedData = mappedData,
+                    paddingValues = paddingValues,
+                    allowSelection = allowSelection,
+                    selectionState = selectionState,
+                    selectedMedia = selectedMedia,
+                    toggleSelection = toggleSelection,
+                    canScroll = canScroll,
+                    allowHeaders = allowHeaders,
+                    aboveGridContent = aboveGridContent,
+                    isScrolling = isScrolling,
+                    emptyContent = emptyContent,
+                    onMediaClick = onMediaClick,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedContentScope
+                )
+            else
+                MediaGrid(
+                    gridState = gridState,
+                    mediaState = mediaState,
+                    mappedData = mappedData,
+                    paddingValues = paddingValues,
+                    allowSelection = allowSelection,
+                    selectionState = selectionState,
+                    selectedMedia = selectedMedia,
+                    toggleSelection = toggleSelection,
+                    canScroll = canScroll,
+                    allowHeaders = allowHeaders,
+                    aboveGridContent = aboveGridContent,
+                    isScrolling = isScrolling,
+                    emptyContent = emptyContent,
+                    onMediaClick = onMediaClick,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedContentScope
+                )
+        }
+    }
+    AnimatedVisibility(
+        visible = !enableStickyHeaders
+    ) {
+        if (useStaggeredGrid)
+            MediaStaggeredGrid(
+                gridState = rememberLazyStaggeredGridState(),
+                mediaState = mediaState,
+                mappedData = mappedData,
+                paddingValues = paddingValues,
+                allowSelection = allowSelection,
+                selectionState = selectionState,
+                selectedMedia = selectedMedia,
+                toggleSelection = toggleSelection,
+                canScroll = canScroll,
+                allowHeaders = allowHeaders,
+                aboveGridContent = aboveGridContent,
+                isScrolling = isScrolling,
+                emptyContent = emptyContent,
+                onMediaClick = onMediaClick,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedContentScope = animatedContentScope
+            )
+        else
             MediaGrid(
                 gridState = gridState,
                 mediaState = mediaState,
@@ -239,29 +304,6 @@ fun <T : Media> MediaGridView(
                 sharedTransitionScope = sharedTransitionScope,
                 animatedContentScope = animatedContentScope
             )
-        }
-    }
-    AnimatedVisibility(
-        visible = !enableStickyHeaders
-    ) {
-        MediaGrid(
-            gridState = gridState,
-            mediaState = mediaState,
-            mappedData = mappedData,
-            paddingValues = paddingValues,
-            allowSelection = allowSelection,
-            selectionState = selectionState,
-            selectedMedia = selectedMedia,
-            toggleSelection = toggleSelection,
-            canScroll = canScroll,
-            allowHeaders = allowHeaders,
-            aboveGridContent = aboveGridContent,
-            isScrolling = isScrolling,
-            emptyContent = emptyContent,
-            onMediaClick = onMediaClick,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = animatedContentScope
-        )
     }
 
 }
