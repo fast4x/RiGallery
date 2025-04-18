@@ -303,6 +303,8 @@
     <string name="auto_play_video_summary">Medya görüntülerken videonun otomatik olarak oynatılmasını sağlar</string>
     <string name="shared_elements">Medya öğelerini canlandır</string>
     <string name="shared_elements_summary">Medya öğelerinin tıklama/dönüş animasyonlarını paylaşılan öğelerle geçiş efekti kullanarak oynat</string>
+    <string name="mosaic_grid">Mosaic Grid</string>
+    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
     <plurals name="item_count">
         <item quantity="one">%s öğe</item>
         <item quantity="other">%s öğeler</item>

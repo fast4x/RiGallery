@@ -303,6 +303,8 @@
     <string name="auto_play_video_summary">Lecture automatique de la vidéo à la visualisation</string>
     <string name="shared_elements">Animer les éléments médias</string>
     <string name="shared_elements_summary">Animer le clic/retour d\'un média à l\'aide des transitions d\'éléments partagés</string>
+    <string name="mosaic_grid">Mosaic Grid</string>
+    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
     <plurals name="item_count">
         <item quantity="one">%s élément</item>
         <item quantity="other">%s éléments</item>

@@ -303,6 +303,8 @@
     <string name="auto_play_video_summary">Play the video automatically while viewing media</string>
     <string name="shared_elements">Animate media items</string>
     <string name="shared_elements_summary">Animate media items click/return using shared elements transitions</string>
+    <string name="mosaic_grid">Mosaic Grid</string>
+    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
     <plurals name="item_count">
         <item quantity="one">%s položka</item>
         <item quantity="few">%s položky</item>

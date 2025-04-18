@@ -332,8 +332,8 @@ fun rememberSettingsList(
     var useStaggeredGrid by Settings.Misc.rememberStaggeredGrid()
     val useStaggeredGridPref = remember(useStaggeredGrid) {
         SettingsEntity.SwitchPreference(
-            title = "Staggered Grid",
-            summary = "Show items in a staggered grid",
+            title = context.getString(R.string.mosaic_grid),
+            summary = context.getString(R.string.mosaic_grid_info),
             isChecked = useStaggeredGrid,
             onCheck = { useStaggeredGrid = it },
             screenPosition = Position.Middle

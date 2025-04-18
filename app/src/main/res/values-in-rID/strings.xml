@@ -303,6 +303,8 @@
     <string name="auto_play_video_summary">Putar video secara otomatis ketika melihat media</string>
     <string name="shared_elements">Animasikan media</string>
     <string name="shared_elements_summary">Animasikan klik media atau saat kembali menggunakan transisi elemen standar</string>
+    <string name="mosaic_grid">Mosaic Grid</string>
+    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
     <plurals name="item_count">
         <item quantity="other">%sitem</item>
     </plurals>

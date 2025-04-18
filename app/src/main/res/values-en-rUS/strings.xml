@@ -322,6 +322,8 @@
     <string name="create_new_vault_title">Create new vault?</string>
     <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)\n\nEncryption key can be accessed inside the vault and will be used in order to restore any vaults.</string>
     <string name="select_a_vault">Select a vault</string>
+    <string name="mosaic_grid">Mosaic Grid</string>
+    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
     <plurals name="item_count">
         <item quantity="one">%s item</item>
         <item quantity="other">%s items</item>
