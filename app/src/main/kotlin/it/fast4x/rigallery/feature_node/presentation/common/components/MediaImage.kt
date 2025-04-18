@@ -49,8 +49,10 @@ import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
 import it.fast4x.rigallery.feature_node.presentation.mediaview.components.video.VideoDurationHeader
 import com.github.panpf.sketch.AsyncImage
+import com.github.panpf.sketch.cache.CachePolicy
 import com.github.panpf.sketch.request.ComposableImageRequest
 import com.github.panpf.sketch.resize.Scale
+import com.github.panpf.sketch.util.key
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
@@ -142,7 +144,7 @@ fun <T: Media> MediaImage(
                 request = ComposableImageRequest(media.getUri().toString()) {
                     crossfade()
                     resizeOnDraw()
-                    scale(Scale.CENTER_CROP)
+                    scale(Scale.FILL)
                     setExtra(
                         key = "mediaKey",
                         value = media.toString(),
