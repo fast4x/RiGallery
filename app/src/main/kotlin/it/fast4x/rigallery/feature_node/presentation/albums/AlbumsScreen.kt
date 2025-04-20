@@ -18,9 +18,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +35,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.KeyboardDoubleArrowDown
+import androidx.compose.material.icons.outlined.KeyboardDoubleArrowUp
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,6 +54,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
@@ -63,20 +68,25 @@ import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
-import it.fast4x.rigallery.core.Constants.albumCellsList
-import it.fast4x.rigallery.core.Settings.Album.rememberAlbumGridSize
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.Settings.Album.LastSort
 import it.fast4x.rigallery.core.Settings.Album.rememberLastSort
+import it.fast4x.rigallery.core.enums.AlbumsSortOrder
+import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.core.enums.Option
 import it.fast4x.rigallery.core.presentation.components.EmptyAlbum
 import it.fast4x.rigallery.core.presentation.components.Error
 import it.fast4x.rigallery.core.presentation.components.FilterButton
 import it.fast4x.rigallery.core.presentation.components.FilterKind
 import it.fast4x.rigallery.core.presentation.components.FilterOption
 import it.fast4x.rigallery.core.presentation.components.LoadingAlbum
+import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
 import it.fast4x.rigallery.feature_node.domain.model.Album
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.util.MediaOrder
+import it.fast4x.rigallery.feature_node.domain.util.OrderType
 import it.fast4x.rigallery.feature_node.presentation.albums.components.AlbumComponent
 import it.fast4x.rigallery.feature_node.presentation.albums.components.CarouselPinnedAlbums
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
@@ -258,6 +268,13 @@ fun AlbumMediaGrid(
         zoom,
         animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
     )
+
+    var showAlbumsOrderMenu by remember { mutableStateOf(false) }
+    var albumsLastSort by rememberLastSort()
+    var albumsOrder = remember(albumsLastSort) { albumsLastSort.orderType }
+    var albumsKind = remember(albumsLastSort) { albumsLastSort.kind }
+
+
     LazyVerticalGrid(
         state = gridState,
         modifier = Modifier
@@ -322,9 +339,61 @@ fun AlbumMediaGrid(
                 enter = enterAnimation,
                 exit = exitAnimation
             ) {
-                FilterButton(
-                    filterOptions = filterOptions.toTypedArray()
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = AlbumsSortOrder.entries[albumsKind.ordinal].title,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .clickable {
+                                showAlbumsOrderMenu = true
+                            }
+                            .padding(5.dp)
+                    )
+                    IconButton(
+                        onClick = {
+                            albumsOrder =
+                                if (albumsOrder == OrderType.Ascending) OrderType.Descending else OrderType.Ascending
+                            albumsLastSort = albumsLastSort.copy(orderType = albumsOrder)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = remember(albumsOrder) {
+                                if (albumsOrder == OrderType.Descending)
+                                    Icons.Outlined.KeyboardDoubleArrowDown
+                                else Icons.Outlined.KeyboardDoubleArrowUp
+                            },
+                            tint = MaterialTheme.colorScheme.primary,
+                            contentDescription = null
+                        )
+                    }
+                }
+                OptionSheetMenu(
+                    title = "Sort order",
+                    options = AlbumsSortOrder.entries.map{ option ->
+                        Option(
+                            ordinal = option.ordinal,
+                            name = option.name,
+                            title = option.title,
+                            icon = option.icon
+                        )
+                    },
+                    visible = showAlbumsOrderMenu,
+                    onSelected = { albumsLastSort = LastSort(albumsOrder, FilterKind.entries[it]) },
+                    onDismiss = { showAlbumsOrderMenu = false }
                 )
+
+//                FilterButton(
+//                    filterOptions = filterOptions.toTypedArray()
+//                )
             }
         }
         items(

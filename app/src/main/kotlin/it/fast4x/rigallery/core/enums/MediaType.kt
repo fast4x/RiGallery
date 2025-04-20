@@ -1,9 +1,9 @@
 package it.fast4x.rigallery.core.enums
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DoneAll
-import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.VideoFile
+import androidx.compose.material.icons.filled.DoneAll
+import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.VideoFile
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class MediaType {
@@ -20,9 +20,9 @@ enum class MediaType {
 
     val icon: ImageVector
         get() = when (this) {
-            Images -> Icons.Outlined.Image
-            Video -> Icons.Outlined.VideoFile
-            All -> Icons.Outlined.DoneAll
+            Images -> Icons.Filled.Image
+            Video -> Icons.Filled.VideoFile
+            All -> Icons.Filled.DoneAll
         }
 
 }
