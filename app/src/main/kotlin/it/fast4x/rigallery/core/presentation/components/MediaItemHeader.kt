@@ -44,7 +44,7 @@ fun MediaItemHeader(
     val smallModifier = modifier
         .padding(
             horizontal = 0.dp,
-            vertical = 24.dp
+            vertical = 5.dp
         )
         .fillMaxWidth()
     val bigModifier = modifier

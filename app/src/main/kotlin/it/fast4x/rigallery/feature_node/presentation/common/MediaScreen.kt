@@ -11,15 +11,30 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -36,13 +51,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Constants.cellsList
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
+import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.core.enums.Option
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
 import it.fast4x.rigallery.core.presentation.components.NavigationActions
 import it.fast4x.rigallery.core.presentation.components.NavigationButton
+import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
 import it.fast4x.rigallery.core.presentation.components.SelectionSheet
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
@@ -98,7 +119,8 @@ fun <T: Media> MediaScreen(
         }
     }
 
-
+    var showMediaTypeMenu by remember { mutableStateOf(false) }
+    var showMediaType by Settings.Misc.rememberShowMediaType()
 
     Box(
         modifier = Modifier
@@ -165,45 +187,95 @@ fun <T: Media> MediaScreen(
                 }
             }
         ) { it ->
-
-                MediaGridView(
-                    mediaState = mediaState,
-                    allowSelection = true,
-                    showSearchBar = showSearchBar,
-                    searchBarPaddingTop = remember(paddingValues) {
-                        paddingValues.calculateTopPadding()
-                    },
-                    enableStickyHeaders = enableStickyHeaders,
-                    paddingValues = remember(paddingValues, it) {
-                        PaddingValues(
-                            start = 5.dp,
-                            end = 5.dp,
-                            top = it.calculateTopPadding(),
-                            bottom = paddingValues.calculateBottomPadding() + 128.dp
-                        )
-                    },
-                    canScroll = canScroll,
-                    selectionState = selectionState,
-                    selectedMedia = selectedMedia,
-                    allowHeaders = allowHeaders,
-                    showMonthlyHeader = showMonthlyHeader,
-                    toggleSelection = toggleSelection,
-                    aboveGridContent = aboveGridContent,
-                    isScrolling = isScrolling,
-                    emptyContent = emptyContent,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedContentScope = animatedContentScope
+                Column(
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it)
                 ) {
-                    if (customViewingNavigation == null) {
-                        val albumRoute = "albumId=$albumId"
-                        val targetRoute = "target=$target"
-                        val param =
-                            if (target != null) targetRoute else albumRoute
-                        navigate(Screen.MediaViewScreen.route + "?mediaId=${it.id}&$param")
-                    } else {
-                        customViewingNavigation(it)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .padding(horizontal = 15.dp)
+                            .padding(vertical = 10.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = MediaType.entries[showMediaType].title,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .clickable{
+                                    showMediaTypeMenu = true
+                                }
+                                .padding(5.dp)
+                        )
+//                        IconButton(onClick = { showMediaTypeMenu = true }) {
+//                            Icon(
+//                                imageVector = MediaType.entries[showMediaType].icon,
+//                                contentDescription = null
+//                            )
+//                        }
+
+                        Text(text = mediaState.value.media.size.toString(),
+                            fontStyle = MaterialTheme.typography.labelSmall.fontStyle)
                     }
+
+                    MediaGridView(
+                        mediaState = mediaState,
+                        allowSelection = true,
+                        showSearchBar = showSearchBar,
+                        searchBarPaddingTop = remember(paddingValues) {
+                            paddingValues.calculateTopPadding()
+                        },
+                        enableStickyHeaders = enableStickyHeaders,
+                        paddingValues = remember(paddingValues, it) {
+                            PaddingValues(
+                                start = 5.dp,
+                                end = 5.dp,
+                                top = 5.dp, //it.calculateTopPadding(),
+                                bottom = 5.dp, //paddingValues.calculateBottomPadding() + 128.dp
+                            )
+                        },
+                        canScroll = canScroll,
+                        selectionState = selectionState,
+                        selectedMedia = selectedMedia,
+                        allowHeaders = allowHeaders,
+                        showMonthlyHeader = showMonthlyHeader,
+                        toggleSelection = toggleSelection,
+                        aboveGridContent = aboveGridContent,
+                        isScrolling = isScrolling,
+                        emptyContent = emptyContent,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedContentScope = animatedContentScope
+                    ) {
+                        if (customViewingNavigation == null) {
+                            val albumRoute = "albumId=$albumId"
+                            val targetRoute = "target=$target"
+                            val param =
+                                if (target != null) targetRoute else albumRoute
+                            navigate(Screen.MediaViewScreen.route + "?mediaId=${it.id}&$param")
+                        } else {
+                            customViewingNavigation(it)
+                        }
+                    }
+
                 }
+
+            OptionSheetMenu(
+                title = "Media type",
+                options = MediaType.entries.map{ option ->
+                    Option(
+                        ordinal = option.ordinal,
+                        name = option.name,
+                        title = option.title,
+                        icon = option.icon
+                    )
+                },
+                visible = showMediaTypeMenu,
+                onSelected = { showMediaType = it },
+                onDismiss = { showMediaTypeMenu = false }
+            )
 
         }
         if (target != TARGET_TRASH) {

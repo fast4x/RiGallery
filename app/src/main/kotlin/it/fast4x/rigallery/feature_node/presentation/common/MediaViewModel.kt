@@ -31,6 +31,9 @@ import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
 import it.fast4x.rigallery.feature_node.presentation.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
+import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.feature_node.domain.util.isImage
+import it.fast4x.rigallery.feature_node.domain.util.isVideo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,7 +85,7 @@ open class MediaViewModel @Inject constructor(
     // Get groupByMonth from app settings, not necessary to get from db
 
     var groupByMonth =
-        repository.getSetting(Settings.Misc.TIMELINE_GROUP_BY_MONTH, true)
+        repository.getSetting(TIMELINE_GROUP_BY_MONTH, true)
             .stateIn(viewModelScope, SharingStarted.Eagerly, true)
 
     private val blacklistedAlbums = repository.getBlacklistedAlbums()
@@ -100,6 +103,18 @@ open class MediaViewModel @Inject constructor(
         repository.getSetting(Settings.Misc.WEEKLY_DATE_FORMAT, Constants.WEEKLY_DATE_FORMAT)
             .stateIn(viewModelScope, SharingStarted.Eagerly, Constants.WEEKLY_DATE_FORMAT)
 
+    val ignoreImages =
+        repository.getSetting(Settings.Misc.IGNORE_IMAGES, false)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    val ignoreVideos =
+        repository.getSetting(Settings.Misc.IGNORE_VIDEOS, false)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    val mediaType =
+        repository.getSetting(Settings.Misc.MEDIATYPE, MediaType.All.ordinal)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, MediaType.All.ordinal)
+
     private val permissionState = MutableStateFlow(false)
 
     val mediaFlow by lazy {
@@ -114,17 +129,24 @@ open class MediaViewModel @Inject constructor(
             ) { defaultDateFormat, extendedDateFormat, weeklyDateFormat ->
                 Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
             },
-            permissionState
-        ) { result, groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat), hasPermission ->
+            mediaType
+        ) { result, groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat),
+            mediaType
+            ->
             if (result is Resource.Error) return@combine MediaState(
                 error = result.message ?: "",
                 isLoading = false
             )
+
+            val data = (result.data ?: emptyList()).toMutableList().apply {
+                removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
+                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
+                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
+            }
+
             updateDatabase()
             mapMediaToItem(
-                data = (result.data ?: emptyList()).toMutableList().apply {
-                    removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
-                },
+                data = data,
                 error = result.message ?: "",
                 albumId = albumId,
                 groupByMonth = groupedByMonth,
