@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -89,6 +90,7 @@ import it.fast4x.rigallery.feature_node.domain.util.MediaOrder
 import it.fast4x.rigallery.feature_node.domain.util.OrderType
 import it.fast4x.rigallery.feature_node.presentation.albums.components.AlbumComponent
 import it.fast4x.rigallery.feature_node.presentation.albums.components.CarouselPinnedAlbums
+import it.fast4x.rigallery.feature_node.presentation.common.components.MediaCountInfo
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
@@ -375,6 +377,11 @@ fun AlbumMediaGrid(
                             contentDescription = null
                         )
                     }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    MediaCountInfo(mediaState)
+
                 }
                 OptionSheetMenu(
                     title = "Sort order",

@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -70,6 +71,7 @@ import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
+import it.fast4x.rigallery.feature_node.presentation.common.components.MediaCountInfo
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaGridView
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
@@ -220,8 +222,13 @@ fun <T: Media> MediaScreen(
 //                            )
 //                        }
 
-                        Text(text = mediaState.value.media.size.toString(),
-                            fontStyle = MaterialTheme.typography.labelSmall.fontStyle)
+//                        Text(text = mediaState.value.media.size.toString(),
+//                            fontStyle = MaterialTheme.typography.labelSmall.fontStyle)
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        MediaCountInfo(mediaState)
+
                     }
 
                     MediaGridView(
