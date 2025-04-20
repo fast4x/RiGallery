@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Photo
@@ -97,6 +98,7 @@ fun rememberNavigationItems(): List<NavigationItem> {
     val timelineTitle = stringResource(R.string.nav_timeline)
     val albumsTitle = stringResource(R.string.nav_albums)
     val libraryTitle = stringResource(R.string.library)
+    val favoritesTitle = stringResource(R.string.favorites)
     return remember {
         mutableListOf(
             NavigationItem(
@@ -109,15 +111,20 @@ fun rememberNavigationItems(): List<NavigationItem> {
                 route = Screen.AlbumsScreen.route,
                 icon = Icons.Outlined.PhotoAlbum,
             ),
-            NavigationItem(
-                name = libraryTitle,
-                route = Screen.LibraryScreen(),
-                icon = Icons.Outlined.PhotoLibrary
-            ),
+//            NavigationItem(
+//                name = libraryTitle,
+//                route = Screen.LibraryScreen(),
+//                icon = Icons.Outlined.PhotoLibrary
+//            ),
             NavigationItem(
                 name = libraryTitle,
                 route = Screen.CategoriesScreen(),
                 icon = Icons.Outlined.ImageSearch
+            ),
+            NavigationItem(
+                name = favoritesTitle,
+                route = Screen.FavoriteScreen(),
+                icon = Icons.Outlined.Favorite
             )
         )
     }
