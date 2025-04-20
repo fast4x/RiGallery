@@ -29,12 +29,14 @@ import androidx.core.content.edit
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import it.fast4x.rigallery.core.Constants.albumCellsList
 import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.PREFERENCE_NAME
+import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.presentation.components.FilterKind
 import it.fast4x.rigallery.core.util.rememberPreference
 import it.fast4x.rigallery.feature_node.domain.util.OrderType
@@ -136,6 +138,15 @@ object Settings {
     }
 
     object Misc {
+
+        val MEDIATYPE = intPreferencesKey("mediatype")
+
+        @Composable
+        fun rememberShowMediaType() =
+            rememberPreference(key = MEDIATYPE, defaultValue = MediaType.All.ordinal)
+
+
+
         private val USER_CHOICE_MEDIA_MANAGER = booleanPreferencesKey("use_media_manager")
 
         @RequiresApi(Build.VERSION_CODES.S)
@@ -357,6 +368,18 @@ object Settings {
         @Composable
         fun rememberSharedElements() =
             rememberPreference(key = SHARED_ELEMENTS, defaultValue = true)
+
+        val IGNORE_IMAGES = booleanPreferencesKey("ignore_images")
+
+        @Composable
+        fun rememberIgnoreImages() =
+            rememberPreference(key = IGNORE_IMAGES, defaultValue = false)
+
+        val IGNORE_VIDEOS = booleanPreferencesKey("ignore_videos")
+
+        @Composable
+        fun rememberIgnoreVideos() =
+            rememberPreference(key = IGNORE_VIDEOS, defaultValue = false)
     }
 }
 

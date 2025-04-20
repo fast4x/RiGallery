@@ -68,6 +68,9 @@ import it.fast4x.rigallery.core.Settings.Misc.rememberFullBrightnessView
 import it.fast4x.rigallery.core.Settings.Misc.rememberLastScreen
 import it.fast4x.rigallery.core.Settings.Misc.rememberVideoAutoplay
 import it.fast4x.rigallery.core.SettingsEntity
+import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.core.enums.Option
+import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
 import it.fast4x.rigallery.feature_node.presentation.settings.components.SettingsAppHeader
 import it.fast4x.rigallery.feature_node.presentation.settings.components.SettingsItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
@@ -247,6 +250,32 @@ fun rememberSettingsList(
             screenPosition = Position.Top
         )
     }
+
+    var showMediaTypeMenu by remember { mutableStateOf(false) }
+    var showMediaType by Settings.Misc.rememberShowMediaType()
+    val showMediaTypePref = remember(showMediaType) {
+        SettingsEntity.Preference(
+            title = "Media type", //context.getString(R.string.show_media_type),
+            summary = MediaType.entries[showMediaType].title,
+            onClick = { showMediaTypeMenu = true },
+            screenPosition = Position.Top
+        )
+    }
+    OptionSheetMenu(
+        title = "Media type",
+        options = MediaType.entries.map{ option ->
+            Option(
+                ordinal = option.ordinal,
+                name = option.name,
+                title = option.title,
+                icon = option.icon
+            )
+        },
+        visible = showMediaTypeMenu,
+        onSelected = { showMediaType = it },
+        onDismiss = { showMediaTypeMenu = false }
+    )
+
     var darkModeValue by Settings.Misc.rememberIsDarkMode()
     val darkThemePref = remember(darkModeValue, forceTheme) {
         SettingsEntity.SwitchPreference(
@@ -522,6 +551,7 @@ fun rememberSettingsList(
             add(SettingsEntity.Header(title = context.getString(R.string.customization)))
             /** Customization Section Start **/
             /** Customization Section Start **/
+            add(showMediaTypePref)
             add(dateHeaderPref)
             add(groupByMonthPref)
             add(allowBlurPref)
