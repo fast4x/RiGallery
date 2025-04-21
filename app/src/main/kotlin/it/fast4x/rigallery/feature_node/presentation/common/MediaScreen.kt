@@ -36,6 +36,7 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -141,7 +142,7 @@ fun <T: Media> MediaScreen(
                 ),
             topBar = {
                 if (!showSearchBar) {
-                    LargeTopAppBar(
+                    TopAppBar(
                         title = {
                             TwoLinedDateToolbarTitle(
                                 albumName = albumName,
@@ -149,17 +150,17 @@ fun <T: Media> MediaScreen(
                             )
                         },
                         navigationIcon = {
-                            NavigationButton(
-                                albumId = albumId,
-                                target = target,
-                                navigateUp = navigateUp,
-                                clearSelection = {
-                                    selectionState.value = false
-                                    selectedMedia.clear()
-                                },
-                                selectionState = selectionState,
-                                alwaysGoBack = true,
-                            )
+//                            NavigationButton(
+//                                albumId = albumId,
+//                                target = target,
+//                                navigateUp = navigateUp,
+//                                clearSelection = {
+//                                    selectionState.value = false
+//                                    selectedMedia.clear()
+//                                },
+//                                selectionState = selectionState,
+//                                alwaysGoBack = true,
+//                            )
                         },
                         actions = {
                             NavigationActions(

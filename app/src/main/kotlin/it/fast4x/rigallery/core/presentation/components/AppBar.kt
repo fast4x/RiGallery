@@ -162,14 +162,14 @@ fun AppBarContainer(
 
     val optionList = remember {
         mutableListOf(
-            OptionItem(
-                text = context.getString(R.string.favorites),
-                icon = Icons.Filled.Favorite,
-                onClick = {
-                    navController.navigate(Screen.FavoriteScreen.route)
-                    expandedDropDown.value = false
-                }
-            ),
+//            OptionItem(
+//                text = context.getString(R.string.favorites),
+//                icon = Icons.Filled.Favorite,
+//                onClick = {
+//                    navController.navigate(Screen.FavoriteScreen.route)
+//                    expandedDropDown.value = false
+//                }
+//            ),
             OptionItem(
                 text = context.getString(R.string.ignored),
                 icon = Icons.Filled.VisibilityOff,

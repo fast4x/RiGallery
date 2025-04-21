@@ -114,12 +114,12 @@ fun CategoriesScreen(
                         )
                     },
                     navigationIcon = {
-                        IconButton(onClick = navigateUp) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back_cd)
-                            )
-                        }
+//                        IconButton(onClick = navigateUp) {
+//                            Icon(
+//                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+//                                contentDescription = stringResource(R.string.back_cd)
+//                            )
+//                        }
                     },
                     scrollBehavior = scrollBehavior
                 )
