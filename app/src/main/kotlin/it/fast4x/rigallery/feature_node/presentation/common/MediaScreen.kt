@@ -11,8 +11,6 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,13 +24,7 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -53,19 +45,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
-import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings
-import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.core.enums.MediaType2
 import it.fast4x.rigallery.core.enums.Option
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
 import it.fast4x.rigallery.core.presentation.components.NavigationActions
-import it.fast4x.rigallery.core.presentation.components.NavigationButton
 import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
 import it.fast4x.rigallery.core.presentation.components.SelectionSheet
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
@@ -107,7 +95,8 @@ fun <T: Media> MediaScreen(
     searchBarActive: MutableState<Boolean> = remember { mutableStateOf(false) },
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
-    onActivityResult: (result: ActivityResult) -> Unit,
+    isMusic: Boolean = false,
+    onActivityResult: (result: ActivityResult) -> Unit
 ) {
     val showSearchBar = remember { albumId == -1L && target == null }
     var canScroll by rememberSaveable { mutableStateOf(true) }
@@ -205,6 +194,7 @@ fun <T: Media> MediaScreen(
                             .padding(vertical = 10.dp)
                             .fillMaxWidth()
                     ) {
+                        if (!isMusic){
                         Text(
                             text = MediaType.entries[showMediaType].title,
                             style = MaterialTheme.typography.titleMedium,
@@ -215,7 +205,19 @@ fun <T: Media> MediaScreen(
                                     showMediaTypeMenu = true
                                 }
                                 .padding(5.dp)
-                        )
+                        )}
+                        if (isMusic){
+                            Text(
+                                text = MediaType2.entries[showMediaType].title,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .clickable{
+                                        showMediaTypeMenu = true
+                                    }
+                                    .padding(5.dp)
+                            )}
 //                        IconButton(onClick = { showMediaTypeMenu = true }) {
 //                            Icon(
 //                                imageVector = MediaType.entries[showMediaType].icon,
@@ -272,7 +274,7 @@ fun <T: Media> MediaScreen(
                     }
 
                 }
-
+            if (!isMusic){
             OptionSheetMenu(
                 title = "Media type",
                 options = MediaType.entries.map{ option ->
@@ -286,8 +288,23 @@ fun <T: Media> MediaScreen(
                 visible = showMediaTypeMenu,
                 onSelected = { showMediaType = it },
                 onDismiss = { showMediaTypeMenu = false }
-            )
-
+            )}
+            else{
+                OptionSheetMenu(
+                    title = "Media type",
+                    options = MediaType2.entries.map{ option ->
+                        Option(
+                            ordinal = option.ordinal,
+                            name = option.name,
+                            title = option.title,
+                            icon = option.icon
+                        )
+                    },
+                    visible = showMediaTypeMenu,
+                    onSelected = { showMediaType = it },
+                    onDismiss = { showMediaTypeMenu = false }
+                )
+            }
         }
         if (target != TARGET_TRASH) {
             SelectionSheet(

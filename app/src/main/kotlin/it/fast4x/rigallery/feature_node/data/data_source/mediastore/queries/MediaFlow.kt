@@ -26,6 +26,7 @@ import it.fast4x.rigallery.core.util.join
 import it.fast4x.rigallery.feature_node.data.data_source.mediastore.MediaQuery
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaType
+
 import it.fast4x.rigallery.feature_node.presentation.util.getDate
 import kotlinx.coroutines.flow.Flow
 
@@ -56,6 +57,7 @@ class MediaFlow(
             when (it) {
                 MediaType.IMAGE -> MediaQuery.Selection.image
                 MediaType.VIDEO -> MediaQuery.Selection.video
+                MediaType.MUSIC -> MediaQuery.Selection.video
             }
         } ?: when (buckedId) {
             MediaStoreBuckets.MEDIA_STORE_BUCKET_PHOTOS.id -> MediaQuery.Selection.image

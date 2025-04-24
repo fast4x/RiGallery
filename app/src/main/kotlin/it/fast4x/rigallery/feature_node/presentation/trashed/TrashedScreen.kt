@@ -66,7 +66,8 @@ inline fun <reified T: Media> TrashedGridScreen(
     navigateUp = navigateUp,
     toggleNavbar = toggleNavbar,
     sharedTransitionScope = sharedTransitionScope,
-    animatedContentScope = animatedContentScope
+    animatedContentScope = animatedContentScope,
+    isMusic = false
 ) { result ->
     if (result.resultCode == Activity.RESULT_OK) {
         selectedMedia.clear()

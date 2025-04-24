@@ -61,6 +61,7 @@ import it.fast4x.rigallery.feature_node.presentation.ignored.IgnoredScreen
 import it.fast4x.rigallery.feature_node.presentation.ignored.setup.IgnoredSetup
 import it.fast4x.rigallery.feature_node.presentation.library.LibraryScreen
 import it.fast4x.rigallery.feature_node.presentation.mediaview.MediaViewScreen
+import it.fast4x.rigallery.feature_node.presentation.music.MusicScreen
 import it.fast4x.rigallery.feature_node.presentation.settings.SettingsScreen
 import it.fast4x.rigallery.feature_node.presentation.setup.SetupScreen
 import it.fast4x.rigallery.feature_node.presentation.timeline.TimelineScreen
@@ -205,6 +206,27 @@ fun NavigationComp(
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedContentScope = this
                 )
+            }
+            composable(
+                route = Screen.MusicScreen()
+            ) {
+                MusicScreen(
+                    paddingValues = paddingValues,
+                    handler = timelineViewModel.handler,
+                    mediaState = timelineState,
+                    albumsState = albumsState,
+                    selectionState = timelineViewModel.multiSelectState,
+                    selectedMedia = timelineViewModel.selectedPhotoState,
+                    toggleSelection = timelineViewModel::toggleSelection,
+                    navigate = navPipe::navigate,
+                    navigateUp = navPipe::navigateUp,
+                    toggleNavbar = navPipe::toggleNavbar,
+                    isScrolling = isScrolling,
+                    searchBarActive = searchBarActive,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedContentScope = this
+                )
+
             }
             composable(
                 route = Screen.TrashedScreen()
@@ -596,6 +618,8 @@ fun NavigationComp(
             ) {
                 DateFormatScreen(navigateUp = navPipe::navigateUp)
             }
+
+
 
         }
     }

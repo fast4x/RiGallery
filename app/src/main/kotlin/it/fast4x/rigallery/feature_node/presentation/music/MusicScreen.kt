@@ -1,9 +1,5 @@
-/*
- * SPDX-FileCopyrightText: 2023 IacobIacob01
- * SPDX-License-Identifier: Apache-2.0
- */
+package it.fast4x.rigallery.feature_node.presentation.music
 
-package it.fast4x.rigallery.feature_node.presentation.timeline
 
 import android.app.Activity
 import androidx.compose.animation.AnimatedContentScope
@@ -24,12 +20,13 @@ import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
 import it.fast4x.rigallery.feature_node.presentation.common.MediaScreen
 import it.fast4x.rigallery.feature_node.presentation.timeline.components.TimelineNavActions
 
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-inline fun <reified T: Media> TimelineScreen(
+inline fun <reified T: Media> MusicScreen(
     paddingValues: PaddingValues,
     albumId: Long = -1L,
-    albumName: String =  BuildConfig.APPLICATION_NAME,
+    albumName: String = BuildConfig.APPLICATION_NAME,
     handler: MediaHandleUseCase,
     mediaState: State<MediaState<T>>,
     albumsState: State<AlbumState>,
@@ -46,7 +43,8 @@ inline fun <reified T: Media> TimelineScreen(
     searchBarActive: MutableState<Boolean> = mutableStateOf(false),
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
-) {
+
+){
     MediaScreen(
         paddingValues = paddingValues,
         albumId = albumId,
@@ -59,8 +57,8 @@ inline fun <reified T: Media> TimelineScreen(
         selectedMedia = selectedMedia,
         toggleSelection = toggleSelection,
         allowHeaders = allowHeaders,
-        showMonthlyHeader = true,
-        enableStickyHeaders = enableStickyHeaders,
+        showMonthlyHeader = false,
+        enableStickyHeaders = false,
         allowNavBar = allowNavBar,
         navActionsContent = { expandedDropDown: MutableState<Boolean>, _ ->
             TimelineNavActions(
@@ -81,7 +79,7 @@ inline fun <reified T: Media> TimelineScreen(
         searchBarActive = searchBarActive,
         sharedTransitionScope = sharedTransitionScope,
         animatedContentScope = animatedContentScope,
-        isMusic = false
+        isMusic = true
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedMedia.clear()
@@ -89,3 +87,4 @@ inline fun <reified T: Media> TimelineScreen(
         }
     }
 }
+

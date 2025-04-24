@@ -64,6 +64,7 @@ fun FavoriteScreen(
     toggleNavbar = toggleNavbar,
     sharedTransitionScope = sharedTransitionScope,
     animatedContentScope = animatedContentScope,
+    isMusic = false
 ) { result ->
     if (result.resultCode == Activity.RESULT_OK) {
         selectedMedia.clear()

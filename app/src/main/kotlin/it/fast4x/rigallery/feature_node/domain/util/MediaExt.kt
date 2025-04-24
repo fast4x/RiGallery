@@ -74,6 +74,7 @@ val Media.readUriOnly: Boolean get() = albumID == -99L && albumLabel == "" && in
 val Media.isVideo: Boolean get() = mimeType.startsWith("video/") && duration != null
 
 val Media.isImage: Boolean get() = mimeType.startsWith("image/")
+val Media.isMusic: Boolean get() = mimeType.startsWith("music/")
 
 val Media.isTrashed: Boolean get() = trashed == 1
 

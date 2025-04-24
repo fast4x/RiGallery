@@ -41,6 +41,7 @@ class AlbumsFlow(
             when (it) {
                 MediaType.IMAGE -> MediaQuery.Selection.image
                 MediaType.VIDEO -> MediaQuery.Selection.video
+                MediaType.MUSIC ->  MediaQuery.Selection.music
             }
         } ?: MediaQuery.Selection.imageOrVideo
         val rawMimeType = mimeType?.takeIf { PickerUtils.isMimeTypeNotGeneric(it) }

@@ -61,6 +61,7 @@ fun CategoryViewScreen(
             navigate(Screen.MediaViewScreen.idAndCategory(media.id, category))
         },
         sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = animatedContentScope
+        animatedContentScope = animatedContentScope,
+        isMusic = false
     )
 }

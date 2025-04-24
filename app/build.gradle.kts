@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import java.io.FileInputStream
 import java.util.Properties
@@ -51,13 +50,13 @@ android {
 
     buildTypes {
         getByName("debug") {
-            buildConfigField("String", "MAPS_TOKEN", getApiKey())
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
             manifestPlaceholders += mapOf(
                 "appProvider" to "it.fast4x.rigallery.debug.media_provider",
                 "appName" to "$applicationName-Debug"
             )
+            buildConfigField("String", "MAPS_TOKEN", getApiKey())
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
             buildConfigField("Boolean", "ALLOW_ALL_FILES_ACCESS", allowAllFilesAccess)
             buildConfigField(
                 "String",

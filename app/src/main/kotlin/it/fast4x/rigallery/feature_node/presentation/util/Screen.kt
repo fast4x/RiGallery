@@ -29,6 +29,7 @@ sealed class Screen(val route: String) {
 
     data object TrashedScreen : Screen("trashed_screen")
     data object FavoriteScreen : Screen("favorite_screen")
+    data object MusicScreen : Screen("music_screen")
 
     data object SettingsScreen : Screen("settings_screen")
     data object IgnoredScreen : Screen("ignored_screen")

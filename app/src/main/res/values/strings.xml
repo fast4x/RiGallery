@@ -324,6 +324,7 @@
     <string name="select_a_vault">Select a vault</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
+    <string name="Music">Music</string>
     <plurals name="item_count">
         <item quantity="one">%s item</item>
         <item quantity="other">%s items</item>

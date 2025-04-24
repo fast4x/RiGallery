@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Image
+import androidx.compose.material.icons.outlined.MusicNote
 import androidx.compose.material.icons.outlined.VideoFile
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +39,12 @@ fun <T: Media> MediaCountInfo(
             contentDescription = null
         )
         Text(text = mediaState.value.videosCount().toString(),
+            fontStyle = MaterialTheme.typography.labelSmall.fontStyle)
+        Icon(
+            imageVector = Icons.Outlined.MusicNote,
+            contentDescription = null
+        )
+        Text(text = mediaState.value.musicCount().toString(),
             fontStyle = MaterialTheme.typography.labelSmall.fontStyle)
     }
 }
