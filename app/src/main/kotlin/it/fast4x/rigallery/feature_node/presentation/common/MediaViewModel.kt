@@ -91,6 +91,9 @@ open class MediaViewModel @Inject constructor(
     private val blacklistedAlbums = repository.getBlacklistedAlbums()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+    private val ignoredMediaList = repository.getMediaIgnored()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
     private val defaultDateFormat =
         repository.getSetting(Settings.Misc.DEFAULT_DATE_FORMAT, Constants.DEFAULT_DATE_FORMAT)
             .stateIn(viewModelScope, SharingStarted.Eagerly, Constants.DEFAULT_DATE_FORMAT)
@@ -129,10 +132,13 @@ open class MediaViewModel @Inject constructor(
             ) { defaultDateFormat, extendedDateFormat, weeklyDateFormat ->
                 Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
             },
-            mediaType
+            combine (mediaType, ignoredMediaList) { mediaType, ignoredMediaList ->
+                Pair(mediaType, ignoredMediaList)
+            }
+
         ) { result, groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat),
-            mediaType
-            ->
+            (mediaType, ignoredMediaList) ->
+
             if (result is Resource.Error) return@combine MediaState(
                 error = result.message ?: "",
                 isLoading = false
@@ -140,6 +146,7 @@ open class MediaViewModel @Inject constructor(
 
             val data = (result.data ?: emptyList()).toMutableList().apply {
                 removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
+                removeAll { media -> media in ignoredMediaList }
                 if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
                 if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
             }

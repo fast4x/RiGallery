@@ -305,6 +305,7 @@
     <string name="shared_elements_summary">Анімуйте натискання / повернення медіа елементів за допомогою спільних елементів переходу</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
+    <string name="ignore">Ignore</string>
     <plurals name="item_count">
         <item quantity="one">%s елемент</item>
         <item quantity="few">%s елементи</item>

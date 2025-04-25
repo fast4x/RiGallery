@@ -175,4 +175,9 @@ interface MediaRepository {
 
     suspend fun deleteClassifications()
 
+    suspend fun setMediaIgnored(id: Long, ignored: Int)
+    suspend fun setMediaIgnored(media: UriMedia)
+
+    fun getMediaIgnored(): Flow<List<UriMedia>>
+
 }

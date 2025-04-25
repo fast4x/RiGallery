@@ -44,6 +44,45 @@ class MediaHandleUseCase(
         }
     }
 
+    suspend fun <T: Media> toggleIgnored(
+        mediaList: List<T>
+    ) {
+        val turnToIgnored = mediaList.filter { it.ignored == 0 }
+        val turnToNotIgnored = mediaList.filter { it.ignored == 1 }
+        if (turnToIgnored.isNotEmpty()) {
+            turnToIgnored.forEach {
+                repository.setMediaIgnored(
+                    it.apply {
+                        ignored = 1
+                    } as Media.UriMedia
+                )
+                println("MediaHandleUseCase: toggleIgnored Loop: turnToIgnored: $it")
+            }
+//            repository.setMediaIgnored(
+//                turnToIgnored.first().apply {
+//                    ignored = 0
+//                } as Media.UriMedia
+//            )
+            println("MediaHandleUseCase: toggleIgnored: turnToIgnored: $turnToIgnored")
+        }
+        if (turnToNotIgnored.isNotEmpty()) {
+            turnToNotIgnored.forEach {
+                repository.setMediaIgnored(
+                    it.apply {
+                        ignored = 0
+                    } as Media.UriMedia
+                )
+                println("MediaHandleUseCase: turnToNotIgnored Loop: turnToNotIgnored: $it")
+            }
+//            repository.setMediaIgnored(
+//                turnToNotIgnored.first().apply {
+//                    ignored = 0
+//                } as Media.UriMedia
+//            )
+            println("MediaHandleUseCase: toggleIgnored: turnToNotIgnored: $turnToNotIgnored")
+        }
+    }
+
     suspend fun <T: Media> trashMedia(
         result: ActivityResultLauncher<IntentSenderRequest>,
         mediaList: List<T>,

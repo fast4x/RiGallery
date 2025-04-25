@@ -305,6 +305,7 @@
     <string name="shared_elements_summary">Animate media items click/return using shared elements transitions</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
+    <string name="ignore">Ignore</string>
     <plurals name="item_count">
         <item quantity="other">%s mục</item>
     </plurals>

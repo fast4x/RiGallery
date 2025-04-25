@@ -305,6 +305,7 @@
     <string name="shared_elements_summary">用共享元素过渡来作为媒体项目的点击/返回动画</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
+    <string name="ignore">Ignore</string>
     <plurals name="item_count">
         <item quantity="other">%s 个项目</item>
     </plurals>

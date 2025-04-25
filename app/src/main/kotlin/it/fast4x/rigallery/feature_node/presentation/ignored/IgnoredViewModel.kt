@@ -20,6 +20,12 @@ class IgnoredViewModel @Inject constructor(
         .map { IgnoredState(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), IgnoredState())
 
+    fun addToBlacklist(ignoredAlbum: IgnoredAlbum) {
+        viewModelScope.launch {
+            repository.addBlacklistedAlbum(ignoredAlbum)
+        }
+    }
+
     fun removeFromBlacklist(ignoredAlbum: IgnoredAlbum) {
         viewModelScope.launch {
             repository.removeBlacklistedAlbum(ignoredAlbum)

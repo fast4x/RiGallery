@@ -16,9 +16,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.res.stringResource
 import it.fast4x.rigallery.BuildConfig
-import it.fast4x.rigallery.R
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
