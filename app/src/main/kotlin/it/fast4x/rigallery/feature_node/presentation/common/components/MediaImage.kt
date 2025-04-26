@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -94,7 +95,7 @@ fun <T: Media> MediaImage(
         label = "strokeColor"
     )
 
-    val aspectRatio = remember(media) {
+    val aspectRatio = rememberSaveable(media) {
         mutableFloatStateOf(
             if (staggered)
                 Random.nextFloat() * (1.5f - 0.5f) + 0.5f
