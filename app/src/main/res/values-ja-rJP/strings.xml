@@ -306,6 +306,8 @@
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
     <string name="ignore">Ignore</string>
+    <string name="empty_ignored_title">You have no ignored</string>
+    <string name="ignored_media">Ignored Media</string>
     <plurals name="item_count">
         <item quantity="other">%s アイテム</item>
     </plurals>

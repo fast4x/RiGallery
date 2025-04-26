@@ -13,6 +13,7 @@ import androidx.activity.result.IntentSenderRequest
 import it.fast4x.rigallery.core.Settings.Misc.getTrashEnabled
 import it.fast4x.rigallery.feature_node.domain.model.ExifAttributes
 import it.fast4x.rigallery.feature_node.domain.model.Media
+import it.fast4x.rigallery.feature_node.domain.model.Media.UriMedia
 import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.util.mediaPair
 import kotlinx.coroutines.Dispatchers
@@ -54,15 +55,10 @@ class MediaHandleUseCase(
                 repository.setMediaIgnored(
                     it.apply {
                         ignored = 1
-                    } as Media.UriMedia
+                    } as UriMedia
                 )
                 println("MediaHandleUseCase: toggleIgnored Loop: turnToIgnored: $it")
             }
-//            repository.setMediaIgnored(
-//                turnToIgnored.first().apply {
-//                    ignored = 0
-//                } as Media.UriMedia
-//            )
             println("MediaHandleUseCase: toggleIgnored: turnToIgnored: $turnToIgnored")
         }
         if (turnToNotIgnored.isNotEmpty()) {
@@ -70,15 +66,10 @@ class MediaHandleUseCase(
                 repository.setMediaIgnored(
                     it.apply {
                         ignored = 0
-                    } as Media.UriMedia
+                    } as UriMedia
                 )
                 println("MediaHandleUseCase: turnToNotIgnored Loop: turnToNotIgnored: $it")
             }
-//            repository.setMediaIgnored(
-//                turnToNotIgnored.first().apply {
-//                    ignored = 0
-//                } as Media.UriMedia
-//            )
             println("MediaHandleUseCase: toggleIgnored: turnToNotIgnored: $turnToNotIgnored")
         }
     }

@@ -33,6 +33,7 @@ sealed class Screen(val route: String) {
     data object SettingsScreen : Screen("settings_screen")
     data object IgnoredScreen : Screen("ignored_screen")
     data object IgnoredSetupScreen : Screen("ignored_setup_screen")
+    data object IgnoredMediaScr : Screen("ignored_media_screen")
 
     data object SetupScreen: Screen("setup_screen")
 
