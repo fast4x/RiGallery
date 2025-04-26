@@ -42,5 +42,7 @@ object MediaQuery {
         val video =
             MediaStore.Files.FileColumns.MEDIA_TYPE eq MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
         val imageOrVideo = image or video
+        val audio =
+            MediaStore.Files.FileColumns.MEDIA_TYPE eq MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO
     }
 }

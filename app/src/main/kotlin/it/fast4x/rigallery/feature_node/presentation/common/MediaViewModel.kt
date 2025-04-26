@@ -32,6 +32,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
 import kotlinx.coroutines.Dispatchers
@@ -147,8 +148,9 @@ open class MediaViewModel @Inject constructor(
             val data = (result.data ?: emptyList()).toMutableList().apply {
                 removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
                 removeAll { media -> media.id == ignoredMediaList.find { it.id == media.id }?.id }
-                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
-                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
+                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage || media.isAudio }
+                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo || media.isAudio }
+                if (mediaType == MediaType.Audios.ordinal) removeAll { media -> media.isVideo || media.isImage }
             }
 
             updateDatabase()

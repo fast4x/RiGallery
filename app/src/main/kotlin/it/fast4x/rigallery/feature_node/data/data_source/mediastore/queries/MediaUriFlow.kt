@@ -59,6 +59,7 @@ class MediaUriFlow(
             when (it) {
                 MediaType.IMAGE -> MediaQuery.Selection.image
                 MediaType.VIDEO -> MediaQuery.Selection.video
+                MediaType.AUDIO -> MediaQuery.Selection.audio
             }
         } ?: MediaQuery.Selection.imageOrVideo
         val albumFilter = when (buckedId) {
