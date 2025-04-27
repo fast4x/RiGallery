@@ -35,8 +35,8 @@ fun SearchHistory(search: (query: String) -> Unit) {
     val suggestionSet = listOf(
         "0" to "Screenshots",
         "1" to "Camera",
-        "2" to "May 2022",
-        "3" to "Thursday"
+        //"2" to "May 2022",
+        //"3" to "Thursday"
     )
 
     Column {
@@ -44,7 +44,7 @@ fun SearchHistory(search: (query: String) -> Unit) {
             Text(
                 text = stringResource(R.string.history_recent_title),
                 color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .padding(top = 16.dp)
@@ -63,7 +63,7 @@ fun SearchHistory(search: (query: String) -> Unit) {
         Text(
             text = stringResource(R.string.history_suggestions_title),
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp)
                 .padding(top = 16.dp)

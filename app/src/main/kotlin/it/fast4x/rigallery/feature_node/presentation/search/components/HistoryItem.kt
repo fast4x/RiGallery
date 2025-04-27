@@ -1,7 +1,11 @@
 package it.fast4x.rigallery.feature_node.presentation.search.components
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.History
@@ -10,11 +14,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.unit.dp
+import it.fast4x.rigallery.feature_node.presentation.library.components.dashedBorder
 
 @Composable
 fun HistoryItem(
@@ -61,5 +69,16 @@ fun HistoryItem(
         ),
         modifier = Modifier
             .clickable { search(historyQuery.second) }
+            //.border(1.dp, MaterialTheme.colorScheme.onBackground, MaterialTheme.shapes.medium)
+            .dashedBorder(
+                color = MaterialTheme.colorScheme.onBackground,
+                shape = MaterialTheme.shapes.medium,
+                strokeWidth = 1.dp,
+                dashLength = 4.dp,
+                gapLength = 2.dp,
+                cap = StrokeCap.Round
+            )
+
     )
+    Spacer(modifier = Modifier.height(8.dp))
 }

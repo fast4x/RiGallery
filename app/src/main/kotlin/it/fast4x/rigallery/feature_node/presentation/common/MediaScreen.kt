@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0 license
  */
 
 package it.fast4x.rigallery.feature_node.presentation.common
