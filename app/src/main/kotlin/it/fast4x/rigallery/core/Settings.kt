@@ -143,7 +143,9 @@ object Settings {
 
         @Composable
         fun rememberShowMediaType() =
-            rememberPreference(key = MEDIATYPE, defaultValue = MediaType.All.ordinal)
+            rememberPreference(key = MEDIATYPE, defaultValue = MediaType.All.ordinal).apply {
+                value = if (value > MediaType.entries.size-1) MediaType.All.ordinal else value
+            }
 
 
 

@@ -150,7 +150,7 @@ open class MediaViewModel @Inject constructor(
                 removeAll { media -> media.id == ignoredMediaList.find { it.id == media.id }?.id }
                 if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage || media.isAudio }
                 if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo || media.isAudio }
-                if (mediaType == MediaType.Audios.ordinal) removeAll { media -> media.isVideo || media.isImage }
+                //if (mediaType == MediaType.Audios.ordinal) removeAll { media -> media.isVideo || media.isImage }
             }
 
             updateDatabase()
