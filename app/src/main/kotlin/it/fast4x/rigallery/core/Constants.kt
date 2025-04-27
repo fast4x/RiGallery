@@ -98,6 +98,7 @@ object Constants {
     object Target {
         const val TARGET_FAVORITES = "favorites"
         const val TARGET_TRASH = "trash"
+        const val TARGET_IGNOREDMEDIA = "ignoredmedia"
     }
 
     val cellsList = listOf(

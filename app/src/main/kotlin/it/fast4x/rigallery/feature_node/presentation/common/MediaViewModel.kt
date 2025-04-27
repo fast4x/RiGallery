@@ -32,6 +32,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
 import kotlinx.coroutines.Dispatchers
@@ -91,6 +92,9 @@ open class MediaViewModel @Inject constructor(
     private val blacklistedAlbums = repository.getBlacklistedAlbums()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+    private val ignoredMediaList = repository.getMediaIgnored()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
     private val defaultDateFormat =
         repository.getSetting(Settings.Misc.DEFAULT_DATE_FORMAT, Constants.DEFAULT_DATE_FORMAT)
             .stateIn(viewModelScope, SharingStarted.Eagerly, Constants.DEFAULT_DATE_FORMAT)
@@ -129,10 +133,13 @@ open class MediaViewModel @Inject constructor(
             ) { defaultDateFormat, extendedDateFormat, weeklyDateFormat ->
                 Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
             },
-            mediaType
+            combine (mediaType, ignoredMediaList) { mediaType, ignoredMediaList ->
+                Pair(mediaType, ignoredMediaList)
+            }
+
         ) { result, groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat),
-            mediaType
-            ->
+            (mediaType, ignoredMediaList) ->
+
             if (result is Resource.Error) return@combine MediaState(
                 error = result.message ?: "",
                 isLoading = false
@@ -140,6 +147,43 @@ open class MediaViewModel @Inject constructor(
 
             val data = (result.data ?: emptyList()).toMutableList().apply {
                 removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
+                removeAll { media -> media.id == ignoredMediaList.find { it.id == media.id }?.id }
+                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage || media.isAudio }
+                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo || media.isAudio }
+                if (mediaType == MediaType.Audios.ordinal) removeAll { media -> media.isVideo || media.isImage }
+            }
+
+            updateDatabase()
+            mapMediaToItem(
+                data = data,
+                error = result.message ?: "",
+                albumId = albumId,
+                groupByMonth = groupedByMonth,
+                defaultDateFormat = defaultDateFormat,
+                extendedDateFormat = extendedDateFormat,
+                weeklyDateFormat = weeklyDateFormat
+            )
+        }.stateIn(viewModelScope, started = SharingStarted.Eagerly, MediaState())
+    }
+
+    val ignoredMediaFlow by lazy {
+        combine(
+            groupByMonth,
+            blacklistedAlbums,
+            combine(
+                defaultDateFormat,
+                extendedDateFormat,
+                weeklyDateFormat
+            ) { defaultDateFormat, extendedDateFormat, weeklyDateFormat ->
+                Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
+            },
+           ignoredMediaList,mediaType
+        ) {
+          groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat),
+            ignoredMediaList, mediaType ->
+
+            println("ignoredMediaFlow: $ignoredMediaList")
+            val data = ignoredMediaList.toMutableList().apply {
                 if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
                 if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
             }
@@ -147,7 +191,7 @@ open class MediaViewModel @Inject constructor(
             updateDatabase()
             mapMediaToItem(
                 data = data,
-                error = result.message ?: "",
+                error = "",
                 albumId = albumId,
                 groupByMonth = groupedByMonth,
                 defaultDateFormat = defaultDateFormat,
@@ -217,6 +261,19 @@ open class MediaViewModel @Inject constructor(
     fun toggleSelection(index: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val item = mediaFlow.value.media[index]
+            val selectedPhoto = selectedPhotoState.find { it.id == item.id }
+            if (selectedPhoto != null) {
+                selectedPhotoState.remove(selectedPhoto)
+            } else {
+                selectedPhotoState.add(item)
+            }
+            multiSelectState.update(selectedPhotoState.isNotEmpty())
+        }
+    }
+
+    fun toggleIgnoredSelection(index: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val item = ignoredMediaFlow.value.media[index]
             val selectedPhoto = selectedPhotoState.find { it.id == item.id }
             if (selectedPhoto != null) {
                 selectedPhotoState.remove(selectedPhoto)

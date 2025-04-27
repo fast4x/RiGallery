@@ -197,7 +197,7 @@
     <string name="individual_album_selection">Pemilihan Album Individual</string>
     <string name="wildcard_creator">Pembuat Wildcard</string>
     <string name="wildcard_summary">Karakter pengganti akan digunakan untuk mencocokkan nama album atau jalurnya. Karakter pengganti dapat diperlakukan sebagai pola regex.</string>
-    <string name="wildcard_summary_first"></string>
+    <string name="wildcard_summary_first">Wildcard: %1$s</string>
     <string name="matched_albums">"Album yang cocok: %1$s"</string>
     <string name="go_back">Kembali</string>
     <string name="continue_string">Melanjutkan</string>
@@ -227,7 +227,7 @@
     <string name="setup_type_regex_title">Pola Regex</string>
     <string name="setup_type_regex_subtitle">Membuat pola seleksi</string>
     <string name="setup_type_regex_example_title">Contoh</string>
-    <string name="setup_type_regex_example_first_title">Cocokkan album apa pun langsung di bawah folder Musik:</string>
+    <string name="setup_type_regex_example_first_title">Matched albums: %2$s</string>
     <string name="setup_type_regex_first_subtitle">.*/Musik/[^/]+/?$</string>
     <string name="setup_type_regex_example_second_title">Cocokkan album apa pun di bawah folder Musik dan subfoldernya:</string>
     <string name="setup_type_regex_example_second_subtitle">.*/Musik/.+/[^/]+/?$</string>
@@ -305,7 +305,18 @@
     <string name="shared_elements_summary">Animasikan klik media atau saat kembali menggunakan transisi elemen standar</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
+    <string name="ignore">Ignore</string>
+    <string name="empty_ignored_title">You have no ignored</string>
+    <string name="ignored_media">Ignored Media</string>
     <plurals name="item_count">
         <item quantity="other">%sitem</item>
     </plurals>
+    <string name="type_stylus">Stylus</string>
+    <string name="type_highlighter">Highlighter</string>
+    <string name="type_marker">Marker</string>
+    <string name="type_erase">Eraser</string>
+    <string name="crop">Crop</string>
+    <string name="adjust">Adjust</string>
+    <string name="filters">Filters</string>
+    <string name="markup">Markup</string>
 </resources>

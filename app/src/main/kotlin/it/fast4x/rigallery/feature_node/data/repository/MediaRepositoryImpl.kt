@@ -158,6 +158,17 @@ class MediaRepositoryImpl(
     override fun getBlacklistedAlbums(): Flow<List<IgnoredAlbum>> =
         database.getBlacklistDao().getBlacklistedAlbums()
 
+    override suspend fun setMediaIgnored(id: Long, ignored: Int) =
+        database.getMediaDao().setMediaIgnored(id, ignored)
+
+    override suspend fun setMediaIgnored(media: UriMedia) =
+        database.getMediaDao().updateMedia(media)
+
+    override fun getMediaIgnored(): Flow<List<UriMedia>> =
+        database.getMediaDao().getMediaIgnored()
+
+
+
     override fun getMediaByAlbumId(albumId: Long): Flow<Resource<List<UriMedia>>> =
         MediaFlow(
             contentResolver = contentResolver,
@@ -617,6 +628,7 @@ class MediaRepositoryImpl(
 
     override suspend fun changeCategory(mediaId: Long, newCategory: String) =
         database.getClassifierDao().changeCategory(mediaId, newCategory)
+
 
     companion object {
         private fun displayName(newName: String) = ContentValues().apply {
