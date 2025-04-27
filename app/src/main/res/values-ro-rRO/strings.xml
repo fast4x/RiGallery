@@ -305,20 +305,9 @@
     <string name="shared_elements_summary">Animate media items click/return using shared elements transitions</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
-    <string name="ignore">Ignore</string>
-    <string name="empty_ignored_title">You have no ignored</string>
-    <string name="ignored_media">Ignored Media</string>
     <plurals name="item_count">
         <item quantity="one">%s articol</item>
         <item quantity="few">%s articole</item>
         <item quantity="other">%s articole</item>
     </plurals>
-    <string name="type_stylus">Stylus</string>
-    <string name="type_highlighter">Highlighter</string>
-    <string name="type_marker">Marker</string>
-    <string name="type_erase">Eraser</string>
-    <string name="crop">Crop</string>
-    <string name="adjust">Adjust</string>
-    <string name="filters">Filters</string>
-    <string name="markup">Markup</string>
 </resources>

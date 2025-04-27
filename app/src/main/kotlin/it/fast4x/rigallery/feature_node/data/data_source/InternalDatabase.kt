@@ -28,7 +28,7 @@ import it.fast4x.rigallery.feature_node.domain.util.Converters
         Media.EncryptedMedia2::class,
         Vault::class
     ],
-    version = 8,
+    version = 7,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -36,8 +36,7 @@ import it.fast4x.rigallery.feature_node.domain.util.Converters
         AutoMigration(from = 3, to = 4),
         AutoMigration(from = 4, to = 5),
         AutoMigration(from = 5, to = 6),
-        AutoMigration(from = 6, to = 7),
-        AutoMigration(from = 7, to = 8),
+        AutoMigration(from = 6, to = 7)
     ]
 )
 @TypeConverters(Converters::class)

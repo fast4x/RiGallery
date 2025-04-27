@@ -39,7 +39,6 @@ import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.Constants.Animation.navigateInAnimation
 import it.fast4x.rigallery.core.Constants.Animation.navigateUpAnimation
 import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
-import it.fast4x.rigallery.core.Constants.Target.TARGET_IGNOREDMEDIA
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Settings.Album.rememberHideTimelineOnAlbum
 import it.fast4x.rigallery.core.Settings.Misc.rememberLastScreen
@@ -54,6 +53,8 @@ import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewMode
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewScreen
 import it.fast4x.rigallery.feature_node.presentation.common.ChanneledViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionItem
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionSheet
 import it.fast4x.rigallery.feature_node.presentation.dateformat.DateFormatScreen
 import it.fast4x.rigallery.feature_node.presentation.favorites.FavoriteScreen
 import it.fast4x.rigallery.feature_node.presentation.ignored.IgnoredScreen
@@ -66,10 +67,12 @@ import it.fast4x.rigallery.feature_node.presentation.setup.SetupScreen
 import it.fast4x.rigallery.feature_node.presentation.timeline.TimelineScreen
 import it.fast4x.rigallery.feature_node.presentation.trashed.TrashedGridScreen
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
-import it.fast4x.rigallery.feature_node.presentation.ignoredmedia.IgnoredMediaScreen
+import it.fast4x.rigallery.feature_node.presentation.util.rememberAppBottomSheetState
 import it.fast4x.rigallery.feature_node.presentation.util.restartApplication
 import it.fast4x.rigallery.feature_node.presentation.vault.VaultScreen
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Stable
@@ -507,31 +510,6 @@ fun NavigationComp(
                 IgnoredSetup(
                     onCancel = navPipe::navigateUp,
                     albumState = albumsState
-                )
-            }
-
-            composable(
-                route = Screen.IgnoredMediaScr()
-            ) {
-                val vm = hiltViewModel<MediaViewModel>().apply {
-                    target = TARGET_IGNOREDMEDIA
-                }
-                val ignoredMediaState =
-                    vm.ignoredMediaFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
-                IgnoredMediaScreen(
-                    paddingValues = paddingValues,
-                    handler = vm.handler,
-                    mediaState = ignoredMediaState,
-                    albumsState = albumsState,
-                    selectionState = vm.multiSelectState,
-                    selectedMedia = vm.selectedPhotoState,
-                    toggleFavorite = vm::toggleFavorite,
-                    toggleSelection = vm::toggleIgnoredSelection,
-                    navigate = navPipe::navigate,
-                    navigateUp = navPipe::navigateUp,
-                    toggleNavbar = navPipe::toggleNavbar,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
                 )
             }
 

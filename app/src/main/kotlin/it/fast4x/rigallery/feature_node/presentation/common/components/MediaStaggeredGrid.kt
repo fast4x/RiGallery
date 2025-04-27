@@ -343,8 +343,8 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
             columns = StaggeredGridCells.Fixed(columns),
             contentPadding = paddingValues,
             userScrollEnabled = canScroll,
-            horizontalArrangement = Arrangement.spacedBy(1.dp),
-            verticalItemSpacing = 1.dp
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalItemSpacing = 5.dp
         ) {
             topContent()
 

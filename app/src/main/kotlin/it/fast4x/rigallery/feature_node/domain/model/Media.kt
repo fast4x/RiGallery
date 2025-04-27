@@ -42,7 +42,6 @@ sealed class Media : Parcelable, java.io.Serializable {
     abstract val trashed: Int
     abstract val size: Long
     abstract val duration: String?
-    abstract var ignored: Int?
 
     val definedTimestamp: Long
         get() = takenTimestamp?.div(1000) ?: timestamp
@@ -77,8 +76,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val favorite: Int,
         override val trashed: Int,
         override val size: Long,
-        override val duration: String? = null,
-        override var ignored: Int? = 0
+        override val duration: String? = null
     ) : Media()
 
     @Serializable
@@ -104,7 +102,6 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val duration: String?,
         val category: String?,
         val score: Float,
-        override var ignored: Int? = 0,
     ): Media()
 
     @Serializable
@@ -125,8 +122,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val favorite: Int,
         override val trashed: Int,
         override val size: Long,
-        override val duration: String? = null,
-        override var ignored: Int? = 0
+        override val duration: String? = null
     ): Media() {
 
         override fun equals(other: Any?): Boolean {
@@ -149,7 +145,6 @@ sealed class Media : Parcelable, java.io.Serializable {
             if (mimeType != other.mimeType) return false
             if (favorite != other.favorite) return false
             if (trashed != other.trashed) return false
-            if (ignored != other.ignored) return false
             if (size != other.size) return false
             if (duration != other.duration) return false
 
@@ -171,7 +166,6 @@ sealed class Media : Parcelable, java.io.Serializable {
             result = 31 * result + mimeType.hashCode()
             result = 31 * result + favorite
             result = 31 * result + trashed
-            result = 31 * result + ignored.hashCode()
             result = 31 * result + size.hashCode()
             result = 31 * result + (duration?.hashCode() ?: 0)
             return result
@@ -198,8 +192,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val favorite: Int,
         override val trashed: Int,
         override val size: Long,
-        override val duration: String? = null,
-        override var ignored: Int? = 0
+        override val duration: String? = null
     ): Media() {
 
         override fun equals(other: Any?): Boolean {
@@ -221,7 +214,6 @@ sealed class Media : Parcelable, java.io.Serializable {
             if (mimeType != other.mimeType) return false
             if (favorite != other.favorite) return false
             if (trashed != other.trashed) return false
-            if (ignored != other.ignored) return false
             if (size != other.size) return false
             if (duration != other.duration) return false
 
@@ -242,7 +234,6 @@ sealed class Media : Parcelable, java.io.Serializable {
             result = 31 * result + mimeType.hashCode()
             result = 31 * result + favorite
             result = 31 * result + trashed
-            result = 31 * result + ignored.hashCode()
             result = 31 * result + size.hashCode()
             result = 31 * result + (duration?.hashCode() ?: 0)
             return result
@@ -299,8 +290,7 @@ sealed class Media : Parcelable, java.io.Serializable {
                 duration = duration,
                 favorite = 0,
                 size = 0,
-                trashed = 0,
-                ignored = 0
+                trashed = 0
             )
         }
     }

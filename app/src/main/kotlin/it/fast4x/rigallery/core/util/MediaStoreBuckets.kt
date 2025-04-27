@@ -33,9 +33,7 @@ enum class MediaStoreBuckets {
     /**
      * Timeline, contains only videos.
      */
-    MEDIA_STORE_BUCKET_VIDEOS,
-
-    MEDIA_STORE_BUCKET_AUDIOS;
+    MEDIA_STORE_BUCKET_VIDEOS;
 
     val id = (-0x0000DEAD - ((ordinal + 1) shl 16)).toLong()
 }

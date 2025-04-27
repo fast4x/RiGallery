@@ -18,6 +18,7 @@ enum class MediaType(
     MUSIC(
         MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
         MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO,
+    );
 
     companion object {
         private val dashMimeTypes = listOf(

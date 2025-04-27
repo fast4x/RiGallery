@@ -57,12 +57,11 @@ class MediaFlow(
             when (it) {
                 MediaType.IMAGE -> MediaQuery.Selection.image
                 MediaType.VIDEO -> MediaQuery.Selection.video
-                MediaType.MUSIC -> MediaQuery.Selection.music
+                MediaType.MUSIC -> MediaQuery.Selection.video
             }
         } ?: when (buckedId) {
             MediaStoreBuckets.MEDIA_STORE_BUCKET_PHOTOS.id -> MediaQuery.Selection.image
             MediaStoreBuckets.MEDIA_STORE_BUCKET_VIDEOS.id -> MediaQuery.Selection.video
-            MediaStoreBuckets.MEDIA_STORE_BUCKET_AUDIOS.id -> MediaQuery.Selection.audio
             else -> MediaQuery.Selection.imageOrVideo
         }
         val albumFilter = when (buckedId) {
@@ -73,8 +72,7 @@ class MediaFlow(
 
             MediaStoreBuckets.MEDIA_STORE_BUCKET_TIMELINE.id,
             MediaStoreBuckets.MEDIA_STORE_BUCKET_PHOTOS.id,
-            MediaStoreBuckets.MEDIA_STORE_BUCKET_VIDEOS.id,
-            MediaStoreBuckets.MEDIA_STORE_BUCKET_AUDIOS.id -> null
+            MediaStoreBuckets.MEDIA_STORE_BUCKET_VIDEOS.id -> null
 
             else -> MediaStore.Files.FileColumns.BUCKET_ID eq Query.ARG
         }

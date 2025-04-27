@@ -35,7 +35,6 @@ import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -180,18 +179,6 @@ fun <T: Media> SelectionSheet(
                 ) {
                     context.shareMedia(selectedMedia)
                 }
-                SelectionBarColumn(
-                    imageVector = Icons.Outlined.VisibilityOff,
-                    tabletMode = tabletMode,
-                    title = stringResource(R.string.ignore)
-                ) {
-                    scope.launch {
-                        handler.toggleIgnored(
-                            mediaList = selectedMedia
-                        )
-                        clearSelection()
-                    }
-                }
                 // Favorite Component
                 SelectionBarColumn(
                     imageVector = Icons.Outlined.FavoriteBorder,
@@ -313,15 +300,14 @@ private fun RowScope.SelectionBarColumn(
             modifier = Modifier
                 .height(32.dp)
         )
-        //TODO Maybe not necessary
-//        Spacer(modifier = Modifier.size(4.dp))
-//        Text(
-//            text = title,
-//            modifier = Modifier,
-//            fontWeight = FontWeight.Medium,
-//            style = MaterialTheme.typography.bodyMedium,
-//            color = tintColor,
-//            textAlign = TextAlign.Center
-//        )
+        Spacer(modifier = Modifier.size(4.dp))
+        Text(
+            text = title,
+            modifier = Modifier,
+            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.bodyMedium,
+            color = tintColor,
+            textAlign = TextAlign.Center
+        )
     }
 }

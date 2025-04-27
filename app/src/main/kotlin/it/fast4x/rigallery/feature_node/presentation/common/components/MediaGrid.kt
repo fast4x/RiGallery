@@ -344,8 +344,8 @@ private fun <T: Media> MediaGridContentWithHeaders(
             columns = GridCells.Fixed(columns),
             contentPadding = paddingValues,
             userScrollEnabled = canScroll,
-            horizontalArrangement = Arrangement.spacedBy(1.dp),
-            verticalArrangement = Arrangement.spacedBy(1.dp),
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             topContent()
 
@@ -418,6 +418,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 .animateItem(
                                     fadeInSpec = null
                                 ),
+                                //.pinchItem(key = it.key),
                             media = it.media,
                             selectionState = selectionState,
                             selectedMedia = selectedMedia,

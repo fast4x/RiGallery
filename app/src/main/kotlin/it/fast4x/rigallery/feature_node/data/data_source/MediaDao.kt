@@ -23,9 +23,6 @@ interface MediaDao {
     @Query("SELECT * FROM media WHERE favorite = 1 ORDER BY timestamp DESC")
     suspend fun getFavorites(): List<UriMedia>
 
-    @Query("SELECT * FROM media WHERE ignored = 1 ORDER BY timestamp DESC")
-    fun getMediaIgnored(): Flow<List<UriMedia>>
-
     @Query("SELECT * FROM media WHERE id = :id LIMIT 1")
     suspend fun getMediaById(id: Long): UriMedia
 
@@ -66,11 +63,5 @@ interface MediaDao {
 
     @Upsert(entity = TimelineSettings::class)
     suspend fun setTimelineSettings(settings: TimelineSettings)
-
-    @Query("UPDATE media SET ignored = :ignored WHERE id = :id")
-    suspend fun setMediaIgnored(id: Long, ignored: Int)
-
-    @Upsert(entity = UriMedia::class)
-    suspend fun updateMedia(media: UriMedia)
 
 }

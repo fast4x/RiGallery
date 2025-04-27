@@ -179,18 +179,10 @@ fun AppBarContainer(
 //                }
 //            ),
             OptionItem(
-                text = context.getString(R.string.ignored_albums),
+                text = context.getString(R.string.ignored),
                 icon = Icons.Filled.VisibilityOff,
                 onClick = {
                     navController.navigate(Screen.IgnoredScreen.route)
-                    expandedDropDown.value = false
-                }
-            ),
-            OptionItem(
-                text = context.getString(R.string.ignored_media),
-                icon = Icons.Filled.VisibilityOff,
-                onClick = {
-                    navController.navigate(Screen.IgnoredMediaScr.route)
                     expandedDropDown.value = false
                 }
             ),

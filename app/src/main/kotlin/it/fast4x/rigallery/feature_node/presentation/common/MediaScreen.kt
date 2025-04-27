@@ -47,8 +47,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.enums.MediaType
@@ -141,18 +139,17 @@ fun <T: Media> MediaScreen(
                             )
                         },
                         navigationIcon = {
-                            if (target != TARGET_FAVORITES)
-                                NavigationButton(
-                                    albumId = albumId,
-                                    target = target,
-                                    navigateUp = navigateUp,
-                                    clearSelection = {
-                                        selectionState.value = false
-                                        selectedMedia.clear()
-                                    },
-                                    selectionState = selectionState,
-                                    alwaysGoBack = true,
-                                )
+//                            NavigationButton(
+//                                albumId = albumId,
+//                                target = target,
+//                                navigateUp = navigateUp,
+//                                clearSelection = {
+//                                    selectionState.value = false
+//                                    selectedMedia.clear()
+//                                },
+//                                selectionState = selectionState,
+//                                alwaysGoBack = true,
+//                            )
                         },
                         actions = {
                             NavigationActions(
