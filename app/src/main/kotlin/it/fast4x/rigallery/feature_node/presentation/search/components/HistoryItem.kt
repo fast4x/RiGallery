@@ -1,5 +1,6 @@
 package it.fast4x.rigallery.feature_node.presentation.search.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -78,6 +79,7 @@ fun HistoryItem(
                 gapLength = 2.dp,
                 cap = StrokeCap.Round
             )
+            .background(MaterialTheme.colorScheme.background)
 
     )
     Spacer(modifier = Modifier.height(8.dp))
