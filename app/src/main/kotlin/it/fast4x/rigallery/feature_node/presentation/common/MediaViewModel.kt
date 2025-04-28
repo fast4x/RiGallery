@@ -313,7 +313,7 @@ open class MediaViewModel @Inject constructor(
     }
 
     private suspend fun <T : Media> List<T>.parseQuery(query: String): List<T> {
-        val tag = if (query.startsWith("#")) query.substringAfter("#") else ""
+        val tag = if (query.startsWith("#")) query.substringAfter("#").lowercase() else ""
         println("MediaViewModel pre tag: $tag query: $query")
         if (tag.isEmpty()) {
             return withContext(Dispatchers.IO) {

@@ -47,6 +47,8 @@ fun TagsGrid(
                 },
                 colors = FilterChipDefaults.filterChipColors().copy(
                     selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
                 ),
                 modifier = Modifier
                     .border(2.dp, TagsType.entries[index].color, MaterialTheme.shapes.large)
