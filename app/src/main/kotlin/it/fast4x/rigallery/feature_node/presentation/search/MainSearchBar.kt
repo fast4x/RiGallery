@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -194,19 +195,37 @@ fun MainSearchBar(
                                     if (query.isNotEmpty()) query = ""
                                     mediaViewModel.clearQuery()
                                 }
-                            }) {
-                            val leadingIcon = remember(activeState.value) {
-                                if (activeState.value)
-                                    Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Search
                             }
+                        ) {
+                                val leadingIcon = remember(activeState.value) {
+                                    if (activeState.value)
+                                        Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Search
+                                }
+                                Icon(
+                                    imageVector = leadingIcon,
+                                    modifier = Modifier.fillMaxHeight(),
+                                    contentDescription = null
+                                )
+                            }
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            enabled = query.isNotEmpty(),
+                            onClick = {
+                                scope.launch {
+                                    canQuery = true
+                                    if (query.isNotEmpty()) query = ""
+                                    mediaViewModel.clearQuery()
+                                }
+                            }
+                        ) {
                             Icon(
-                                imageVector = leadingIcon,
+                                imageVector = Icons.Outlined.Close,
                                 modifier = Modifier.fillMaxHeight(),
                                 contentDescription = null
                             )
                         }
-                    },
-                    trailingIcon = {
+
                         // TODO ICON ACTION IN THE SEARCH BAR
 //                        Row {
 //                            androidx.compose.animation.AnimatedVisibility(

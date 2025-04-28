@@ -39,41 +39,47 @@ fun SearchHistory(search: (query: String) -> Unit) {
         //"3" to "Thursday"
     )
 
-    Column {
-        if (historyItems.isNotEmpty()) {
-            Text(
-                text = stringResource(R.string.history_recent_title),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .padding(top = 16.dp)
-            )
+    SearchHistoryGrid(
+        historyItems = historyItems,
+        suggestionSet = suggestionSet,
+        search = search
+    )
 
-
-            repeat(historyItems.size) {
-                HistoryItem(
-                    historyQuery = historyItems[it],
-                    search = search,
-                ) {
-                    historySet = historySet.toMutableSet().apply { remove(it) }
-                }
-            }
-        }
-        Text(
-            text = stringResource(R.string.history_suggestions_title),
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .padding(top = 16.dp)
-        )
-
-        repeat(suggestionSet.size) {
-            HistoryItem(
-                historyQuery = suggestionSet[it],
-                search = search,
-            )
-        }
-    }
+//    Column {
+//        if (historyItems.isNotEmpty()) {
+//            Text(
+//                text = stringResource(R.string.history_recent_title),
+//                color = MaterialTheme.colorScheme.primary,
+//                style = MaterialTheme.typography.titleMedium,
+//                modifier = Modifier
+//                    .padding(horizontal = 16.dp, vertical = 8.dp)
+//                    .padding(top = 16.dp)
+//            )
+//
+//
+//            repeat(historyItems.size) {
+//                HistoryItem(
+//                    historyQuery = historyItems[it],
+//                    search = search,
+//                ) {
+//                    historySet = historySet.toMutableSet().apply { remove(it) }
+//                }
+//            }
+//        }
+//        Text(
+//            text = stringResource(R.string.history_suggestions_title),
+//            color = MaterialTheme.colorScheme.primary,
+//            style = MaterialTheme.typography.titleMedium,
+//            modifier = Modifier
+//                .padding(horizontal = 16.dp, vertical = 8.dp)
+//                .padding(top = 16.dp)
+//        )
+//
+//        repeat(suggestionSet.size) {
+//            HistoryItem(
+//                historyQuery = suggestionSet[it],
+//                search = search,
+//            )
+//        }
+//    }
 }

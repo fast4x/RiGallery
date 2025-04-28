@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.fast4x.rigallery.core.Constants
@@ -35,6 +36,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
+import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +50,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import javax.inject.Inject
@@ -310,11 +313,26 @@ open class MediaViewModel @Inject constructor(
     }
 
     private suspend fun <T : Media> List<T>.parseQuery(query: String): List<T> {
-        return withContext(Dispatchers.IO) {
-            if (query.isEmpty())
-                return@withContext emptyList()
-            val matches = FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
-            return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+        val tag = if (query.startsWith("#")) query.substringAfter("#") else ""
+        println("MediaViewModel pre tag: $tag query: $query")
+        if (tag.isEmpty()) {
+            return withContext(Dispatchers.IO) {
+                if (query.isEmpty())
+                    return@withContext emptyList()
+                val matches =
+                    FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
+                return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+            }
+        } else {
+            println("MediaViewModel tag: $tag")
+            return runBlocking {
+                return@runBlocking this@parseQuery
+                    .filter {
+                        (it.isImage && tag == "image") ||
+                        (it.isVideo && tag == "video") ||
+                        (it.isFavorite && tag == "favorite")
+                    }
+            }
         }
     }
 
