@@ -72,7 +72,9 @@ fun HistoryItem(
             }
         },
         colors = FilterChipDefaults.filterChipColors().copy(
-            selectedContainerColor = MaterialTheme.colorScheme.background
+            selectedContainerColor = MaterialTheme.colorScheme.background,
+            selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+            selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
         ),
         modifier = Modifier
             .dashedBorder(MaterialTheme.colorScheme.onBackground, MaterialTheme.shapes.medium, 1.dp, 4.dp, 2.dp)
