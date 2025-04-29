@@ -145,7 +145,10 @@ class MediaFlow(
         val mimeType = it.getString(indexCache[i++])
         val isFavorite = it.getInt(indexCache[i++])
         val isTrashed = it.getInt(indexCache[i++])
-        val expiryTimestamp = it.tryGetLong(indexCache[i])
+        val expiryTimestamp = it.tryGetLong(indexCache[i++])
+        val height = it.getInt(indexCache[i++])
+        val width = it.getInt(indexCache[i++])
+        val orientation = it.getInt(indexCache[i++])
         val contentUri = if (mimeType.contains("image"))
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         else
@@ -168,7 +171,10 @@ class MediaFlow(
             favorite = isFavorite,
             trashed = isTrashed,
             size = size,
-            mimeType = mimeType
+            mimeType = mimeType,
+            height = height,
+            width = width,
+            orientation = orientation,
         )
     }
 }

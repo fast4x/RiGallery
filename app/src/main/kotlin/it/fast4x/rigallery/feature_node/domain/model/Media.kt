@@ -43,6 +43,9 @@ sealed class Media : Parcelable, java.io.Serializable {
     abstract val size: Long
     abstract val duration: String?
     abstract var ignored: Int?
+    abstract val height: Int?
+    abstract val width: Int?
+    abstract val orientation: Int?
 
     val definedTimestamp: Long
         get() = takenTimestamp?.div(1000) ?: timestamp
@@ -78,7 +81,10 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val trashed: Int,
         override val size: Long,
         override val duration: String? = null,
-        override var ignored: Int? = 0
+        override var ignored: Int? = 0,
+        override val height: Int? = null,
+        override val width: Int? = null,
+        override val orientation: Int? = null,
     ) : Media()
 
     @Serializable
@@ -105,6 +111,9 @@ sealed class Media : Parcelable, java.io.Serializable {
         val category: String?,
         val score: Float,
         override var ignored: Int? = 0,
+        override val height: Int? = null,
+        override val width: Int? = null,
+        override val orientation: Int? = null,
     ): Media()
 
     @Serializable
@@ -126,7 +135,10 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val trashed: Int,
         override val size: Long,
         override val duration: String? = null,
-        override var ignored: Int? = 0
+        override var ignored: Int? = 0,
+        override val height: Int? = null,
+        override val width: Int? = null,
+        override val orientation: Int? = null,
     ): Media() {
 
         override fun equals(other: Any?): Boolean {
@@ -199,7 +211,10 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val trashed: Int,
         override val size: Long,
         override val duration: String? = null,
-        override var ignored: Int? = 0
+        override var ignored: Int? = 0,
+        override val height: Int? = null,
+        override val width: Int? = null,
+        override val orientation: Int? = null,
     ): Media() {
 
         override fun equals(other: Any?): Boolean {

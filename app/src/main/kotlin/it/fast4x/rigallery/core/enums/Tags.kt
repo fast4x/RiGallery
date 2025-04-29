@@ -1,33 +1,52 @@
 package it.fast4x.rigallery.core.enums
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.PanoramaHorizontal
+import androidx.compose.material.icons.filled.PanoramaVertical
+import androidx.compose.material.icons.filled.Rotate90DegreesCw
+import androidx.compose.material.icons.filled.VerticalAlignBottom
 import androidx.compose.material.icons.filled.VideoFile
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import it.fast4x.rigallery.core.enums.MediaType.All
-import it.fast4x.rigallery.core.enums.MediaType.Images
+import androidx.compose.ui.res.stringResource
+import it.fast4x.rigallery.R
 
 enum class TagsType {
     Favorite,
     Image,
-    Video;
+    Video,
+    Rotated90,
+    Rotated180,
+    Rotated270,
+    Vertical,
+    Horizontal;
 
     val color: Color
         get() = when (this) {
             Favorite -> Color.Red
             Image -> Color.Blue
             Video -> Color.Green
+            Rotated90 -> Color.Yellow
+            Rotated180 -> Color.Cyan
+            Rotated270 -> Color.Magenta
+            Vertical -> Color.Black
+            Horizontal -> Color.Gray
         }
 
     val tag: String
+        @Composable
         get() = when (this) {
-            //NO TRANSLATE
-            Favorite -> "#favorite"
-            Image -> "#image"
-            Video -> "#video"
+            Favorite -> "#${stringResource(R.string.tag_favorite)}"
+            Image -> "#${stringResource(R.string.tag_image)}"
+            Video -> "#${stringResource(R.string.tag_video)}"
+            Rotated90 -> "#${stringResource(R.string.tag_rotated90)}"
+            Rotated180 -> "#${stringResource(R.string.tag_rotated180)}"
+            Rotated270 -> "#${stringResource(R.string.tag_rotated270)}"
+            Vertical -> "#${stringResource(R.string.tag_vertical)}"
+            Horizontal -> "#${stringResource(R.string.tag_horizontal)}"
         }
 
     val icon: ImageVector
@@ -35,5 +54,10 @@ enum class TagsType {
             Favorite -> Icons.Filled.Favorite
             Image -> Icons.Filled.Image
             Video -> Icons.Filled.VideoFile
+            Rotated90 -> Icons.Filled.Rotate90DegreesCw
+            Rotated180 -> Icons.Filled.Rotate90DegreesCw
+            Rotated270 -> Icons.Filled.Rotate90DegreesCw
+            Vertical -> Icons.Filled.PanoramaVertical
+            Horizontal -> Icons.Filled.PanoramaHorizontal
         }
 }

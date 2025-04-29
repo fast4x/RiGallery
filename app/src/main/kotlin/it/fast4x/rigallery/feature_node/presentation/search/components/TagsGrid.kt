@@ -34,10 +34,11 @@ fun TagsGrid(
         modifier = Modifier.height(50.dp)
     ) {
         items(TagsType.entries.size) { index ->
+            val tag = TagsType.entries[index].tag
             FilterChip(
                 selected = true,
-                onClick = { searchTag(TagsType.entries[index].tag) },
-                label = { Text(text = "#${TagsType.entries[index].name}") },
+                onClick = { searchTag(tag) },
+                label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
                         imageVector = TagsType.entries[index].icon,

@@ -7,15 +7,16 @@
 
 package it.fast4x.rigallery.feature_node.presentation.common
 
+import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil3.Uri
 import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.Resource
 import it.fast4x.rigallery.core.Settings
@@ -23,7 +24,6 @@ import it.fast4x.rigallery.feature_node.domain.model.IgnoredAlbum
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.Media.UriMedia
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
-import it.fast4x.rigallery.feature_node.domain.model.TimelineSettings
 import it.fast4x.rigallery.feature_node.domain.model.Vault
 import it.fast4x.rigallery.feature_node.domain.model.VaultState
 import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
@@ -33,6 +33,8 @@ import it.fast4x.rigallery.feature_node.presentation.util.mapMediaToItem
 import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
 import it.fast4x.rigallery.feature_node.presentation.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
@@ -50,7 +52,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import me.xdrop.fuzzywuzzy.FuzzySearch
 import javax.inject.Inject
@@ -59,6 +60,7 @@ import javax.inject.Inject
 open class MediaViewModel @Inject constructor(
     private val repository: MediaRepository,
     val handler: MediaHandleUseCase,
+    @ApplicationContext val context: Context
 ) : ViewModel() {
 
     var lastQuery = mutableStateOf("")
@@ -299,8 +301,15 @@ open class MediaViewModel @Inject constructor(
                 return@launch
             } else {
                 _searchMediaState.tryEmit(MediaState(isLoading = true))
+                val tag = if (query.startsWith("#")) query.substringAfter("#").lowercase() else ""
+                val tagFiltersNot = query.lowercase().split("!#")
+                    .dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
+                val tagFilters = query.lowercase().split("#").filterNot {
+                    it in tagFiltersNot
+                }.dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
                 _searchMediaState.collectMedia(
-                    data = mediaFlow.value.media.parseQuery(query),
+                    data = if (tag.isEmpty()) mediaFlow.value.media.parseQuery(query)
+                    else mediaFlow.value.media.filterMedia(tagFilters),
                     error = mediaFlow.value.error,
                     albumId = albumId,
                     groupByMonth = groupByMonth.value,
@@ -313,9 +322,16 @@ open class MediaViewModel @Inject constructor(
     }
 
     private suspend fun <T : Media> List<T>.parseQuery(query: String): List<T> {
-        val tag = if (query.startsWith("#")) query.substringAfter("#").lowercase() else ""
-        println("MediaViewModel pre tag: $tag query: $query")
-        if (tag.isEmpty()) {
+//        val tag = if (query.startsWith("#")) query.substringAfter("#").lowercase() else ""
+//        val tagFiltersNot = query.lowercase().split("!#")
+//            .dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
+//        val tagFilters = query.lowercase().split("#").filterNot {
+//            it in tagFiltersNot
+//        }.dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
+
+        //println("MediaViewModel pre tag: $tag query: $query")
+        //println("MediaViewModel tagFilters: $tagFilters tagFiltersNot: $tagFiltersNot")
+        //if (tagFilters.isEmpty() && tagFiltersNot.isEmpty()) {
             return withContext(Dispatchers.IO) {
                 if (query.isEmpty())
                     return@withContext emptyList()
@@ -323,17 +339,66 @@ open class MediaViewModel @Inject constructor(
                     FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
                 return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
             }
-        } else {
-            println("MediaViewModel tag: $tag")
-            return runBlocking {
-                return@runBlocking this@parseQuery
-                    .filter {
-                        (it.isImage && tag == "image") ||
-                        (it.isVideo && tag == "video") ||
-                        (it.isFavorite && tag == "favorite")
-                    }
+        //} else {
+//            return withContext(Dispatchers.IO) {
+//                return@withContext this@parseQuery
+//                    .filterNot {
+//                        if (tagFiltersNot.isNotEmpty()) {
+//                            parseTags(it, tagFiltersNot)
+////                            (it.isImage && context.getString(R.string.tag_image)
+////                                .toString() in tagFiltersNot) ||
+////                                    (it.isVideo && context.getString(R.string.tag_video)
+////                                        .toString() in tagFiltersNot) ||
+////                                    (it.isFavorite && context.getString(R.string.tag_favorite)
+////                                        .toString() in tagFiltersNot)
+//                        } else false
+//                    }
+//                    .filter {
+//                        if (tagFilters.isNotEmpty()) {
+//                            parseTags(it, tagFilters)
+////                            (it.isImage && context.getString(R.string.tag_image)
+////                                .toString() in tagFilters) ||
+////                                    (it.isVideo && context.getString(R.string.tag_video)
+////                                        .toString() in tagFilters) ||
+////                                    (it.isFavorite && context.getString(R.string.tag_favorite)
+////                                        .toString() in tagFilters)
+//                        } else false
+//                    }
+
+//                    .filter {
+//                        (it.isImage && tag == context.getString(R.string.tag_image)) ||
+//                        (it.isVideo && tag == context.getString(R.string.tag_video)) ||
+//                        (it.isFavorite && tag == context.getString(R.string.tag_favorite))
+//                    }
+            //}
+        //}
+    }
+
+    private suspend fun <T: Media>parseTags(t: T, tags: List<String>): Boolean {
+        return withContext(Dispatchers.IO) {
+            ((t.isImage && context.getString(R.string.tag_image).toString() in tags) ||
+                    (t.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
+                    (t.isFavorite && context.getString(R.string.tag_favorite).toString() in tags))
+        }
+
+    }
+
+    private suspend fun <T : Media> List<T>.filterMedia(tags: List<String>): List<T> {
+        return withContext(Dispatchers.IO) {
+            println("MediaViewModel filterMedia tags: $tags ${this@filterMedia.map { it.orientation }}")
+            return@withContext this@filterMedia.filter { it ->
+                (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
+                (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
+                (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
+                        (it.orientation == 90 && context.getString(R.string.tag_rotated90).toString() in tags) ||
+                        (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
+                        (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
+                        ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
+                        ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags)
+
             }
         }
+
     }
 
     private fun IgnoredAlbum.shouldIgnore(media: Media) =

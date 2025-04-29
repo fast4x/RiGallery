@@ -321,4 +321,12 @@
     <string name="adjust">Adjust</string>
     <string name="filters">Filters</string>
     <string name="markup">Markup</string>
+    <string name="tag_favorite">favorite</string>
+    <string name="tag_image">image</string>
+    <string name="tag_video">video</string>
+    <string name="tag_rotated90">rotated90</string>
+    <string name="tag_rotated180">rotated180</string>
+    <string name="tag_rotated270">rotated270</string>
+    <string name="tag_vertical">vertical</string>
+    <string name="tag_horizontal">horizontal</string>
 </resources>
