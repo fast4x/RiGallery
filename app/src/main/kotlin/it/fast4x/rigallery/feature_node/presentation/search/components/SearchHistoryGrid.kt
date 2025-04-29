@@ -17,15 +17,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
+import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 
 @Composable
 fun SearchHistoryGrid(
     historyItems: SnapshotStateList<Pair<String, String>>,
     suggestionSet: List<Pair<String, String>>,
-    search: (String) -> Unit
+    search: (String) -> Unit,
+    historyTagsItems: SnapshotStateList<Pair<String, String>>
 ) {
 
     var historySet by rememberSearchHistory()
+
     LazyVerticalGrid(
         state = rememberLazyGridState(),
         columns = GridCells.Fixed(2),
@@ -36,6 +39,25 @@ fun SearchHistoryGrid(
             TagsGrid(
                 searchTag = search
             )
+        }
+
+        if (historyTagsItems.isNotEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = stringResource(R.string.history_recent_title),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(top = 16.dp)
+                )
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                RecentTagsGrid(
+                    historyTagsItems = historyTagsItems,
+                    searchTag = search
+                )
+            }
         }
 
         if (historyItems.isNotEmpty()) {

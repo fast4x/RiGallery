@@ -135,6 +135,12 @@ object Settings {
         @Composable
         fun rememberSearchHistory() =
             rememberPreference(key = HISTORY, defaultValue = emptySet())
+
+        private val TAGSHISTORY = stringSetPreferencesKey("search_tags_history")
+
+        @Composable
+        fun rememberSearchTagsHistory() =
+            rememberPreference(key = TAGSHISTORY, defaultValue = emptySet())
     }
 
     object Misc {

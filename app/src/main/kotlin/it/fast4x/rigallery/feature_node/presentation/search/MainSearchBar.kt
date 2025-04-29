@@ -70,6 +70,7 @@ import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
 import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
+import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
 import it.fast4x.rigallery.core.presentation.components.LoadingMedia
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
@@ -96,6 +97,7 @@ fun MainSearchBar(
     menuItems: @Composable (RowScope.() -> Unit)? = null,
 ) {
     var historySet by rememberSearchHistory()
+    var historyTagsSet by rememberSearchTagsHistory()
     var canQuery by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
     val mediaViewModel: MediaViewModel = hiltViewModel<MediaViewModel>().also {
@@ -104,11 +106,38 @@ fun MainSearchBar(
     val state = mediaViewModel.searchMediaState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(state.value.media) {
+    LaunchedEffect(state.value.media, query, canQuery) {
+        println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
         if (query.isNotEmpty() && state.value.media.isEmpty() && canQuery) {
+
+            if (query.isNotEmpty()) {
+                if (query.startsWith("#"))
+                    historyTagsSet = historyTagsSet.toMutableSet().apply {
+                        removeIf { historyQuery -> historyQuery.contains(query) }
+                        add("${System.currentTimeMillis()}/$query")
+                    }
+                else
+                    historySet = historySet.toMutableSet().apply {
+                        removeIf { historyQuery -> historyQuery.contains(query) }
+                        add("${System.currentTimeMillis()}/$query")
+                    }
+            }
+
             mediaViewModel.queryMedia(query)
         }
     }
+
+    val lastQueryIsEmpty =
+        remember(mediaViewModel.lastQuery.value) { mediaViewModel.lastQuery.value.isEmpty() }
+
+    val mediaIsEmpty = remember(state) { state.value.media.isEmpty() && !state.value.isLoading }
+
+//    LaunchedEffect(query) {
+//        println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
+//        if (query.isNotEmpty() && state.value.media.isEmpty() && canQuery) {
+//            mediaViewModel.queryMedia(query)
+//        }
+//    }
 
     val alpha by animateFloatAsState(
         targetValue = if (selectionState != null && selectionState.value) 0.6f else 1f,
@@ -158,6 +187,7 @@ fun MainSearchBar(
                 SearchBarDefaults.InputField(
                     query = query,
                     onQueryChange = {
+                        println("MainSearchBar: onQueryChange query: $it")
                         scope.launch {
                             query = it
                             if (it != mediaViewModel.lastQuery.value && mediaViewModel.lastQuery.value.isNotEmpty()) {
@@ -167,11 +197,18 @@ fun MainSearchBar(
                         }
                     },
                     onSearch = {
+                        println("MainSearchBar: onSearch query: $it")
                         if (it.isNotEmpty()) {
-                            historySet = historySet.toMutableSet().apply {
-                                removeIf { historyQuery -> historyQuery.contains(it) }
-                                add("${System.currentTimeMillis()}/$it")
-                            }
+                            if (it.startsWith("#"))
+                                historyTagsSet = historyTagsSet.toMutableSet().apply {
+                                    removeIf { historyQuery -> historyQuery.contains(it) }
+                                    add("${System.currentTimeMillis()}/$it")
+                                }
+                            else
+                                historySet = historySet.toMutableSet().apply {
+                                    removeIf { historyQuery -> historyQuery.contains(it) }
+                                    add("${System.currentTimeMillis()}/$it")
+                                }
                         }
                         mediaViewModel.queryMedia(it)
                         canQuery = true
@@ -247,8 +284,7 @@ fun MainSearchBar(
             colors = colors,
             tonalElevation = elevation,
             content = {
-                val lastQueryIsEmpty =
-                    remember(mediaViewModel.lastQuery.value) { mediaViewModel.lastQuery.value.isEmpty() }
+
                 AnimatedVisibility(
                     visible = lastQueryIsEmpty,
                     enter = enterAnimation,
@@ -266,7 +302,7 @@ fun MainSearchBar(
                     enter = enterAnimation,
                     exit = exitAnimation
                 ) {
-                    val mediaIsEmpty = remember(state) { state.value.media.isEmpty() && !state.value.isLoading }
+
                     if (mediaIsEmpty) {
                         Column(
                             modifier = Modifier

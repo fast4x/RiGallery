@@ -7,16 +7,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -53,6 +53,46 @@ fun TagsGrid(
                 ),
                 modifier = Modifier
                     .border(2.dp, TagsType.entries[index].color, MaterialTheme.shapes.large)
+                    .background(Color.Transparent, MaterialTheme.shapes.large)
+            )
+        }
+    }
+}
+
+
+@Composable
+fun RecentTagsGrid(
+    searchTag: (String) -> Unit,
+    historyTagsItems: SnapshotStateList<Pair<String, String>>,
+){
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(1),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(50.dp)
+    ) {
+        items(historyTagsItems.size) { index ->
+            val tag = historyTagsItems[index].second
+            val tagType = TagsType.entries.find { it.tag == tag }
+            FilterChip(
+                selected = true,
+                onClick = { searchTag(tag) },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = tagType?.icon ?: Icons.Default.Tag,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = Modifier
+                    .border(2.dp, tagType?.color ?: MaterialTheme.colorScheme.primary, MaterialTheme.shapes.large)
                     .background(Color.Transparent, MaterialTheme.shapes.large)
             )
         }
