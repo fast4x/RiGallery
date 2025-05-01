@@ -386,9 +386,11 @@ open class MediaViewModel @Inject constructor(
     }
 
     private suspend fun <T : Media> List<T>.filterMedia(tags: List<String>): List<T> {
+
         return withContext(Dispatchers.IO) {
             println("MediaViewModel filterMedia tags: $tags ${this@filterMedia.map { it.orientation }}")
             return@withContext this@filterMedia.filter { it ->
+
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
                 (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
                 (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
@@ -396,9 +398,9 @@ open class MediaViewModel @Inject constructor(
                         (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
                         (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
                         ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
-                        ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
-                        (getExifInterface(context, it.getUri())?.latLong?.isNotEmpty() == true && context.getString(R.string.tag_withlocation).toString() in tags) ||
-                        (getExifInterface(context, it.getUri())?.latLong?.isEmpty() == true && context.getString(R.string.tag_withoutlocation).toString() in tags)
+                        ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags)
+                        //(getExifInterface(context, it.getUri())?.latLong?.isNotEmpty() == true && context.getString(R.string.tag_withlocation).toString() in tags) ||
+                        //(getExifInterface(context, it.getUri())?.latLong?.isEmpty() == true && context.getString(R.string.tag_withoutlocation).toString() in tags)
 
 
             }
