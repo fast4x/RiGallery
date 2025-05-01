@@ -329,4 +329,6 @@
     <string name="tag_rotated270">rotated270</string>
     <string name="tag_vertical">vertical</string>
     <string name="tag_horizontal">horizontal</string>
+    <string name="tag_withlocation">withlocation</string>
+    <string name="tag_withoutlocation">withoutlocation</string>
 </resources>

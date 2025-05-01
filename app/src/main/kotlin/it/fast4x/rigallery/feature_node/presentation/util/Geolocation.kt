@@ -1,5 +1,6 @@
 package it.fast4x.rigallery.feature_node.presentation.util
 
+import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
@@ -10,6 +11,12 @@ import androidx.core.text.isDigitsOnly
 @Composable
 fun rememberGeocoder(): Geocoder? {
     val geocoder = Geocoder(LocalContext.current)
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && Geocoder.isPresent())
+        geocoder else null
+}
+
+fun getGeocoder(context: Context): Geocoder? {
+    val geocoder = Geocoder(context)
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && Geocoder.isPresent())
         geocoder else null
 }

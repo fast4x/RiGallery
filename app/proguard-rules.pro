@@ -20,6 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-dontobfuscate
+
 -dontwarn org.bouncycastle.jsse.**
 -dontwarn org.conscrypt.**
 -dontwarn org.openjsse.**

@@ -20,6 +20,7 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import it.fast4x.rigallery.core.enums.MetadataTagsType
 import it.fast4x.rigallery.core.enums.TagsType
 
 @Composable
@@ -94,6 +95,43 @@ fun RecentTagsGrid(
                 modifier = Modifier
                     .border(2.dp, tagType?.color ?: MaterialTheme.colorScheme.primary, MaterialTheme.shapes.large)
                     .background(Color.Transparent, MaterialTheme.shapes.large)
+            )
+        }
+    }
+}
+
+@Composable
+fun MetadataTagsGrid(
+    searchTag: (String) -> Unit,
+){
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(1),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(50.dp)
+    ) {
+        items(MetadataTagsType.entries.size) { index ->
+            val tag = MetadataTagsType.entries[index].tag
+            FilterChip(
+                selected = true,
+                onClick = { searchTag(tag) },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = MetadataTagsType.entries[index].icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = Modifier
+                    .border(2.dp, MetadataTagsType.entries[index].color, MaterialTheme.shapes.extraLarge)
+                    .background(Color.Transparent, MaterialTheme.shapes.extraLarge)
             )
         }
     }

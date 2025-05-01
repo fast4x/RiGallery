@@ -3,6 +3,8 @@ package it.fast4x.rigallery.core.enums
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.LocationOff
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PanoramaHorizontal
 import androidx.compose.material.icons.filled.PanoramaVertical
 import androidx.compose.material.icons.filled.Rotate90DegreesCw
@@ -13,6 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.enums.TagsType.Horizontal
+import it.fast4x.rigallery.core.enums.TagsType.Rotated180
+import it.fast4x.rigallery.core.enums.TagsType.Rotated270
+import it.fast4x.rigallery.core.enums.TagsType.Rotated90
+import it.fast4x.rigallery.core.enums.TagsType.Vertical
+import it.fast4x.rigallery.core.enums.TagsType.Video
 
 enum class TagsType {
     Favorite,
@@ -59,5 +67,29 @@ enum class TagsType {
             Rotated270 -> Icons.Filled.Rotate90DegreesCw
             Vertical -> Icons.Filled.PanoramaVertical
             Horizontal -> Icons.Filled.PanoramaHorizontal
+        }
+}
+
+enum class MetadataTagsType {
+    WithLocation,
+    WithoutLocation;
+
+    val color: Color
+        get() = when (this) {
+            WithLocation -> Color.DarkGray
+            WithoutLocation -> Color.LightGray
+        }
+
+    val tag: String
+        @Composable
+        get() = when (this) {
+            WithLocation -> "#${stringResource(R.string.tag_withlocation)}"
+            WithoutLocation -> "#${stringResource(R.string.tag_withoutlocation)}"
+        }
+
+    val icon: ImageVector
+        get() = when (this) {
+            WithLocation -> Icons.Filled.LocationOn
+            WithoutLocation -> Icons.Filled.LocationOff
         }
 }

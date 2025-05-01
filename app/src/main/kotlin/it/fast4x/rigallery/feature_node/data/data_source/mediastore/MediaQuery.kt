@@ -24,7 +24,7 @@ object MediaQuery {
         MediaStore.Files.FileColumns.DATE_EXPIRES,
         MediaStore.Files.FileColumns.HEIGHT,
         MediaStore.Files.FileColumns.WIDTH,
-        MediaStore.Files.FileColumns.ORIENTATION
+        MediaStore.Files.FileColumns.ORIENTATION,
     )
     val AlbumsProjection = arrayOf(
         MediaStore.Files.FileColumns._ID,

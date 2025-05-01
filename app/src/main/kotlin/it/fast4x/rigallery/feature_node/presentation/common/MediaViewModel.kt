@@ -37,10 +37,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.feature_node.domain.util.getUri
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
+import it.fast4x.rigallery.feature_node.presentation.util.getExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -394,7 +396,10 @@ open class MediaViewModel @Inject constructor(
                         (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
                         (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
                         ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
-                        ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags)
+                        ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
+                        (getExifInterface(context, it.getUri())?.latLong?.isNotEmpty() == true && context.getString(R.string.tag_withlocation).toString() in tags) ||
+                        (getExifInterface(context, it.getUri())?.latLong?.isEmpty() == true && context.getString(R.string.tag_withoutlocation).toString() in tags)
+
 
             }
         }

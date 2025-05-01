@@ -41,6 +41,22 @@ fun SearchHistoryGrid(
             )
         }
 
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
+                text = stringResource(R.string.metadata),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(top = 16.dp)
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            MetadataTagsGrid (
+                searchTag = search
+            )
+        }
+
         if (historyTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
