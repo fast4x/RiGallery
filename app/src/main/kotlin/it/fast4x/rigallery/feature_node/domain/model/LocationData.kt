@@ -88,8 +88,6 @@ fun getLocationData(
             exifMetadata.gpsLatLong[1],
             1,
             {
-                println("getLocationData: addressName: ${it.firstOrNull()?.formattedAddress}")
-
                 onLocationFound(
                     LocationData(
                         latitude = exifMetadata.gpsLatLong[0],
