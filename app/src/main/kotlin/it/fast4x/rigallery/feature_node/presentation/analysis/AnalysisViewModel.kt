@@ -25,6 +25,10 @@ class AnalysisViewModel @Inject constructor(
         .map { it.data?.filter { m -> m.analyzed == 0 } ?: emptyList() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
+    val mediaInDatabase = repository.getMedia()
+        .map { it.data }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
     val analyzedMediaCount = repository.getAnalyzedMediaCount()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
 

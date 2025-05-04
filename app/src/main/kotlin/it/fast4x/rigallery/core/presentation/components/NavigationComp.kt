@@ -161,13 +161,10 @@ fun NavigationComp(
 
     // Analysis of media to get location and other future info
     val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
-    val notAnalyzedMedia = analyzerViewModel.notAnalyzedMedia.collectAsStateWithLifecycle(context = Dispatchers.IO)
-    notAnalyzedMedia.value?.size?.let {
-        if (it > 0) {
-            println("NavigationComp Require analysis: Starting analysis")
-            analyzerViewModel.startAnalysis()
-        }
-    }
+    analyzerViewModel.startAnalysis() // If no media in database, start analysis from mediaFlow
+
+
+
 
     LaunchedEffect(permissionState) {
         timelineViewModel.updatePermissionState(permissionState)

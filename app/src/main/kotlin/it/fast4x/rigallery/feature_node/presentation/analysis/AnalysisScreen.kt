@@ -42,9 +42,7 @@ fun AnalysisScreen(
     val viewModel = hiltViewModel<AnalysisViewModel>()
     val mediaNotAnalyzedCount by viewModel.notAnalyzedMediaCount.collectAsStateWithLifecycle()
     val analyzedMediaCount by viewModel.analyzedMediaCount.collectAsStateWithLifecycle()
-//    val mediaIsEmpty by remember {
-//        derivedStateOf { mediaNotAnalyzedCount }
-//    }
+
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
         state = rememberTopAppBarState(),
@@ -87,9 +85,9 @@ fun AnalysisScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                if (mediaNotAnalyzedCount > 0 || isRunning) {
+                //if (mediaNotAnalyzedCount > 0 || mediaInDatabase?.isEmpty() == true) {
                     ScannerButton(
-                        scanForNewText = "Analyze media $mediaNotAnalyzedCount",
+                        scanForNewText = "Analyze media",
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -105,7 +103,7 @@ fun AnalysisScreen(
                                 }
                             )
                     )
-                }
+                //}
 
                 if (analyzedMediaCount > 0 && !isRunning) {
                     ScannerButton(

@@ -73,7 +73,7 @@ interface MediaDao {
     @Query("UPDATE media SET ignored = :ignored WHERE id = :id")
     suspend fun setMediaIgnored(id: Long, ignored: Int)
 
-    @Upsert(entity = UriMedia::class)
+    @Upsert
     suspend fun updateMedia(media: UriMedia)
 
     @Query("UPDATE media SET analyzed = 0, location = '' WHERE analyzed = 1")

@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.exifinterface.media.ExifInterface
 import androidx.hilt.work.HiltWorker
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.Data
@@ -46,8 +47,12 @@ import it.fast4x.rigallery.feature_node.presentation.util.formattedAddress
 import it.fast4x.rigallery.feature_node.presentation.util.getExifInterface
 import it.fast4x.rigallery.feature_node.presentation.util.getGeocoder
 import it.fast4x.rigallery.feature_node.presentation.util.getLocation
+import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -74,19 +79,23 @@ class AnalyzerWorker @AssistedInject constructor(
 
             printWarning("ClassifierWorker retrieving media")
 
-            val media = database.getMediaDao().getMedia()
-                .filter { it.analyzed == 0 }
+            val mediaToAnalyze = database.getMediaDao().getMedia().filter { it.analyzed == 0 }
+            val mediaInDatabase = database.getMediaDao().getMedia()
+            var mediaFlow = repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
 
-            if (media.isEmpty()) {
+            val media = if (mediaInDatabase.isNotEmpty() && mediaToAnalyze.isNotEmpty()) mediaToAnalyze
+                else mediaFlow
+
+            if (media?.isEmpty() == true) {
                 printWarning("MediaAnalyzer media is empty, we can abort")
                 setProgress(workDataOf("progress" to 100))
                 return@withContext Result.success()
             }
-            printWarning("MediaAnalyzer not analyzed media size: ${media.size}")
+            printWarning("MediaAnalyzer not analyzed media size: ${media?.size}")
             setProgress(workDataOf("progress" to 0))
 
-            printWarning("MediaAnalyzer Starting analysis for ${media.size} items")
-            media.fastForEachIndexed { index, item ->
+            printWarning("MediaAnalyzer Starting analysis for ${media?.size} items")
+            media?.fastForEachIndexed { index, item ->
                 //printWarning("MediaAnalyzer Processing item $index")
                 setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
                 try {
