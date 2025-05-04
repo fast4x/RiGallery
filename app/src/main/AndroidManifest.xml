@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="auto"
     tools:ignore="SelectedPhotoAccess, ProtectedPermissions">
+
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <!-- Required to access images for SDK 33+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -36,6 +49,9 @@
     -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 
+    <!-- Required to show workManager analysis progress via notification -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <queries>
         <intent>
             <action android:name="android.intent.action.EDIT" />
@@ -50,13 +66,13 @@
     <application
         android:name=".GalleryApp"
         android:allowBackup="true"
+        android:banner="@drawable/ic_launcher_foreground"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:largeHeap="true"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gallery"
@@ -72,6 +88,7 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.APP_GALLERY"/>
                 <category android:name="android.intent.category.INFO"/>
             </intent-filter>

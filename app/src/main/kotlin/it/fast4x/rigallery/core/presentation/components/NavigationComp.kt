@@ -53,6 +53,7 @@ import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsScreen
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisScreen
+import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoriesScreen
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewModel
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewScreen
@@ -158,14 +159,25 @@ fun NavigationComp(
 
     val vaultState = timelineViewModel.vaultsFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
 
+    // Analysis of media to get location and other future info
+    val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
+    val notAnalyzedMedia = analyzerViewModel.notAnalyzedMedia.collectAsStateWithLifecycle(context = Dispatchers.IO)
+    notAnalyzedMedia.value?.size?.let {
+        if (it > 0) {
+            println("NavigationComp Require analysis: Starting analysis")
+            analyzerViewModel.startAnalysis()
+        }
+    }
+
     LaunchedEffect(permissionState) {
         timelineViewModel.updatePermissionState(permissionState)
     }
 
+    // not necessary
 //    LaunchedEffect(Unit, groupTimelineByMonth) {
 //        timelineViewModel.groupByMonth.value = groupTimelineByMonth
 //    }
-    // not necessary
+
     SharedTransitionLayout {
         NavHost(
             navController = navController,

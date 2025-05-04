@@ -110,4 +110,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    companion object {
+        const val OPEN_FROM_ANALYZER = 2
+    }
+
 }
