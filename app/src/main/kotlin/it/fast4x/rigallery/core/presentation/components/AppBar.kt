@@ -34,6 +34,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HideSource
+import androidx.compose.material.icons.filled.QueryStats
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
@@ -170,6 +171,14 @@ fun AppBarContainer(
 //                    expandedDropDown.value = false
 //                }
 //            ),
+            OptionItem(
+                text = "Analysis media" ,//context.getString(R.string.ignored_albums),
+                icon = Icons.Filled.QueryStats,
+                onClick = {
+                    navController.navigate(Screen.AnalysisScreen.route)
+                    expandedDropDown.value = false
+                }
+            ),
             OptionItem(
                 text = context.getString(R.string.ignored_albums),
                 icon = Icons.Filled.VisibilityOff,

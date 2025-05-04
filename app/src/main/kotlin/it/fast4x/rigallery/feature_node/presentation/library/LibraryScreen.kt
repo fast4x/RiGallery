@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,11 +35,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material.icons.outlined.DeleteOutline
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -48,7 +44,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -77,12 +72,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.albumCellsList
-import it.fast4x.rigallery.core.Settings.Album.rememberAlbumGridSize
 import it.fast4x.rigallery.core.Settings.Misc.rememberNoClassification
-import it.fast4x.rigallery.feature_node.domain.model.LibraryIndicatorState
-import it.fast4x.rigallery.feature_node.domain.model.Media
-import it.fast4x.rigallery.feature_node.presentation.classifier.CategoriesMediaGrid
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaImage
 import it.fast4x.rigallery.feature_node.presentation.library.components.LibrarySmallItem
 import it.fast4x.rigallery.feature_node.presentation.library.components.dashedBorder
@@ -90,8 +80,6 @@ import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
 import it.fast4x.rigallery.feature_node.presentation.util.mediaSharedElement
-import it.fast4x.rigallery.ui.core.icons.Encrypted
-import it.fast4x.rigallery.ui.core.Icons as GalleryIcons
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -451,10 +439,11 @@ fun LibraryMediaGrid(
                     span = { GridItemSpan(maxLineSpan) },
                     key = "NoCategories"
                 ) {
-                    NoCategories(
+                    ButtonToStartProcess(
                         modifier = Modifier
                             .animateItem()
-                            .padding(16.dp)
+                            .padding(16.dp),
+                        title = stringResource(R.string.categorise_your_media)
                     ) {
                         viewModel.startClassification()
                         //navigate(Screen.CategoriesScreen())
@@ -506,8 +495,9 @@ fun LibraryMediaGrid(
 }
 
 @Composable
-fun NoCategories(
+fun ButtonToStartProcess(
     modifier: Modifier = Modifier,
+    title: String,
     onClick: () -> Unit = {}
 ) {
     val brush = Brush.linearGradient(
@@ -549,7 +539,7 @@ fun NoCategories(
                 }
         )
         Text(
-            text = stringResource(R.string.categorise_your_media),
+            text = title,
             style = MaterialTheme.typography.titleMedium.copy(brush = brush),
         )
     }

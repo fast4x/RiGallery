@@ -1,6 +1,9 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
+ *
  */
 
 package it.fast4x.rigallery.core.presentation.components
@@ -49,6 +52,7 @@ import it.fast4x.rigallery.core.presentation.components.util.permissionGranted
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsScreen
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
+import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisScreen
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoriesScreen
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewModel
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewScreen
@@ -619,6 +623,15 @@ fun NavigationComp(
                 DateFormatScreen(navigateUp = navPipe::navigateUp)
             }
 
+            composable(
+                route = Screen.AnalysisScreen()
+            ) {
+                AnalysisScreen(
+                    navigateUp = navPipe::navigateUp,
+                    navigate = navPipe::navigate
+                )
+
+            }
         }
     }
 }

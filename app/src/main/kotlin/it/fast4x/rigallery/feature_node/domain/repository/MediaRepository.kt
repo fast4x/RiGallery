@@ -180,4 +180,11 @@ interface MediaRepository {
 
     fun getMediaIgnored(): Flow<List<UriMedia>>
 
+    suspend fun resetAnalizedMedia()
+
+    fun getAnalyzedMediaCount(): Flow<Int>
+
+    fun getNotAnalyzedMediaCount(): Flow<Int>
+
+    fun getMediaWithLocation(): Flow<List<UriMedia>>
 }

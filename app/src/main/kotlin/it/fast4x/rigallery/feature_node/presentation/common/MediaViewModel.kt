@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil3.Uri
 import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.Resource
 import it.fast4x.rigallery.core.Settings
@@ -37,16 +36,15 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.MediaType
-import it.fast4x.rigallery.feature_node.domain.util.getUri
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
-import it.fast4x.rigallery.feature_node.presentation.util.getExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -102,6 +100,9 @@ open class MediaViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val ignoredMediaList = repository.getMediaIgnored()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private val mediaWithLocation = repository.getMediaWithLocation()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val defaultDateFormat =
@@ -385,23 +386,24 @@ open class MediaViewModel @Inject constructor(
 
     }
 
-    private suspend fun <T : Media> List<T>.filterMedia(tags: List<String>): List<T> {
-
+    private suspend fun <T : Media> List<T>.filterMedia(
+        tags: List<String>
+    ): List<T> {
+        println("MediaViewModel tags: $tags")
         return withContext(Dispatchers.IO) {
-            println("MediaViewModel filterMedia tags: $tags ${this@filterMedia.map { it.orientation }}")
-            return@withContext this@filterMedia.filter { it ->
 
+            return@withContext this@filterMedia.filter { it ->
+                println("MediaViewModel filterMedia tags: $tags ${it.location}")
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
                 (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
                 (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
-                        (it.orientation == 90 && context.getString(R.string.tag_rotated90).toString() in tags) ||
-                        (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
-                        (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
-                        ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
-                        ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags)
-                        //(getExifInterface(context, it.getUri())?.latLong?.isNotEmpty() == true && context.getString(R.string.tag_withlocation).toString() in tags) ||
-                        //(getExifInterface(context, it.getUri())?.latLong?.isEmpty() == true && context.getString(R.string.tag_withoutlocation).toString() in tags)
-
+                (it.orientation == 90 && context.getString(R.string.tag_rotated90).toString() in tags) ||
+                (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
+                (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
+                ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
+                ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
+                (it.id in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
+                (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags)
 
             }
         }
@@ -410,4 +412,7 @@ open class MediaViewModel @Inject constructor(
 
     private fun IgnoredAlbum.shouldIgnore(media: Media) =
         matchesMedia(media) && (hiddenInTimeline && albumId == -1L || hiddenInAlbums && albumId != -1L)
+
+
+
 }

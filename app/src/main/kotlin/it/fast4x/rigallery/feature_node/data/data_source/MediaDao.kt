@@ -26,6 +26,9 @@ interface MediaDao {
     @Query("SELECT * FROM media WHERE ignored = 1 ORDER BY timestamp DESC")
     fun getMediaIgnored(): Flow<List<UriMedia>>
 
+    @Query("SELECT * FROM media WHERE location != '' ORDER BY timestamp DESC")
+    fun getMediaWithLocation(): Flow<List<UriMedia>>
+
     @Query("SELECT * FROM media WHERE id = :id LIMIT 1")
     suspend fun getMediaById(id: Long): UriMedia
 
@@ -72,5 +75,14 @@ interface MediaDao {
 
     @Upsert(entity = UriMedia::class)
     suspend fun updateMedia(media: UriMedia)
+
+    @Query("UPDATE media SET analyzed = 0, location = '' WHERE analyzed = 1")
+    suspend fun resetAnalizedMedia()
+
+    @Query("SELECT COUNT(*) FROM media WHERE analyzed = 1")
+    fun getAnalyzedMediaCount(): Flow<Int>
+
+    @Query("SELECT COUNT(*) FROM media WHERE analyzed = 0")
+    fun getNotAnalyzedMediaCount(): Flow<Int>
 
 }

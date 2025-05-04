@@ -167,6 +167,19 @@ class MediaRepositoryImpl(
     override fun getMediaIgnored(): Flow<List<UriMedia>> =
         database.getMediaDao().getMediaIgnored()
 
+    override suspend fun resetAnalizedMedia() {
+        database.getMediaDao().resetAnalizedMedia()
+    }
+
+    override fun getAnalyzedMediaCount(): Flow<Int> =
+        database.getMediaDao().getAnalyzedMediaCount()
+
+    override fun getNotAnalyzedMediaCount(): Flow<Int> =
+        database.getMediaDao().getNotAnalyzedMediaCount()
+
+    override fun getMediaWithLocation(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithLocation()
+    }
 
 
     override fun getMediaByAlbumId(albumId: Long): Flow<Resource<List<UriMedia>>> =

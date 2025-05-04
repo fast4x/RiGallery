@@ -46,6 +46,8 @@ sealed class Media : Parcelable, java.io.Serializable {
     abstract val height: Int?
     abstract val width: Int?
     abstract val orientation: Int?
+    abstract val analyzed: Int?
+    abstract val location: String?
 
     val definedTimestamp: Long
         get() = takenTimestamp?.div(1000) ?: timestamp
@@ -85,6 +87,9 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val height: Int? = null,
         override val width: Int? = null,
         override val orientation: Int? = null,
+        override val analyzed: Int? = 0,
+        override val location: String? = null,
+
     ) : Media()
 
     @Serializable
@@ -114,6 +119,9 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val height: Int? = null,
         override val width: Int? = null,
         override val orientation: Int? = null,
+        override val analyzed: Int? = 0,
+        override val location: String? = null,
+
     ): Media()
 
     @Serializable
@@ -139,6 +147,9 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val height: Int? = null,
         override val width: Int? = null,
         override val orientation: Int? = null,
+        override val analyzed: Int? = 0,
+        override val location: String? = null,
+
     ): Media() {
 
         override fun equals(other: Any?): Boolean {
@@ -215,6 +226,9 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val height: Int? = null,
         override val width: Int? = null,
         override val orientation: Int? = null,
+        override val analyzed: Int? = 0,
+        override val location: String? = null,
+
     ): Media() {
 
         override fun equals(other: Any?): Boolean {

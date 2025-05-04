@@ -26,13 +26,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Scanner
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -43,7 +41,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -74,8 +71,9 @@ import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaImage
+import it.fast4x.rigallery.feature_node.presentation.common.components.ScannerButton
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
-import it.fast4x.rigallery.feature_node.presentation.library.NoCategories
+import it.fast4x.rigallery.feature_node.presentation.library.ButtonToStartProcess
 import it.fast4x.rigallery.feature_node.presentation.library.components.LibrarySmallItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
@@ -299,7 +297,9 @@ fun CategoriesMediaGrid(
             ) {
 
                 if (categoriesIsEmpty) {
-                    NoCategories {
+                    ButtonToStartProcess(
+                        title = stringResource(R.string.scan_for_new_categories),
+                    ) {
                         viewModel.startClassification()
                     }
                 }
@@ -349,92 +349,3 @@ fun CategoriesMediaGrid(
     }
 }
 
-@Composable
-fun ScannerButton(
-    modifier: Modifier = Modifier,
-    contentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer,
-    indicatorCounter: Float = 0f,
-    isRunning: Boolean = false
-) {
-    ListItem(
-        colors = ListItemDefaults.colors(
-            containerColor = contentColor.copy(alpha = 0.1f),
-            headlineColor = contentColor
-        ),
-        modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
-            .then(modifier),
-        headlineContent = {
-            val scanningMediaText = stringResource(R.string.scanning_media)
-            val scanForNewCategoriesText = stringResource(R.string.scan_for_new_categories)
-            val text = remember(isRunning) {
-                if (isRunning) scanningMediaText else scanForNewCategoriesText
-            }
-            Text(
-                modifier = Modifier
-                    .then(if (isRunning) Modifier.padding(top = 8.dp) else Modifier),
-                text = text,
-                style = MaterialTheme.typography.labelLarge,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
-        },
-        leadingContent = {
-            Icon(
-                imageVector = Icons.Outlined.Scanner,
-                tint = contentColor,
-                contentDescription = stringResource(R.string.scan_for_new_categories)
-            )
-        },
-        trailingContent = {
-            AnimatedVisibility(
-                visible = isRunning,
-                enter = enterAnimation,
-                exit = exitAnimation
-            ) {
-                Text(
-                    text = remember(indicatorCounter) {
-                        String.format(
-                            Locale.getDefault(),
-                            "%.1f",
-                            indicatorCounter.coerceIn(0f..100f)
-                        ) + "%"
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = contentColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-            }
-        },
-        supportingContent = if (isRunning) {
-            {
-                Column(
-                    modifier = Modifier.padding(vertical = 16.dp)
-                ) {
-                    AnimatedVisibility(
-                        visible = indicatorCounter < 100f
-                    ) {
-                        LinearProgressIndicator(
-                            modifier = Modifier.fillMaxWidth(),
-                            progress = { (indicatorCounter / 100f).coerceAtLeast(0f) },
-                            color = contentColor,
-                        )
-                    }
-
-                    AnimatedVisibility(
-                        visible = indicatorCounter == 100f
-                    ) {
-                        LinearProgressIndicator(
-                            modifier = Modifier.fillMaxWidth(),
-                            color = contentColor,
-                        )
-                    }
-                }
-            }
-        } else null
-    )
-}
