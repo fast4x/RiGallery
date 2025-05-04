@@ -333,4 +333,6 @@
     <string name="tag_horizontal">horizontal</string>
     <string name="tag_withlocation">withlocation</string>
     <string name="tag_withoutlocation">withoutlocation</string>
+    <string name="tag_country">country</string>
+    <string name="tag_locality">locality</string>
 </resources>
