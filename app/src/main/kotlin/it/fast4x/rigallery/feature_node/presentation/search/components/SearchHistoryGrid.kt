@@ -1,22 +1,37 @@
 package it.fast4x.rigallery.feature_node.presentation.search.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDownward
+import androidx.compose.material.icons.outlined.ArrowUpward
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchHistoryGrid(
@@ -29,6 +44,8 @@ fun SearchHistoryGrid(
 ) {
 
     var historySet by rememberSearchHistory()
+    var expanded by remember { mutableStateOf(false) }
+    val textExpand = if (expanded) "Collapse" else "Expand" // stringResource(R.string.collapse) else stringResource(R.string.expand)
 
     LazyVerticalGrid(
         state = rememberLazyGridState(),
@@ -37,6 +54,36 @@ fun SearchHistoryGrid(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = Modifier.padding(horizontal = 5.dp).padding(bottom = 50.dp)
     ) {
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+            ) {
+                Text(
+                    text = textExpand,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .clickable{
+                            expanded = !expanded
+                        }
+                )
+                IconButton(
+                    onClick = {
+                        expanded = !expanded
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Outlined.ArrowUpward else Icons.Outlined.ArrowDownward,
+                        modifier = Modifier.fillMaxHeight(),
+                        contentDescription = null
+                    )
+                }
+            }
+        }
 
         if (historyTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -52,7 +99,8 @@ fun SearchHistoryGrid(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 RecentTagsGrid(
                     historyTagsItems = historyTagsItems,
-                    searchTag = search
+                    searchTag = search,
+                    expanded = expanded
                 )
             }
         }
@@ -70,7 +118,7 @@ fun SearchHistoryGrid(
         item(span = { GridItemSpan(maxLineSpan) }) {
             TagsGrid(
                 searchTag = search,
-                expanded = true
+                expanded = expanded
             )
         }
 
@@ -86,7 +134,8 @@ fun SearchHistoryGrid(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             MetadataTagsGrid (
-                searchTag = search
+                searchTag = search,
+                expanded = expanded
             )
         }
 
@@ -104,7 +153,8 @@ fun SearchHistoryGrid(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LocationTagsGrid(
                     tagsItems = countriesTagsItems,
-                    searchTag = search
+                    searchTag = search,
+                    expanded = expanded
                 )
             }
         }
@@ -124,7 +174,8 @@ fun SearchHistoryGrid(
                 LocationTagsGrid(
                     tagsItems = localitiesTagsItems,
                     searchTag = search,
-                    locationIsCountry = false
+                    locationIsCountry = false,
+                    expanded = expanded
                 )
             }
         }

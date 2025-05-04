@@ -77,11 +77,10 @@ fun SearchHistory(
 
     println("SearchHistory: countries: $countriesTagsItems and localities: $localitiesTagsItems")
 
+    //TODO add suggestion set
     val suggestionSet = listOf(
         "0" to "Screenshots",
         "1" to "Camera",
-        //"2" to "May 2022",
-        //"3" to "Thursday"
     )
 
     SearchHistoryGrid(

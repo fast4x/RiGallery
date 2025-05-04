@@ -64,6 +64,7 @@ fun TagsGrid(
                 modifier = Modifier
                     .border(2.dp, TagsType.entries[index].color, MaterialTheme.shapes.large)
                     .background(Color.Transparent, MaterialTheme.shapes.large)
+                    .animateItem()
             )
         }
     }
@@ -74,13 +75,18 @@ fun TagsGrid(
 fun RecentTagsGrid(
     searchTag: (String) -> Unit,
     historyTagsItems: SnapshotStateList<Pair<String, String>>,
+    expanded: Boolean = false
 ){
+    val rows = if (expanded && historyTagsItems.size > 3) 3 else 1
+    val baseHeight = 60.dp
+    val height = if (expanded && historyTagsItems.size > 3) baseHeight*rows else baseHeight
+
     LazyHorizontalGrid(
-        rows = GridCells.Fixed(1),
+        rows = GridCells.Fixed(rows),
         state = rememberLazyGridState(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.height(50.dp)
+        modifier = Modifier.height(height)
     ) {
         items(historyTagsItems.size) { index ->
             val tag = historyTagsItems[index].second
@@ -108,6 +114,7 @@ fun RecentTagsGrid(
                         MaterialTheme.shapes.large
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.large)
+                    .animateItem()
             )
         }
     }
@@ -116,13 +123,18 @@ fun RecentTagsGrid(
 @Composable
 fun MetadataTagsGrid(
     searchTag: (String) -> Unit,
+    expanded: Boolean = false
 ){
+    val rows = 1 //if (expanded) 3 else 1
+    val baseHeight = 60.dp
+    val height =  baseHeight //if (expanded) baseHeight*rows else baseHeight
+
     LazyHorizontalGrid(
-        rows = GridCells.Fixed(1),
+        rows = GridCells.Fixed(rows),
         state = rememberLazyGridState(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.height(50.dp)
+        modifier = Modifier.height(height)
     ) {
         items(MetadataTagsType.entries.size) { index ->
             val tag = MetadataTagsType.entries[index].tag
@@ -149,6 +161,7 @@ fun MetadataTagsGrid(
                         MaterialTheme.shapes.extraLarge
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.extraLarge)
+                    .animateItem()
             )
         }
     }
@@ -158,16 +171,20 @@ fun MetadataTagsGrid(
 fun LocationTagsGrid(
     searchTag: (String) -> Unit,
     tagsItems: List<String?>,
-    locationIsCountry: Boolean = true
+    locationIsCountry: Boolean = true,
+    expanded: Boolean = false
 ){
+    val rows = if (expanded && tagsItems.size > 3) 3 else 1
+    val baseHeight = 60.dp
+    val height = if (expanded && tagsItems.size > 3) baseHeight*rows else baseHeight
     val tagName = stringResource(if (locationIsCountry) R.string.tag_country else R.string.tag_locality)
 
     LazyHorizontalGrid(
-        rows = GridCells.Fixed(1),
+        rows = GridCells.Fixed(rows),
         state = rememberLazyGridState(),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = Modifier.height(50.dp)
+        modifier = Modifier.height(height)
     ) {
         items(tagsItems.size) { index ->
             val tag = tagsItems[index]
@@ -194,6 +211,7 @@ fun LocationTagsGrid(
                         MaterialTheme.shapes.extraSmall
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.extraSmall)
+                    .animateItem()
             )
         }
     }
