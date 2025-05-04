@@ -14,16 +14,12 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -53,7 +49,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
@@ -66,9 +61,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
-import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
-import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
@@ -103,6 +96,9 @@ fun MainSearchBar(
     val mediaViewModel: MediaViewModel = hiltViewModel<MediaViewModel>().also {
         it.mediaFlow.collectAsStateWithLifecycle()
     }
+
+    val mediaWithLocation = mediaViewModel.mediaWithLocation.collectAsStateWithLifecycle()
+
     val state = mediaViewModel.searchMediaState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
 
@@ -290,7 +286,9 @@ fun MainSearchBar(
                     enter = enterAnimation,
                     exit = exitAnimation
                 ) {
-                    SearchHistory {
+                    SearchHistory(
+                        mediaWithLocation,
+                    ) {
                         canQuery = true
                         query = it
                         mediaViewModel.queryMedia(it)

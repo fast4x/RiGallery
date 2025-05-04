@@ -102,7 +102,7 @@ open class MediaViewModel @Inject constructor(
     private val ignoredMediaList = repository.getMediaIgnored()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    private val mediaWithLocation = repository.getMediaWithLocation()
+    internal val mediaWithLocation = repository.getMediaWithLocation()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val defaultDateFormat =
@@ -393,7 +393,11 @@ open class MediaViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
 
             return@withContext this@filterMedia.filter { it ->
-                println("MediaViewModel filterMedia tags: $tags ${it.location}")
+
+                if (it.id in mediaWithLocation.value.map { it.id }) {
+                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
+                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
+                }
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
                 (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
                 (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
@@ -403,7 +407,9 @@ open class MediaViewModel @Inject constructor(
                 ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
                 ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
                 (it.id in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
-                (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags)
+                (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
+                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
+                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags)
 
             }
         }

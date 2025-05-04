@@ -17,14 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
-import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 
 @Composable
 fun SearchHistoryGrid(
     historyItems: SnapshotStateList<Pair<String, String>>,
     suggestionSet: List<Pair<String, String>>,
     search: (String) -> Unit,
-    historyTagsItems: SnapshotStateList<Pair<String, String>>
+    historyTagsItems: SnapshotStateList<Pair<String, String>>,
+    countriesTagsItems: List<String?>,
+    localitiesTagsItems: List<String?>
 ) {
 
     var historySet by rememberSearchHistory()
@@ -34,37 +35,17 @@ fun SearchHistoryGrid(
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
+        modifier = Modifier.padding(horizontal = 5.dp).padding(bottom = 50.dp)
     ) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            TagsGrid(
-                searchTag = search
-            )
-        }
-
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            Text(
-                text = stringResource(R.string.metadata),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .padding(top = 16.dp)
-            )
-        }
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            MetadataTagsGrid (
-                searchTag = search
-            )
-        }
 
         if (historyTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = stringResource(R.string.history_recent_title),
+                    text = "Recent tags",//stringResource(R.string.history_recent_tags),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(vertical = 8.dp)
                         .padding(top = 16.dp)
                 )
             }
@@ -76,6 +57,78 @@ fun SearchHistoryGrid(
             }
         }
 
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
+                text = "Tags", //stringResource(R.string.tags),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .padding(top = 16.dp)
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            TagsGrid(
+                searchTag = search,
+                expanded = true
+            )
+        }
+
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
+                text = stringResource(R.string.metadata),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .padding(top = 16.dp)
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            MetadataTagsGrid (
+                searchTag = search
+            )
+        }
+
+        if (countriesTagsItems.isNotEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = "Countries", //stringResource(R.string.metadata),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .padding(top = 16.dp)
+                )
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                LocationTagsGrid(
+                    tagsItems = countriesTagsItems,
+                    searchTag = search
+                )
+            }
+        }
+
+        if (localitiesTagsItems.isNotEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = "Localities", //stringResource(R.string.metadata),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .padding(top = 16.dp)
+                )
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                LocationTagsGrid(
+                    tagsItems = localitiesTagsItems,
+                    searchTag = search,
+                    locationIsCountry = false
+                )
+            }
+        }
+
         if (historyItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
@@ -83,7 +136,7 @@ fun SearchHistoryGrid(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(vertical = 8.dp)
                         .padding(top = 16.dp)
                 )
             }
@@ -103,7 +156,7 @@ fun SearchHistoryGrid(
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(vertical = 8.dp)
                         .padding(top = 16.dp)
                 )
             }
