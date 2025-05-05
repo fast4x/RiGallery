@@ -49,10 +49,6 @@ inline fun <reified T: Media> TimelineScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
-    // Analysis of media to get location and other future info
-    val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
-    if (!analyzerViewModel.isRunning.value)
-        analyzerViewModel.startAnalysis()
 
     MediaScreen(
         paddingValues = paddingValues,

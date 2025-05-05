@@ -46,6 +46,7 @@ class AnalysisViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0f)
 
     fun startAnalysis() {
+        if (isRunning.value) return
         workManager.startAnalysis()
     }
 

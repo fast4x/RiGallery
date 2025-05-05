@@ -183,6 +183,7 @@ class AnalyzerWorker @AssistedInject constructor(
             .setContentIntent(openAppIntent)
             .addAction(stopAction)
             .build()
+
         // from Android 14 (API 34), foreground service type is mandatory for long-running workers:
         // https://developer.android.com/guide/background/persistent/how-to/long-running
         return when {

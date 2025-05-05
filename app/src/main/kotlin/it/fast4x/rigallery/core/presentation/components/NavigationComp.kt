@@ -75,6 +75,7 @@ import it.fast4x.rigallery.feature_node.presentation.ignoredmedia.IgnoredMediaSc
 import it.fast4x.rigallery.feature_node.presentation.util.restartApplication
 import it.fast4x.rigallery.feature_node.presentation.vault.VaultScreen
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Stable

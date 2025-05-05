@@ -83,25 +83,24 @@ fun AnalysisScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                //if (mediaNotAnalyzedCount > 0 || mediaInDatabase?.isEmpty() == true) {
-                    ScannerButton(
-                        scanForNewText = "Analyze media",
-                        isRunning = isRunning,
-                        indicatorCounter = progress,
-                        contentColor = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .combinedClickable(
-                                onLongClick = {
-                                    if (isRunning) viewModel.stopAnalysis()
-                                },
-                                onClick = {
-                                    if (!isRunning) viewModel.startAnalysis()
-                                    else viewModel.stopAnalysis()
-                                }
-                            )
-                    )
-                //}
+                ScannerButton(
+                    scanForNewText = "Analyze media",
+                    isRunning = isRunning,
+                    indicatorCounter = progress,
+                    contentColor = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .combinedClickable(
+                            onLongClick = {
+                                if (isRunning) viewModel.stopAnalysis()
+                            },
+                            onClick = {
+                                if (!isRunning) viewModel.startAnalysis()
+                                else viewModel.stopAnalysis()
+                            }
+                        )
+                )
+
 
                 if (analyzedMediaCount > 0 && !isRunning) {
                     ScannerButton(

@@ -23,6 +23,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.core.Settings.Misc.getSecureMode
@@ -34,6 +35,7 @@ import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,6 +53,10 @@ class MainActivity : AppCompatActivity() {
         enforceSecureFlag()
         enableEdgeToEdge()
         setContent {
+
+            val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
+            analyzerViewModel.startAnalysis()
+
             GalleryTheme {
                 val navController = rememberNavController()
                 val isScrolling = remember { mutableStateOf(false) }
