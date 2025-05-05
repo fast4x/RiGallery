@@ -59,7 +59,8 @@ object Constants {
             listOf(
                 Manifest.permission.READ_MEDIA_IMAGES,
                 Manifest.permission.READ_MEDIA_VIDEO,
-                Manifest.permission.ACCESS_MEDIA_LOCATION
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS
             )
         )
     }

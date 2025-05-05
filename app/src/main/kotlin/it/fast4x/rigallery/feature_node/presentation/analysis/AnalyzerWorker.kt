@@ -1,5 +1,6 @@
 package it.fast4x.rigallery.feature_node.presentation.analysis
 
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -71,20 +72,16 @@ class AnalyzerWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-    private val workerScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    var title = ""
+    var message = ""
 
     override suspend fun doWork(): Result {
-        workerScope.launch {
-            createNotificationChannel()
-            setForeground(createForegroundInfo())
-        }.join()
-
         withContext(Dispatchers.IO) {
             printWarning("MediaAnalyzer retrieving media")
 
             var media = database.getMediaDao().getMedia()
 
-            // TODO Search solution
             if (media.isEmpty()) {
                 printWarning("MediaAnalyzer media is empty, let's try and update the database")
                 val mediaVersion = appContext.mediaStoreVersion
@@ -112,16 +109,17 @@ class AnalyzerWorker @AssistedInject constructor(
             printWarning("MediaAnalyzer Starting analysis for ${media.size} items")
             media.fastForEachIndexed { index, item ->
                 setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
-                val title = "Analyzing ${index + 1}/${media.size}"
-                val message = "Analyzing ${item.label}"
-                setForeground(createForegroundInfo(title, message))
+                title = "Analyzing media ${index + 1}/${media.size}"
+                message = "File: ${item.label}"
+                println("MediaAnalyzer index $index media.size ${media.size}")
+                setForeground(createForegroundInfo(title, message, index, media.size))
                 try {
                     var media = item
                     getLocationData(appContext, media,
                         onLocationFound = {
-                            printWarning("MediaAnalyzer Updating media $index with location: ${it?.location}")
+                            //printWarning("MediaAnalyzer Updating media $index with location: ${it?.location}")
                             launch(Dispatchers.IO) {
-                                printWarning("MediaAnalyzer Updating item $media")
+                                //printWarning("MediaAnalyzer Updating item $media")
                                 database.getMediaDao().updateMedia(
                                     if (it?.location == null || it.location.isEmpty())
                                         item.copy(
@@ -149,15 +147,18 @@ class AnalyzerWorker @AssistedInject constructor(
     }
 
     private fun createNotificationChannel() {
-        val channel = NotificationChannelCompat.Builder(NOTIFICATION_CHANNEL, NotificationManagerCompat.IMPORTANCE_LOW)
+        val channel = NotificationChannelCompat.Builder(NOTIFICATION_CHANNEL, NotificationManagerCompat.IMPORTANCE_HIGH)
             //.setName(applicationContext.getText(R.string.analysis_channel_name))
             .setName("Analyzer channel name")
             .setShowBadge(false)
             .build()
+
         NotificationManagerCompat.from(applicationContext).createNotificationChannel(channel)
     }
 
-    private fun createForegroundInfo(title: String? = null, message: String? = null): ForegroundInfo {
+    private fun createForegroundInfo(title: String? = null, message: String? = null, progress: Int = 0, max: Int = 100): ForegroundInfo {
+        createNotificationChannel()
+
         val pendingIntentFlags =
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         val openAppIntent = Intent(applicationContext, MainActivity::class.java).let {
@@ -169,15 +170,15 @@ class AnalyzerWorker @AssistedInject constructor(
             WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
         ).build()
 
-        createNotificationChannel()
-
         val contentTitle = title ?: "Default title" //applicationContext.getText(R.string.analysis_notification_default_title)
         val notification = NotificationCompat.Builder(applicationContext,
             NOTIFICATION_CHANNEL
         )
             .setContentTitle(contentTitle)
             .setTicker(contentTitle)
+            .setSilent(true)
             .setContentText(message)
+            .setProgress(max, progress, false)
             .setSmallIcon(R.drawable.ic_gallery_thumbnail)
             .setOngoing(true)
             .setContentIntent(openAppIntent)

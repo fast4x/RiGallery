@@ -339,6 +339,8 @@
     <string name="tag_withoutlocation">withoutlocation</string>
     <string name="tag_country">country</string>
     <string name="tag_locality">locality</string>
+    <string name="notification">Notification</string>
+    <string name="notification_summary">Permit the app to show notification about analysis of local media, when new media are detected</string>
     <plurals name="item_count">
         <item quantity="one">%s item</item>
         <item quantity="other">%s items</item>
