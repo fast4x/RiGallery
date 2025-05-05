@@ -48,7 +48,9 @@ import it.fast4x.rigallery.feature_node.presentation.util.getExifInterface
 import it.fast4x.rigallery.feature_node.presentation.util.getGeocoder
 import it.fast4x.rigallery.feature_node.presentation.util.getLocation
 import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
@@ -56,6 +58,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import kotlin.reflect.KMutableProperty1
 
 const val NOTIFICATION_CHANNEL = "analyzerWorker"
 const val NOTIFICATION_ID = 1
@@ -67,42 +71,51 @@ class AnalyzerWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
-
+    private val workerScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     override suspend fun doWork(): Result {
+        workerScope.launch {
+            createNotificationChannel()
+            setForeground(createForegroundInfo())
+        }.join()
+
         withContext(Dispatchers.IO) {
+            printWarning("MediaAnalyzer retrieving media")
 
-            launch {
-                createNotificationChannel()
-                setForeground(createForegroundInfo())
-            }.join()
+            var media = database.getMediaDao().getMedia()
 
-            printWarning("ClassifierWorker retrieving media")
+            // TODO Search solution
+            if (media.isEmpty()) {
+                printWarning("MediaAnalyzer media is empty, let's try and update the database")
+                val mediaVersion = appContext.mediaStoreVersion
+                printWarning("MediaAnalyzer Force-updating database to version $mediaVersion")
+                database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
+                val fetchedMedia =
+                    repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
+                fetchedMedia?.let {
+                    database.getMediaDao().updateMedia(it)
+                }
+            }
 
-            val mediaToAnalyze = database.getMediaDao().getMedia().filter { it.analyzed == 0 }
-            val mediaInDatabase = database.getMediaDao().getMedia()
-            var mediaFlow = repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
+            media = database.getMediaDao().getMedia().filter { it.analyzed == 0 }
 
-            val media = if (mediaInDatabase.isNotEmpty() && mediaToAnalyze.isNotEmpty()) mediaToAnalyze
-                else mediaFlow
+            printWarning("MediaAnalyzer mediaToAnalyze size: ${media.size}")
 
-            if (media?.isEmpty() == true) {
+            if (media.isEmpty() == true) {
                 printWarning("MediaAnalyzer media is empty, we can abort")
                 setProgress(workDataOf("progress" to 100))
                 return@withContext Result.success()
             }
-            printWarning("MediaAnalyzer not analyzed media size: ${media?.size}")
+            printWarning("MediaAnalyzer not analyzed media size: ${media.size}")
             setProgress(workDataOf("progress" to 0))
 
-            printWarning("MediaAnalyzer Starting analysis for ${media?.size} items")
-            media?.fastForEachIndexed { index, item ->
-                //printWarning("MediaAnalyzer Processing item $index")
+            printWarning("MediaAnalyzer Starting analysis for ${media.size} items")
+            media.fastForEachIndexed { index, item ->
                 setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
+                val title = "Analyzing ${index + 1}/${media.size}"
+                val message = "Analyzing ${item.label}"
+                setForeground(createForegroundInfo(title, message))
                 try {
-                    val title = "Analyzing ${index + 1}/${media.size}"
-                    val message = "Analyzing ${item.label}"
-                    setForeground(createForegroundInfo(title, message))
-
                     var media = item
                     getLocationData(appContext, media,
                         onLocationFound = {
@@ -135,11 +148,6 @@ class AnalyzerWorker @AssistedInject constructor(
         return Result.success()
     }
 
-//    override fun onError(error: String) {
-//        printWarning("ClassifierWorker ImageClassifierHelper Error: $error")
-//    }
-
-
     private fun createNotificationChannel() {
         val channel = NotificationChannelCompat.Builder(NOTIFICATION_CHANNEL, NotificationManagerCompat.IMPORTANCE_LOW)
             //.setName(applicationContext.getText(R.string.analysis_channel_name))
@@ -160,6 +168,9 @@ class AnalyzerWorker @AssistedInject constructor(
             "Stop", //applicationContext.getString(R.string.analysis_notification_action_stop),
             WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
         ).build()
+
+        createNotificationChannel()
+
         val contentTitle = title ?: "Default title" //applicationContext.getText(R.string.analysis_notification_default_title)
         val notification = NotificationCompat.Builder(applicationContext,
             NOTIFICATION_CHANNEL
@@ -181,7 +192,6 @@ class AnalyzerWorker @AssistedInject constructor(
         }
     }
 
-
 }
 
 fun WorkManager.startAnalysis(indexStart: Int = 0, size: Int = 50) {
@@ -189,6 +199,7 @@ fun WorkManager.startAnalysis(indexStart: Int = 0, size: Int = 50) {
         .putInt("chunkIndexStart", indexStart)
         .putInt("chunkSize", size)
         .build()
+
     val uniqueWork = OneTimeWorkRequestBuilder<AnalyzerWorker>()
         .addTag("MediaAnalyzer")
         .setConstraints(

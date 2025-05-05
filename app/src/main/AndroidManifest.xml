@@ -209,6 +209,16 @@
                 />
         </provider>
 
+        <!--
+        Required for analysis worker service type:
+        - dataSync from Android 14 (API 34)
+        - mediaProcessing from Android 15 (API 35)
+        -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync|mediaProcessing"
+            tools:node="merge" />
+
     </application>
 
 </manifest>

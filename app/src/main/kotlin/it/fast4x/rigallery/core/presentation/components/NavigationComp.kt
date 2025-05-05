@@ -8,6 +8,7 @@
 
 package it.fast4x.rigallery.core.presentation.components
 
+import android.provider.Settings
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.PaddingValues
@@ -159,21 +160,9 @@ fun NavigationComp(
 
     val vaultState = timelineViewModel.vaultsFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
 
-    // Analysis of media to get location and other future info
-    val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
-    analyzerViewModel.startAnalysis() // If no media in database, start analysis from mediaFlow
-
-
-
-
     LaunchedEffect(permissionState) {
         timelineViewModel.updatePermissionState(permissionState)
     }
-
-    // not necessary
-//    LaunchedEffect(Unit, groupTimelineByMonth) {
-//        timelineViewModel.groupByMonth.value = groupTimelineByMonth
-//    }
 
     SharedTransitionLayout {
         NavHost(
