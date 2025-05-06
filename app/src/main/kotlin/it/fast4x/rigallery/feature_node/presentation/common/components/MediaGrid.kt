@@ -376,7 +376,6 @@ private fun <T: Media> MediaGridContentWithHeaders(
                             .animateItem(
                                 fadeInSpec = null
                             ),
-                            //.pinchItem(key = it.key),
                         date = remember {
                             it.text
                                 .replace("Today", stringToday)
@@ -492,7 +491,6 @@ private fun <T: Media> MediaGridContent(
                         .animateItem(
                             fadeInSpec = null
                         ),
-                        //.pinchItem(key = media.toString()),
                     media = media,
                     selectionState = selectionState,
                     selectedMedia = selectedMedia,

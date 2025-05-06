@@ -156,7 +156,7 @@ fun <T: Media> MediaImage(
                     )
                 },
                 contentDescription = media.label,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
             )
         }
 
