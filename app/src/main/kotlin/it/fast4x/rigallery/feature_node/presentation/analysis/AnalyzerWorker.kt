@@ -39,6 +39,8 @@ import com.github.panpf.sketch.request.ImageRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.util.isAtLeastAndroid14
+import it.fast4x.rigallery.core.util.isAtLeastAndroid15
 import it.fast4x.rigallery.feature_node.domain.model.LocationData
 import it.fast4x.rigallery.feature_node.domain.model.getLocationData
 import it.fast4x.rigallery.feature_node.presentation.classifier.ImageClassifierHelper
@@ -109,8 +111,8 @@ class AnalyzerWorker @AssistedInject constructor(
             printWarning("MediaAnalyzer Starting analysis for ${media.size} items")
             media.fastForEachIndexed { index, item ->
                 setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
-                title = "Analyzing media ${index + 1}/${media.size}"
-                message = "File: ${item.label}"
+                title = (if (isAtLeastAndroid15) applicationContext.getText(R.string.analyzing_media) else "${applicationContext.getText(R.string.analyzing_media)} ${index + 1}/${media.size}").toString()
+                message = if (isAtLeastAndroid15) "" else "File: ${item.label}"
                 println("MediaAnalyzer index $index media.size ${media.size}")
                 setForeground(createForegroundInfo(title, message, index, media.size))
                 try {
@@ -166,19 +168,21 @@ class AnalyzerWorker @AssistedInject constructor(
         }
         val stopAction = NotificationCompat.Action.Builder(
             R.drawable.ic_remove,
-            "Stop", //applicationContext.getString(R.string.analysis_notification_action_stop),
+            applicationContext.getString(R.string.action_stop),
             WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
         ).build()
 
-        val contentTitle = title ?: "Default title" //applicationContext.getText(R.string.analysis_notification_default_title)
+        val contentTitle = title
         val notification = NotificationCompat.Builder(applicationContext,
             NOTIFICATION_CHANNEL
         )
             .setContentTitle(contentTitle)
             .setTicker(contentTitle)
             .setSilent(true)
+            .setColorized(true)
+            .setAutoCancel(true)
             .setContentText(message)
-            .setProgress(max, progress, false)
+            .setProgress(max, progress, if (isAtLeastAndroid15) true else false) //Workaround to android 15 because notification freeze
             .setSmallIcon(R.drawable.ic_gallery_thumbnail)
             .setOngoing(true)
             .setContentIntent(openAppIntent)
@@ -188,8 +192,8 @@ class AnalyzerWorker @AssistedInject constructor(
         // from Android 14 (API 34), foreground service type is mandatory for long-running workers:
         // https://developer.android.com/guide/background/persistent/how-to/long-running
         return when {
-            Build.VERSION.SDK_INT >= 35 -> ForegroundInfo(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROCESSING)
-            Build.VERSION.SDK_INT == 34 -> ForegroundInfo(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
+            isAtLeastAndroid15 -> ForegroundInfo(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROCESSING)
+            isAtLeastAndroid14 -> ForegroundInfo(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
             else -> ForegroundInfo(NOTIFICATION_ID, notification)
         }
     }

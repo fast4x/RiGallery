@@ -14,26 +14,32 @@
         android:name="android.software.leanback"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
     <!-- Required to access images for SDK 33+ -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <!-- Required to access videos for SDK 33+ -->
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VIDEO" />
 
     <!-- Required to access GPS Data of Media -->
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <uses-permission
+        android:name="android.permission.ACCESS_MEDIA_LOCATION" />
 
     <!-- Required to download Map Preview for Media -->
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission
+        android:name="android.permission.INTERNET"/>
 
     <!-- Remove unwanted permissions from being added -->
     <!-- <uses-permission android:name="android.permission.INTERNET" tools:node="remove"/> -->
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove"/> -->
 
     <!-- Required to access media for SDK < 33 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
     <!--
@@ -41,7 +47,17 @@
         Requested to bypass another user confirmation requested by
         ScopedStorage when the user wants to trash, delete or add/remove favorites media
     -->
-    <uses-permission android:name="android.permission.MANAGE_MEDIA" />
+    <uses-permission
+        android:name="android.permission.MANAGE_MEDIA" />
+
+    <!--
+    Scoped storage on Android 10 (API 29) is inconvenient because users need to confirm edition on each individual file.
+    So we request `WRITE_EXTERNAL_STORAGE` until Android 10 (API 29), and enable `requestLegacyExternalStorage`
+    -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29"
+        tools:ignore="ScopedStorage" />
 
     <!--
         (OPTIONAL)
@@ -51,6 +67,15 @@
 
     <!-- Required to show workManager analysis progress via notification -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Required to provide a foreground service type, as required from Android 14 (API 34) -->
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"
+        android:maxSdkVersion="34"
+        tools:ignore="SystemPermissionTypo" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROCESSING"
+        tools:ignore="SystemPermissionTypo" />
 
     <queries>
         <intent>
@@ -75,6 +100,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.Gallery"
         tools:targetApi="33">
         <activity

@@ -337,4 +337,6 @@
     <string name="tag_locality">locality</string>
     <string name="notification">Notification</string>
     <string name="notification_summary">Permit the app to show notification about analysis of local media, when new media are detected</string>
+    <string name="analyzing_media">Analyzing media</string>
+    <string name="action_stop">Stop</string>
 </resources>
