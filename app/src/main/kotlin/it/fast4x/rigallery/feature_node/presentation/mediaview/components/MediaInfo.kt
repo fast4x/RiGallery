@@ -1,11 +1,15 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.mediaview.components
 
+import android.content.ClipData
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.util.Log
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,8 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import it.fast4x.rigallery.R
@@ -49,7 +52,8 @@ fun MediaInfoRow(
     onClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null
 ) {
-    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+    val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
     ListItem(
         modifier = modifier
             .fillMaxWidth()
@@ -59,7 +63,7 @@ fun MediaInfoRow(
                 onLongClick = {
                     if (onLongClick != null) onLongClick()
                     else {
-                        clipboardManager.setText(AnnotatedString(content))
+                        clipboardManager.setPrimaryClip(ClipData.newPlainText("", AnnotatedString(content)))
                     }
                 }
             ),
