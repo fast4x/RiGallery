@@ -258,6 +258,7 @@ dependencies {
     implementation(libs.avif.coder.coil)
 
     // Sketch
+    implementation(libs.sketch.singleton)
     implementation(libs.sketch.compose)
     implementation(libs.sketch.view)
     implementation(libs.sketch.animated.gif)

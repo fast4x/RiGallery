@@ -53,6 +53,7 @@ import com.github.panpf.sketch.AsyncImage
 import com.github.panpf.sketch.cache.CachePolicy
 import com.github.panpf.sketch.request.ComposableImageRequest
 import com.github.panpf.sketch.resize.Scale
+import com.github.panpf.sketch.transition.CrossfadeTransition
 import com.github.panpf.sketch.util.key
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -143,7 +144,8 @@ fun <T: Media> MediaImage(
                 modifier = Modifier
                     .fillMaxSize(),
                 request = ComposableImageRequest(media.getUri().toString()) {
-                    crossfade()
+                    key(media.id)
+                    crossfade(100)
                     resizeOnDraw()
                     scale(Scale.FILL)
                     setExtra(

@@ -34,7 +34,7 @@ room = "2.7.1"
 accompanist = "0.37.0"
 datastore = "1.1.4" #no upgrade to 1.1.5 there's an issue on the package
 securityCrypto = "1.1.0-alpha07"
-sketch = "4.0.5"
+sketch = "4.0.6"
 startupRuntime = "1.2.0"
 tensorflowLite = "2.16.1"
 tensorflowLiteTaskVision = "0.4.4"
@@ -120,12 +120,13 @@ datastore-prefs = { group = "androidx.datastore", name = "datastore-preferences"
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist" }
 
-# Zoomable
+# Sketch
 sketch-animated-gif = { module = "io.github.panpf.sketch4:sketch-animated-gif", version.ref = "sketch" }
 sketch-animated-heif = { module = "io.github.panpf.sketch4:sketch-animated-heif", version.ref = "sketch" }
 sketch-animated-webp = { module = "io.github.panpf.sketch4:sketch-animated-webp", version.ref = "sketch" }
 sketch-compose = { module = "io.github.panpf.sketch4:sketch-compose", version.ref = "sketch" }
 sketch-extensions-compose = { module = "io.github.panpf.sketch4:sketch-extensions-compose", version.ref = "sketch" }
+sketch-singleton = { module = "io.github.panpf.sketch4:sketch-singleton", version.ref = "sketch" }
 sketch-http-ktor = { module = "io.github.panpf.sketch4:sketch-http-ktor3", version.ref = "sketch" }
 sketch-svg = { module = "io.github.panpf.sketch4:sketch-svg", version.ref = "sketch" }
 sketch-video = { module = "io.github.panpf.sketch4:sketch-video", version.ref = "sketch" }
