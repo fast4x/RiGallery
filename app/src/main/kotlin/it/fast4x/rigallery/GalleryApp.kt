@@ -18,6 +18,10 @@ import com.github.panpf.sketch.cache.DiskCache
 import com.github.panpf.sketch.cache.MemoryCache
 import com.github.panpf.sketch.decode.supportAnimatedHeif
 import com.github.panpf.sketch.decode.supportAnimatedWebp
+import com.github.panpf.sketch.decode.supportGif
+import com.github.panpf.sketch.decode.supportImageDecoderAnimatedWebp
+import com.github.panpf.sketch.decode.supportImageDecoderGif
+import com.github.panpf.sketch.decode.supportMovieGif
 import com.github.panpf.sketch.decode.supportSvg
 import com.github.panpf.sketch.decode.supportVideoFrame
 import com.github.panpf.sketch.request.supportPauseLoadWhenScrolling
@@ -45,20 +49,30 @@ class GalleryApp : Application(), SingletonSketch.Factory, Configuration.Provide
     }
 
     override fun createSketch(context: PlatformContext): Sketch = Sketch.Builder(this).apply {
-        components {
-            supportSaveCellularTraffic()
-            supportPauseLoadWhenScrolling()
-            supportSvg()
-            supportVideoFrame()
-            supportAnimatedWebp()
-            supportAnimatedHeif()
-            supportHeifDecoder()
-            supportJxlDecoder()
-            supportVaultDecoder()
-        }
+        networkParallelismLimited(0)
+        decodeParallelismLimited(0)
+
+        // Manual components registration
+//        components {
+//            //supportSaveCellularTraffic()
+//            supportPauseLoadWhenScrolling()
+//            supportSvg()
+//            supportVideoFrame()
+//            supportAnimatedWebp()
+//            supportAnimatedHeif()
+//            supportGif()
+//            supportMovieGif()
+//
+//            supportImageDecoderAnimatedWebp()
+//            supportHeifDecoder()
+//            supportJxlDecoder()
+//            supportVaultDecoder()
+//            supportImageDecoderGif()
+//        }
+
         val diskCache = DiskCache.Builder(context, FileSystem.SYSTEM)
             .directory(context.appCacheDirectory())
-            .maxSize(1000 * 1024 * 1024)
+            .maxSize(2000 * 1024 * 1024)
             .build()
 
         val memoryCache = MemoryCache.Builder(context)
