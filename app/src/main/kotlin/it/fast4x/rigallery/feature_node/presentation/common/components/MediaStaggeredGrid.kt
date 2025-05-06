@@ -16,7 +16,9 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
@@ -24,6 +26,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.FullLine
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.SingleLane
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -352,6 +355,12 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                 items = mappedData,
                 key = { item -> item.key },
                 contentType = { item -> item.key.startsWith("media_") },
+                span = { item ->
+                    when {
+                        item.key.isHeaderKey -> FullLine
+                        else -> SingleLane
+                    }
+                }
             ) { it ->
                 if (it is MediaItem.Header) {
                     val isChecked = rememberSaveable { mutableStateOf(false) }
