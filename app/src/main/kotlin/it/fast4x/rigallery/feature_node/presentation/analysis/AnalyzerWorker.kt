@@ -87,7 +87,7 @@ class AnalyzerWorker @AssistedInject constructor(
             if (media.isEmpty()) {
                 printWarning("MediaAnalyzer media is empty, let's try and update the database")
                 val mediaVersion = appContext.mediaStoreVersion
-                printWarning("MediaAnalyzer Force-updating database to version $mediaVersion")
+                //printWarning("MediaAnalyzer Force-updating database to version $mediaVersion")
                 database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
                 val fetchedMedia =
                     repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
@@ -101,7 +101,7 @@ class AnalyzerWorker @AssistedInject constructor(
             printWarning("MediaAnalyzer mediaToAnalyze size: ${media.size}")
 
             if (media.isEmpty() == true) {
-                printWarning("MediaAnalyzer media is empty, we can abort")
+                printWarning("MediaAnalyzer media is empty, nothing to analyze")
                 setProgress(workDataOf("progress" to 100))
                 return@withContext Result.success()
             }
@@ -113,7 +113,7 @@ class AnalyzerWorker @AssistedInject constructor(
                 setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
                 title = (if (isAtLeastAndroid15) applicationContext.getText(R.string.analyzing_media) else "${applicationContext.getText(R.string.analyzing_media)} ${index + 1}/${media.size}").toString()
                 message = if (isAtLeastAndroid15) "" else "File: ${item.label}"
-                println("MediaAnalyzer index $index media.size ${media.size}")
+                //println("MediaAnalyzer index $index media.size ${media.size}")
                 setForeground(createForegroundInfo(title, message, index, media.size))
                 try {
                     var media = item
