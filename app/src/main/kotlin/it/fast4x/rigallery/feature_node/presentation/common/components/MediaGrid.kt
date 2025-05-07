@@ -303,7 +303,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
         mediaState.value.headers.toMutableStateList()
     }
 
-    val displayMode by remember { mutableStateOf(1) }
+    val displayMode by remember { mutableIntStateOf(1) }
     var zoom by remember(displayMode) { mutableFloatStateOf(1f) }
     val zoomTransition: Float by animateFloatAsState(
         zoom,
