@@ -99,7 +99,7 @@ fun <T: Media> MediaImage(
     val aspectRatio = rememberSaveable(media) {
         mutableFloatStateOf(
             if (staggered)
-                Random.nextFloat() * (1.5f - 0.5f) + 0.5f
+                Random.nextFloat() + 1f
             else 1f
          )
     }
