@@ -367,28 +367,33 @@ open class MediaViewModel @Inject constructor(
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
                 (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
                 (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
+
                 (it.orientation == 90 && context.getString(R.string.tag_rotated90).toString() in tags) ||
                 (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
                 (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
+
                 ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
                 ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
+
                 (it.id in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
                 (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
                 (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
                 (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags) ||
+
                 ("${context.getString(R.string.tag_album).lowercase()}:${it.albumLabel.lowercase()}".toString() in tags) ||
+
                 (dt.monthValue == 1 && context.getString(R.string.tag_january).toString() in tags) ||
-                        (dt.monthValue == 2 && context.getString(R.string.tag_february).toString() in tags) ||
+                (dt.monthValue == 2 && context.getString(R.string.tag_february).toString() in tags) ||
                 (dt.monthValue == 3 && context.getString(R.string.tag_march).toString() in tags) ||
-                        (dt.monthValue == 4 && context.getString(R.string.tag_april).toString() in tags) ||
+                (dt.monthValue == 4 && context.getString(R.string.tag_april).toString() in tags) ||
                 (dt.monthValue == 5 && context.getString(R.string.tag_may).toString() in tags) ||
-                        (dt.monthValue == 6 && context.getString(R.string.tag_june).toString() in tags) ||
-                        (dt.monthValue == 7 && context.getString(R.string.tag_july).toString() in tags) ||
-                        (dt.monthValue == 8 && context.getString(R.string.tag_august).toString() in tags) ||
-                        (dt.monthValue == 9 && context.getString(R.string.tag_september).toString() in tags) ||
-                        (dt.monthValue == 10 && context.getString(R.string.tag_october).toString() in tags) ||
-                        (dt.monthValue == 11 && context.getString(R.string.tag_november).toString() in tags) ||
-                        (dt.monthValue == 12 && context.getString(R.string.tag_december).toString() in tags)
+                (dt.monthValue == 6 && context.getString(R.string.tag_june).toString() in tags) ||
+                (dt.monthValue == 7 && context.getString(R.string.tag_july).toString() in tags) ||
+                (dt.monthValue == 8 && context.getString(R.string.tag_august).toString() in tags) ||
+                (dt.monthValue == 9 && context.getString(R.string.tag_september).toString() in tags) ||
+                (dt.monthValue == 10 && context.getString(R.string.tag_october).toString() in tags) ||
+                (dt.monthValue == 11 && context.getString(R.string.tag_november).toString() in tags) ||
+                (dt.monthValue == 12 && context.getString(R.string.tag_december).toString() in tags)
 
 
             }
