@@ -9,6 +9,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -379,7 +380,9 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                     MediaItemHeader(
                         modifier = Modifier
                             .animateItem(
-                                fadeInSpec = null
+                                fadeInSpec = tween(durationMillis = 250),
+                                fadeOutSpec = tween(durationMillis = 100),
+                                placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                             ),
                         date = remember {
                             it.text
@@ -420,7 +423,9 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                                     animatedVisibilityScope = animatedContentScope
                                 )
                                 .animateItem(
-                                    fadeInSpec = null
+                                    fadeInSpec = tween(durationMillis = 250),
+                                    fadeOutSpec = tween(durationMillis = 100),
+                                    placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                                 ),
                             media = it.media,
                             staggered = true,
@@ -493,7 +498,9 @@ private fun <T: Media> MediaStaggeredGridContent(
                             animatedVisibilityScope = animatedContentScope
                         )
                         .animateItem(
-                            fadeInSpec = null
+                            fadeInSpec = tween(durationMillis = 250),
+                            fadeOutSpec = tween(durationMillis = 100),
+                            placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                         ),
                     media = media,
                     staggered = true,
