@@ -9,7 +9,7 @@ appcompat = "1.7.0"
 composeVideo = "1.2.0"
 core = "1.11.1"
 coreSplashscreen = "1.0.1"
-fuzzywuzzy = "1.4.0"
+#fuzzywuzzy = "1.4.0"
 exifinterface = "1.4.1"
 graphicsShapes = "1.0.1"
 jxlCoder = "2.1.10"
@@ -140,7 +140,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 material = { module = "com.google.android.material:material", version.ref = "material" }
 
 # Fuzzy Search
-fuzzywuzzy = { module = "me.xdrop:fuzzywuzzy", version.ref = "fuzzywuzzy" }
+#fuzzywuzzy = { module = "me.xdrop:fuzzywuzzy", version.ref = "fuzzywuzzy" }
 
 # Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.enums.DayTagsType
 import it.fast4x.rigallery.core.enums.MetadataTagsType
 import it.fast4x.rigallery.core.enums.MonthTagsType
 import it.fast4x.rigallery.core.enums.TagsType
@@ -275,9 +276,9 @@ fun MonthTagsGrid(
     searchTag: (String) -> Unit,
     expanded: Boolean = false
 ){
-    val rows = 1 //if (expanded) 3 else 1
+    val rows = if (expanded) 3 else 1
     val baseHeight = 60.dp
-    val height =  baseHeight //if (expanded) baseHeight*rows else baseHeight
+    val height =  if (expanded) baseHeight*rows else baseHeight
 
     LazyHorizontalGrid(
         rows = GridCells.Fixed(rows),
@@ -308,9 +309,56 @@ fun MonthTagsGrid(
                     .border(
                         2.dp,
                         MonthTagsType.entries[index].color,
-                        MaterialTheme.shapes.extraLarge
+                        MaterialTheme.shapes.medium
                     )
-                    .background(Color.Transparent, MaterialTheme.shapes.extraLarge)
+                    .background(Color.Transparent, MaterialTheme.shapes.medium)
+                    .animateItem()
+            )
+        }
+    }
+}
+
+@Composable
+fun DayTagsGrid(
+    searchTag: (String) -> Unit,
+    expanded: Boolean = false
+){
+    val rows = if (expanded) 3 else 1
+    val baseHeight = 60.dp
+    val height =  if (expanded) baseHeight*rows else baseHeight
+
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(rows),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(height)
+    ) {
+        items(DayTagsType.entries.size) { index ->
+            val tag = DayTagsType.entries[index].tag
+            FilterChip(
+                selected = true,
+                onClick = { searchTag(tag) },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = DayTagsType.entries[index].icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = Modifier
+                    .border(
+                        2.dp,
+                        DayTagsType.entries[index].color,
+                        MaterialTheme.shapes.small
+                    )
+                    .background(Color.Transparent, MaterialTheme.shapes.small)
                     .animateItem()
             )
         }

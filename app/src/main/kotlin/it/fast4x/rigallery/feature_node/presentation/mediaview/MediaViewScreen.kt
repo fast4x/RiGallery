@@ -562,9 +562,12 @@ fun <T : Media> MediaViewScreen(
                     }
                 }
             }
-            val exifInterface = rememberExifInterface(currentMedia as T, true)
-            val exifMetadata = rememberExifMetadata(currentMedia as T, exifInterface)
-            val locationData = rememberLocationData(exifMetadata, currentMedia as T)
+
+            val currMedia = currentMedia ?: return@FullBrightnessWindow
+            val exifInterface = rememberExifInterface(currMedia, true)
+
+            val exifMetadata = rememberExifMetadata(currMedia, exifInterface)
+            val locationData = rememberLocationData(exifMetadata, currMedia)
             MediaViewAppBar(
                 modifier = Modifier.padding(
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),

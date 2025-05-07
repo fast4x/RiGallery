@@ -2,6 +2,7 @@ package it.fast4x.rigallery.core.enums
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.CalendarViewDay
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.LocationOff
@@ -113,17 +114,17 @@ enum class MonthTagsType {
 
     val color: Color
         get() = when (this) {
-            January -> Color.DarkGray
-            February -> Color.LightGray
-            March -> Color.DarkGray
-            April -> Color.LightGray
-            May -> Color.DarkGray
-            June -> Color.LightGray
-            July -> Color.DarkGray
-            August -> Color.LightGray
-            September -> Color.DarkGray
-            October -> Color.LightGray
-            November -> Color.DarkGray
+            January -> Color.Black
+            February -> Color.Blue
+            March -> Color.Green
+            April -> Color.Gray
+            May -> Color.Yellow
+            June -> Color.Red
+            July -> Color.Cyan
+            August -> Color.Magenta
+            September -> Color.LightGray
+            October -> Color.DarkGray
+            November -> Color.Black
             December -> Color.LightGray
         }
 
@@ -146,4 +147,41 @@ enum class MonthTagsType {
 
     val icon: ImageVector
         get() = Icons.Filled.CalendarMonth
+}
+
+enum class DayTagsType {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday;
+
+    val color: Color
+        get() = when (this) {
+            Monday -> Color.Magenta
+            Tuesday -> Color.Gray
+            Wednesday -> Color.Green
+            Thursday -> Color.DarkGray
+            Friday -> Color.Yellow
+            Saturday -> Color.Cyan
+            Sunday -> Color.Red
+        }
+
+    val tag: String
+        @Composable
+        get() = when (this) {
+            Monday -> "#${stringResource(R.string.tag_monday)}"
+            Tuesday -> "#${stringResource(R.string.tag_tuesday)}"
+            Wednesday -> "#${stringResource(R.string.tag_wednesday)}"
+            Thursday -> "#${stringResource(R.string.tag_thursday)}"
+            Friday -> "#${stringResource(R.string.tag_friday)}"
+            Saturday -> "#${stringResource(R.string.tag_saturday)}"
+            Sunday -> "#${stringResource(R.string.tag_sunday)}"
+        }
+
+    val icon: ImageVector
+        get() = Icons.Filled.CalendarViewDay
+
 }

@@ -301,27 +301,27 @@ fun MainSearchBar(
                     exit = exitAnimation
                 ) {
 
-                    if (mediaIsEmpty) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 72.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.ImageSearch,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .size(64.dp)
-                            )
-                            Text(
-                                text = stringResource(R.string.no_media_found),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                    } else {
+//                    if (mediaIsEmpty) {
+//                        Column(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(top = 72.dp),
+//                            verticalArrangement = Arrangement.spacedBy(16.dp),
+//                            horizontalAlignment = Alignment.CenterHorizontally
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Outlined.ImageSearch,
+//                                contentDescription = null,
+//                                tint = MaterialTheme.colorScheme.primary,
+//                                modifier = Modifier
+//                                    .size(64.dp)
+//                            )
+//                            Text(
+//                                text = stringResource(R.string.no_media_found),
+//                                style = MaterialTheme.typography.titleMedium
+//                            )
+//                        }
+//                    } else {
                         val pd = PaddingValues(
                             bottom = bottomPadding + 16.dp
                         )
@@ -335,20 +335,24 @@ fun MainSearchBar(
                                 onMediaClick = {
                                     navigate(Screen.MediaViewScreen.route + "?mediaId=${it.id}&query=true")
                                 },
-                                emptyContent = { EmptyMedia() },
+                                emptyContent = {
+                                        EmptyMedia()
+                                },
                                 animatedContentScope = animatedContentScope,
                                 sharedTransitionScope = sharedTransitionScope
                             )
-                            androidx.compose.animation.AnimatedVisibility(
-                                visible = state.value.isLoading,
-                                enter = enterAnimation,
-                                exit = exitAnimation
-                            ) {
-                                LoadingMedia()
-                            }
+
+                        // emptymedia include loading indicator
+//                            androidx.compose.animation.AnimatedVisibility(
+//                                visible = state.value.isLoading,
+//                                enter = enterAnimation,
+//                                exit = exitAnimation
+//                            ) {
+//                                LoadingMedia()
+//                            }
 
 
-                    }
+                    //}
                 }
             },
         )

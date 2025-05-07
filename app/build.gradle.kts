@@ -287,7 +287,7 @@ dependencies {
     implementation(libs.datastore.prefs)
 
     // Fuzzy Search
-    implementation(libs.fuzzywuzzy)
+    //implementation(libs.fuzzywuzzy)
 
     // Aire
     implementation(libs.aire)

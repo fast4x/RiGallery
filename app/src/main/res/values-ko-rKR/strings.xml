@@ -359,4 +359,11 @@
     <string name="tag_october">october</string>
     <string name="tag_november">november</string>
     <string name="tag_december">december</string>
+    <string name="tag_monday">monday</string>
+    <string name="tag_tuesday">tuesday</string>
+    <string name="tag_wednesday">wednesday</string>
+    <string name="tag_thursday">thursday</string>
+    <string name="tag_friday">friday</string>
+    <string name="tag_saturday">saturday</string>
+    <string name="tag_sunday">sunday</string>
 </resources>

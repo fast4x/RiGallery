@@ -160,6 +160,23 @@ fun SearchHistoryGrid(
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
+                text = "Day", //stringResource(R.string.day),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .padding(top = 16.dp)
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            DayTagsGrid (
+                searchTag = search,
+                expanded = expanded
+            )
+        }
+
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
                 text = stringResource(R.string.metadata),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,

@@ -53,9 +53,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.xdrop.fuzzywuzzy.FuzzySearch
+import java.time.DayOfWeek
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
 
@@ -331,9 +330,14 @@ open class MediaViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
             if (query.isEmpty())
                 return@withContext emptyList()
-            val matches =
-                FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
-            return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+            // TODO remove fuzzy searc
+//            val matches =
+//                FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 80)
+//            return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+
+            return@withContext this@parseQuery.filter {
+                it.toString().contains(query, ignoreCase = true)
+            }
         }
     }
 
@@ -393,7 +397,15 @@ open class MediaViewModel @Inject constructor(
                 (dt.monthValue == 9 && context.getString(R.string.tag_september).toString() in tags) ||
                 (dt.monthValue == 10 && context.getString(R.string.tag_october).toString() in tags) ||
                 (dt.monthValue == 11 && context.getString(R.string.tag_november).toString() in tags) ||
-                (dt.monthValue == 12 && context.getString(R.string.tag_december).toString() in tags)
+                (dt.monthValue == 12 && context.getString(R.string.tag_december).toString() in tags) ||
+
+                (dt.dayOfWeek == DayOfWeek.MONDAY && context.getString(R.string.tag_monday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.TUESDAY && context.getString(R.string.tag_tuesday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.WEDNESDAY && context.getString(R.string.tag_wednesday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.THURSDAY && context.getString(R.string.tag_thursday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.FRIDAY && context.getString(R.string.tag_friday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.SATURDAY && context.getString(R.string.tag_saturday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.SUNDAY && context.getString(R.string.tag_sunday).toString() in tags)
 
 
             }
