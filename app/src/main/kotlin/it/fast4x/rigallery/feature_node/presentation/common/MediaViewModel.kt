@@ -54,6 +54,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.xdrop.fuzzywuzzy.FuzzySearch
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -347,10 +350,16 @@ open class MediaViewModel @Inject constructor(
         tags: List<String>
     ): List<T> {
         println("MediaViewModel tags: $tags")
+
         return withContext(Dispatchers.IO) {
 
             return@withContext this@filterMedia.filter { it ->
-                println("MediaViewModel filterMedia albumlabel: ${it.albumLabel}")
+                val dt = Instant.ofEpochSecond(it.definedTimestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime()
+
+
+                println("MediaViewModel filterMedia month: ${dt.monthValue}")
 //                if (it.id in mediaWithLocation.value.map { it.id }) {
 //                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
 //                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
@@ -367,7 +376,20 @@ open class MediaViewModel @Inject constructor(
                 (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
                 (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
                 (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags) ||
-                ("${context.getString(R.string.tag_album).lowercase()}:${it.albumLabel.lowercase()}".toString() in tags)
+                ("${context.getString(R.string.tag_album).lowercase()}:${it.albumLabel.lowercase()}".toString() in tags) ||
+                (dt.monthValue == 1 && context.getString(R.string.tag_january).toString() in tags) ||
+                        (dt.monthValue == 2 && context.getString(R.string.tag_february).toString() in tags) ||
+                (dt.monthValue == 3 && context.getString(R.string.tag_march).toString() in tags) ||
+                        (dt.monthValue == 4 && context.getString(R.string.tag_april).toString() in tags) ||
+                (dt.monthValue == 5 && context.getString(R.string.tag_may).toString() in tags) ||
+                        (dt.monthValue == 6 && context.getString(R.string.tag_june).toString() in tags) ||
+                        (dt.monthValue == 7 && context.getString(R.string.tag_july).toString() in tags) ||
+                        (dt.monthValue == 8 && context.getString(R.string.tag_august).toString() in tags) ||
+                        (dt.monthValue == 9 && context.getString(R.string.tag_september).toString() in tags) ||
+                        (dt.monthValue == 10 && context.getString(R.string.tag_october).toString() in tags) ||
+                        (dt.monthValue == 11 && context.getString(R.string.tag_november).toString() in tags) ||
+                        (dt.monthValue == 12 && context.getString(R.string.tag_december).toString() in tags)
+
 
             }
         }
@@ -378,5 +400,5 @@ open class MediaViewModel @Inject constructor(
         matchesMedia(media) && (hiddenInTimeline && albumId == -1L || hiddenInAlbums && albumId != -1L)
 
 
-
 }
+

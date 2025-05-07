@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.enums.MetadataTagsType
+import it.fast4x.rigallery.core.enums.MonthTagsType
 import it.fast4x.rigallery.core.enums.TagsType
 import it.fast4x.rigallery.feature_node.domain.model.Album
 
@@ -263,6 +264,53 @@ fun AlbumsTagsGrid(
                         MaterialTheme.shapes.small
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.small)
+                    .animateItem()
+            )
+        }
+    }
+}
+
+@Composable
+fun MonthTagsGrid(
+    searchTag: (String) -> Unit,
+    expanded: Boolean = false
+){
+    val rows = 1 //if (expanded) 3 else 1
+    val baseHeight = 60.dp
+    val height =  baseHeight //if (expanded) baseHeight*rows else baseHeight
+
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(rows),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(height)
+    ) {
+        items(MonthTagsType.entries.size) { index ->
+            val tag = MonthTagsType.entries[index].tag
+            FilterChip(
+                selected = true,
+                onClick = { searchTag(tag) },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = MonthTagsType.entries[index].icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = Modifier
+                    .border(
+                        2.dp,
+                        MonthTagsType.entries[index].color,
+                        MaterialTheme.shapes.extraLarge
+                    )
+                    .background(Color.Transparent, MaterialTheme.shapes.extraLarge)
                     .animateItem()
             )
         }

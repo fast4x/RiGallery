@@ -68,13 +68,13 @@ fun SearchHistory(
 
 
     val countriesTagsItems = remember {
-        mediaWithLocation.value.map {
+        mediaWithLocation.value.mapNotNull {
             it.location?.substringAfterLast(delimiter = ",", missingDelimiterValue = "")?.trim()
         }.distinct().sortedByDescending { it }
     }
 
     val localitiesTagsItems = remember {
-        mediaWithLocation.value.map {
+        mediaWithLocation.value.mapNotNull {
             it.location?.substringBefore(delimiter = ",", missingDelimiterValue = "")?.trim()
         }.distinct().sortedByDescending { it }
     }

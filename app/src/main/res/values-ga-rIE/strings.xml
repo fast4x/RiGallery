@@ -351,4 +351,16 @@
     <string name="create_new_vault_title">Create new vault?</string>
     <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)</string>
     <string name="tag_album">album</string>
+    <string name="tag_january">january</string>
+    <string name="tag_february">february</string>
+    <string name="tag_march">march</string>
+    <string name="tag_april">april</string>
+    <string name="tag_may">may</string>
+    <string name="tag_june">june</string>
+    <string name="tag_july">july</string>
+    <string name="tag_august">august</string>
+    <string name="tag_september">september</string>
+    <string name="tag_october">october</string>
+    <string name="tag_november">november</string>
+    <string name="tag_december">december</string>
 </resources>

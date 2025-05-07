@@ -1,6 +1,7 @@
 package it.fast4x.rigallery.core.enums
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.LocationOff
@@ -15,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.enums.MetadataTagsType.WithLocation
+import it.fast4x.rigallery.core.enums.MetadataTagsType.WithoutLocation
 import it.fast4x.rigallery.core.enums.TagsType.Horizontal
 import it.fast4x.rigallery.core.enums.TagsType.Rotated180
 import it.fast4x.rigallery.core.enums.TagsType.Rotated270
@@ -92,4 +95,55 @@ enum class MetadataTagsType {
             WithLocation -> Icons.Filled.LocationOn
             WithoutLocation -> Icons.Filled.LocationOff
         }
+}
+
+enum class MonthTagsType {
+    January,
+    February,
+    March,
+    April,
+    May,
+    June,
+    July,
+    August,
+    September,
+    October,
+    November,
+    December;
+
+    val color: Color
+        get() = when (this) {
+            January -> Color.DarkGray
+            February -> Color.LightGray
+            March -> Color.DarkGray
+            April -> Color.LightGray
+            May -> Color.DarkGray
+            June -> Color.LightGray
+            July -> Color.DarkGray
+            August -> Color.LightGray
+            September -> Color.DarkGray
+            October -> Color.LightGray
+            November -> Color.DarkGray
+            December -> Color.LightGray
+        }
+
+    val tag: String
+        @Composable
+        get() = when (this) {
+            January -> "#${stringResource(R.string.tag_january)}"
+            February -> "#${stringResource(R.string.tag_february)}"
+            March -> "#${stringResource(R.string.tag_march)}"
+            April -> "#${stringResource(R.string.tag_april)}"
+            May -> "#${stringResource(R.string.tag_may)}"
+            June -> "#${stringResource(R.string.tag_june)}"
+            July -> "#${stringResource(R.string.tag_july)}"
+            August -> "#${stringResource(R.string.tag_august)}"
+            September -> "#${stringResource(R.string.tag_september)}"
+            October -> "#${stringResource(R.string.tag_october)}"
+            November -> "#${stringResource(R.string.tag_november)}"
+            December -> "#${stringResource(R.string.tag_december)}"
+        }
+
+    val icon: ImageVector
+        get() = Icons.Filled.CalendarMonth
 }
