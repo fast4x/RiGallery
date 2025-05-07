@@ -343,6 +343,7 @@
     <string name="notification_summary">Permit the app to show notification about analysis of local media, when new media are detected</string>
     <string name="analyzing_media">Analyzing media</string>
     <string name="action_stop">Stop</string>
+    <string name="tag_album">album</string>
     <plurals name="item_count">
         <item quantity="one">%s item</item>
         <item quantity="other">%s items</item>

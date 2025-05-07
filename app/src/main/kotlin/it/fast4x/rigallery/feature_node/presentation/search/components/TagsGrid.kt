@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tag
+import androidx.compose.material.icons.outlined.Album
 import androidx.compose.material.icons.outlined.LocationCity
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.FilterChip
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.enums.MetadataTagsType
 import it.fast4x.rigallery.core.enums.TagsType
+import it.fast4x.rigallery.feature_node.domain.model.Album
 
 @Composable
 fun TagsGrid(
@@ -211,6 +213,56 @@ fun LocationTagsGrid(
                         MaterialTheme.shapes.extraSmall
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.extraSmall)
+                    .animateItem()
+            )
+        }
+    }
+}
+
+@Composable
+fun AlbumsTagsGrid(
+    searchTag: (String) -> Unit,
+    tagsItems: List<Album>,
+    expanded: Boolean = false
+){
+    val rows = if (expanded && tagsItems.size > 3) 3 else 1
+    val baseHeight = 60.dp
+    val height = if (expanded && tagsItems.size > 3) baseHeight*rows else baseHeight
+    val tagName = stringResource(R.string.tag_album)
+
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(rows),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(height)
+    ) {
+        items(tagsItems.size) { index ->
+            val tag = tagsItems[index].label
+            //val tagLabel = tagsItems[index].label
+            FilterChip(
+                selected = true,
+                onClick = { searchTag("#$tagName:$tag") },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Album,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = Modifier
+                    .border(
+                        2.dp,
+                        MaterialTheme.colorScheme.onPrimary,
+                        MaterialTheme.shapes.small
+                    )
+                    .background(Color.Transparent, MaterialTheme.shapes.small)
                     .animateItem()
             )
         }

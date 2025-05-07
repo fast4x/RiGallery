@@ -325,56 +325,13 @@ open class MediaViewModel @Inject constructor(
     }
 
     private suspend fun <T : Media> List<T>.parseQuery(query: String): List<T> {
-//        val tag = if (query.startsWith("#")) query.substringAfter("#").lowercase() else ""
-//        val tagFiltersNot = query.lowercase().split("!#")
-//            .dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
-//        val tagFilters = query.lowercase().split("#").filterNot {
-//            it in tagFiltersNot
-//        }.dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
-
-        //println("MediaViewModel pre tag: $tag query: $query")
-        //println("MediaViewModel tagFilters: $tagFilters tagFiltersNot: $tagFiltersNot")
-        //if (tagFilters.isEmpty() && tagFiltersNot.isEmpty()) {
-            return withContext(Dispatchers.IO) {
-                if (query.isEmpty())
-                    return@withContext emptyList()
-                val matches =
-                    FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
-                return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
-            }
-        //} else {
-//            return withContext(Dispatchers.IO) {
-//                return@withContext this@parseQuery
-//                    .filterNot {
-//                        if (tagFiltersNot.isNotEmpty()) {
-//                            parseTags(it, tagFiltersNot)
-////                            (it.isImage && context.getString(R.string.tag_image)
-////                                .toString() in tagFiltersNot) ||
-////                                    (it.isVideo && context.getString(R.string.tag_video)
-////                                        .toString() in tagFiltersNot) ||
-////                                    (it.isFavorite && context.getString(R.string.tag_favorite)
-////                                        .toString() in tagFiltersNot)
-//                        } else false
-//                    }
-//                    .filter {
-//                        if (tagFilters.isNotEmpty()) {
-//                            parseTags(it, tagFilters)
-////                            (it.isImage && context.getString(R.string.tag_image)
-////                                .toString() in tagFilters) ||
-////                                    (it.isVideo && context.getString(R.string.tag_video)
-////                                        .toString() in tagFilters) ||
-////                                    (it.isFavorite && context.getString(R.string.tag_favorite)
-////                                        .toString() in tagFilters)
-//                        } else false
-//                    }
-
-//                    .filter {
-//                        (it.isImage && tag == context.getString(R.string.tag_image)) ||
-//                        (it.isVideo && tag == context.getString(R.string.tag_video)) ||
-//                        (it.isFavorite && tag == context.getString(R.string.tag_favorite))
-//                    }
-            //}
-        //}
+        return withContext(Dispatchers.IO) {
+            if (query.isEmpty())
+                return@withContext emptyList()
+            val matches =
+                FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
+            return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+        }
     }
 
     private suspend fun <T: Media>parseTags(t: T, tags: List<String>): Boolean {
@@ -393,11 +350,11 @@ open class MediaViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
 
             return@withContext this@filterMedia.filter { it ->
-
-                if (it.id in mediaWithLocation.value.map { it.id }) {
-                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
-                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
-                }
+                println("MediaViewModel filterMedia albumlabel: ${it.albumLabel}")
+//                if (it.id in mediaWithLocation.value.map { it.id }) {
+//                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
+//                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
+//                }
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
                 (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
                 (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
@@ -409,7 +366,8 @@ open class MediaViewModel @Inject constructor(
                 (it.id in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
                 (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
                 (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
-                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags)
+                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags) ||
+                ("${context.getString(R.string.tag_album).lowercase()}:${it.albumLabel.lowercase()}".toString() in tags)
 
             }
         }

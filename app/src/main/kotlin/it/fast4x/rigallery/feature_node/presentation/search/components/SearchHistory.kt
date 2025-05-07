@@ -6,9 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.feature_node.domain.model.Media
+import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun SearchHistory(
@@ -77,6 +81,10 @@ fun SearchHistory(
 
     println("SearchHistory: countries: $countriesTagsItems and localities: $localitiesTagsItems")
 
+    val albumsViewModel = hiltViewModel<AlbumsViewModel>()
+    val albumsState =
+        albumsViewModel.albumsFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
+
     //TODO add suggestion set
     val suggestionSet = listOf(
         "0" to "Screenshots",
@@ -88,6 +96,7 @@ fun SearchHistory(
         historyTagsItems = historyTagsItems,
         countriesTagsItems = countriesTagsItems,
         localitiesTagsItems = localitiesTagsItems,
+        albumsTagsItems = albumsState.value.albums,
         suggestionSet = suggestionSet,
         search = search
     )

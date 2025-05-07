@@ -346,4 +346,5 @@
     <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.</string>
     <string name="create_new_vault_title">Create new vault?</string>
     <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)</string>
+    <string name="tag_album">album</string>
 </resources>

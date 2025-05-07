@@ -13,8 +13,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
-import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
-import kotlinx.coroutines.launch
+import it.fast4x.rigallery.feature_node.domain.model.Album
 
 @Composable
 fun SearchHistoryGrid(
@@ -40,7 +38,8 @@ fun SearchHistoryGrid(
     search: (String) -> Unit,
     historyTagsItems: SnapshotStateList<Pair<String, String>>,
     countriesTagsItems: List<String?>,
-    localitiesTagsItems: List<String?>
+    localitiesTagsItems: List<String?>,
+    albumsTagsItems: List<Album>
 ) {
 
     var historySet by rememberSearchHistory()
@@ -120,6 +119,26 @@ fun SearchHistoryGrid(
                 searchTag = search,
                 expanded = expanded
             )
+        }
+
+        if (albumsTagsItems.isNotEmpty()) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Text(
+                    text = "Albums", //stringResource(R.string.metadata),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .padding(top = 16.dp)
+                )
+            }
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                AlbumsTagsGrid(
+                    tagsItems = albumsTagsItems,
+                    searchTag = search,
+                    expanded = expanded
+                )
+            }
         }
 
         item(span = { GridItemSpan(maxLineSpan) }) {
