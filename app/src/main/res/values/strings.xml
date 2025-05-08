@@ -367,6 +367,14 @@
     <string name="tag_year">year</string>
     <string name="tag_today">today</string>
     <string name="tag_yesterday">yesterday</string>
+    <string name="recent_tag">Recent tag</string>
+    <string name="tag">Tag</string>
+    <string name="album">Album</string>
+    <string name="month">Month</string>
+    <string name="day">Day</string>
+    <string name="year">Year</string>
+    <string name="countries">Countries</string>
+    <string name="localities">Localities</string>
     <plurals name="item_count">
         <item quantity="one">%s item</item>
         <item quantity="other">%s items</item>

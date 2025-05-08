@@ -88,7 +88,7 @@ fun SearchHistoryGrid(
         if (historyTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Recent tags",//stringResource(R.string.history_recent_tags),
+                    text = stringResource(R.string.recent_tag),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
@@ -107,7 +107,7 @@ fun SearchHistoryGrid(
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
-                text = "Tags", //stringResource(R.string.tags),
+                text = stringResource(R.string.tag),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
@@ -125,7 +125,7 @@ fun SearchHistoryGrid(
         if (albumsTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Albums", //stringResource(R.string.metadata),
+                    text = stringResource(R.string.album),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
@@ -144,7 +144,7 @@ fun SearchHistoryGrid(
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
-                text = "Month", //stringResource(R.string.month),
+                text = stringResource(R.string.month),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
@@ -161,7 +161,7 @@ fun SearchHistoryGrid(
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
-                text = "Day", //stringResource(R.string.day),
+                text = stringResource(R.string.day),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
@@ -178,7 +178,7 @@ fun SearchHistoryGrid(
 
         item(span = { GridItemSpan(maxLineSpan) }) {
             Text(
-                text = "Year", //stringResource(R.string.year),
+                text = stringResource(R.string.year),
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
@@ -214,7 +214,7 @@ fun SearchHistoryGrid(
         if (countriesTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Countries", //stringResource(R.string.metadata),
+                    text = stringResource(R.string.countries),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
@@ -234,7 +234,7 @@ fun SearchHistoryGrid(
         if (localitiesTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "Localities", //stringResource(R.string.metadata),
+                    text = stringResource(R.string.localities),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier
