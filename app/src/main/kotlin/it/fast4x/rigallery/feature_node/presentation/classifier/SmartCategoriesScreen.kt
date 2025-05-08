@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -28,12 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.outlined.Scanner
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -60,15 +54,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaImage
 import it.fast4x.rigallery.feature_node.presentation.common.components.ScannerButton
@@ -77,11 +68,10 @@ import it.fast4x.rigallery.feature_node.presentation.library.ButtonToStartProces
 import it.fast4x.rigallery.feature_node.presentation.library.components.LibrarySmallItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoriesScreen(
+fun SmartCategoriesScreen(
     navigateUp: () -> Unit,
     navigate: (String) -> Unit,
 ) {
@@ -107,7 +97,7 @@ fun CategoriesScreen(
                 TopAppBar(
                     title = {
                         TwoLinedDateToolbarTitle(
-                            albumName = stringResource(R.string.categories),
+                            albumName = stringResource(R.string.smart_categories),
                             dateHeader = stringResource(R.string.classified_media, classifiedCount)
                         )
                     },
@@ -336,14 +326,14 @@ fun CategoriesMediaGrid(
                     )
                 }
 
-                LibrarySmallItem(
-                    title = stringResource(R.string.disclaimer),
-                    subtitle = stringResource(R.string.disclaimer_classification),
-                    icon = Icons.Default.Info,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    containerColor = Color.Transparent,
-                    modifier = Modifier.animateItem()
-                )
+//                LibrarySmallItem(
+//                    title = stringResource(R.string.disclaimer),
+//                    subtitle = stringResource(R.string.disclaimer_classification),
+//                    icon = Icons.Default.Info,
+//                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+//                    containerColor = Color.Transparent,
+//                    modifier = Modifier.animateItem()
+//                )
             }
         }
     }
