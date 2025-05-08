@@ -27,6 +27,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.SmartDisplay
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -288,7 +290,7 @@ fun CategoriesMediaGrid(
 
                 if (categoriesIsEmpty) {
                     ButtonToStartProcess(
-                        title = stringResource(R.string.scan_for_new_categories),
+                        title = stringResource(R.string.create_smart_categories),
                     ) {
                         viewModel.startClassification()
                     }
@@ -296,6 +298,8 @@ fun CategoriesMediaGrid(
 
                 if (!categoriesIsEmpty || isRunning) {
                     ScannerButton(
+                        scanForNewText = stringResource(R.string.create_smart_categories),
+                        image = Icons.Outlined.Category,
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -316,8 +320,8 @@ fun CategoriesMediaGrid(
 
                 if (!categoriesIsEmpty && !isRunning) {
                     LibrarySmallItem(
-                        title = stringResource(R.string.delete_all_categories),
-                        subtitle = stringResource(R.string.delete_all_categories_summary),
+                        title = stringResource(R.string.delete_smart_categories),
+                        //subtitle = stringResource(R.string.delete_all_categories_summary),
                         icon = Icons.Default.Delete,
                         contentColor = MaterialTheme.colorScheme.error,
                         modifier = Modifier
@@ -326,14 +330,14 @@ fun CategoriesMediaGrid(
                     )
                 }
 
-//                LibrarySmallItem(
-//                    title = stringResource(R.string.disclaimer),
-//                    subtitle = stringResource(R.string.disclaimer_classification),
-//                    icon = Icons.Default.Info,
-//                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-//                    containerColor = Color.Transparent,
-//                    modifier = Modifier.animateItem()
-//                )
+                LibrarySmallItem(
+                    title = stringResource(R.string.info),
+                    subtitle = stringResource(R.string.info_create_smart_categories),
+                    icon = Icons.Default.Info,
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    containerColor = Color.Transparent,
+                    modifier = Modifier.animateItem()
+                )
             }
         }
     }

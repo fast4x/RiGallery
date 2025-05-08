@@ -383,4 +383,8 @@
     <string name="year">Year</string>
     <string name="countries">Countries</string>
     <string name="localities">Localities</string>
+    <string name="delete_smart_categories">Delete smart categories</string>
+    <string name="create_smart_categories">Classify media and create smart categories</string>
+    <string name="info_create_smart_categories">The classification of images is performed by an intelligent algorithm directly on this device. No data is sent to any online server. The intelligent algorithm assigns a category to each image based on the objects it recognizes.</string>
+    <string name="info">Information</string>
 </resources>

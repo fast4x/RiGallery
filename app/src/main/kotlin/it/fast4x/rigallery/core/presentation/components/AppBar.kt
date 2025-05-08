@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Album
+import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.ImageSearch
@@ -102,7 +103,8 @@ import kotlinx.coroutines.launch
 fun rememberNavigationItems(): List<NavigationItem> {
     val timelineTitle = stringResource(R.string.nav_timeline)
     val albumsTitle = stringResource(R.string.nav_albums)
-    val libraryTitle = stringResource(R.string.library)
+    //val libraryTitle = stringResource(R.string.library)
+    val smartCategoriesTitle = stringResource(R.string.smart_categories)
     val favoritesTitle = stringResource(R.string.favorites)
     return remember {
         mutableListOf(
@@ -122,9 +124,9 @@ fun rememberNavigationItems(): List<NavigationItem> {
 //                icon = Icons.Outlined.PhotoLibrary
 //            ),
             NavigationItem(
-                name = libraryTitle,
+                name = smartCategoriesTitle,
                 route = Screen.CategoriesScreen(),
-                icon = Icons.Outlined.DocumentScanner
+                icon = Icons.Outlined.Category
             ),
             NavigationItem(
                 name = favoritesTitle,

@@ -48,8 +48,6 @@ fun ScannerButton(
             .clip(RoundedCornerShape(16.dp))
             .then(modifier),
         headlineContent = {
-            //val scanningMediaText = stringResource(R.string.scanning_media)
-            //val scanForNewCategoriesText = stringResource(R.string.scan_for_new_categories)
             val text = remember(isRunning) {
                 if (isRunning) scanningMediaText else scanForNewText
             }
@@ -59,14 +57,14 @@ fun ScannerButton(
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                maxLines = 2
             )
         },
         leadingContent = {
             Icon(
                 imageVector = image,
                 tint = contentColor,
-                contentDescription = stringResource(R.string.scan_for_new_categories)
+                contentDescription = "" //stringResource(R.string.scan_for_new_categories)
             )
         },
         trailingContent = {
