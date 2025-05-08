@@ -34,8 +34,8 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
 class ImageClassifierHelper(
     private var threshold: Float = 0.8f,
-    private var numThreads: Int = 6,
-    private var maxResults: Int = 3,
+    private var numThreads: Int = 10,
+    private var maxResults: Int = 5,
     private val modelName: String = "mobile_ica_8bit_with_metadata.tflite",
     val context: Context,
     val imageClassifierListener: ClassifierListener?
