@@ -150,6 +150,8 @@ enum class MonthTagsType {
 }
 
 enum class DayTagsType {
+    Today,
+    Yesterday,
     Monday,
     Tuesday,
     Wednesday,
@@ -160,6 +162,8 @@ enum class DayTagsType {
 
     val color: Color
         get() = when (this) {
+            Today -> Color.Blue
+            Yesterday -> Color.Black
             Monday -> Color.Magenta
             Tuesday -> Color.Gray
             Wednesday -> Color.Green
@@ -172,6 +176,8 @@ enum class DayTagsType {
     val tag: String
         @Composable
         get() = when (this) {
+            Today -> "#${stringResource(R.string.tag_today)}"
+            Yesterday -> "#${stringResource(R.string.tag_yesterday)}"
             Monday -> "#${stringResource(R.string.tag_monday)}"
             Tuesday -> "#${stringResource(R.string.tag_tuesday)}"
             Wednesday -> "#${stringResource(R.string.tag_wednesday)}"

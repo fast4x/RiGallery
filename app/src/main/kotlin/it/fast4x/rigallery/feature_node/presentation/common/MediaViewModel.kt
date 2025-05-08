@@ -361,6 +361,10 @@ open class MediaViewModel @Inject constructor(
                 val dt = Instant.ofEpochSecond(it.definedTimestamp)
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime()
+                val d = Instant.ofEpochSecond(it.definedTimestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                val today = Instant.now().atZone(ZoneId.systemDefault()).toLocalDate()
 
 
                 println("MediaViewModel filterMedia year: ${dt.year}")
@@ -406,6 +410,8 @@ open class MediaViewModel @Inject constructor(
                 (dt.dayOfWeek == DayOfWeek.FRIDAY && context.getString(R.string.tag_friday).toString() in tags) ||
                 (dt.dayOfWeek == DayOfWeek.SATURDAY && context.getString(R.string.tag_saturday).toString() in tags) ||
                 (dt.dayOfWeek == DayOfWeek.SUNDAY && context.getString(R.string.tag_sunday).toString() in tags)  ||
+                (d == today && context.getString(R.string.tag_today).toString() in tags) ||
+                (d == today.minusDays(1) && context.getString(R.string.tag_yesterday).toString() in tags) ||
 
                 ("${context.getString(R.string.tag_year).lowercase()}:${dt.year}".toString() in tags)
 

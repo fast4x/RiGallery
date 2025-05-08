@@ -369,4 +369,6 @@
     <string name="tag_sunday">sunday</string>
     <string name="smart_categories">Smart Categories</string>
     <string name="tag_year">year</string>
+    <string name="tag_today">today</string>
+    <string name="tag_yesterday">yesterday</string>
 </resources>
