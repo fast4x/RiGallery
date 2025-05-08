@@ -26,6 +26,7 @@ import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.nnapi.NnApiDelegate
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.image.ops.ResizeOp
 import org.tensorflow.lite.support.label.Category
 import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.core.vision.ImageProcessingOptions
@@ -34,8 +35,8 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
 class ImageClassifierHelper(
     private var threshold: Float = 0.8f,
-    private var numThreads: Int = 10,
-    private var maxResults: Int = 5,
+    private var numThreads: Int = 5,
+    private var maxResults: Int = 1,
     private val modelName: String = "mobile_ica_8bit_with_metadata.tflite",
     val context: Context,
     val imageClassifierListener: ClassifierListener?
@@ -104,7 +105,9 @@ class ImageClassifierHelper(
         // Create preprocessor for the image.
         // See https://www.tensorflow.org/lite/inference_with_metadata/
         //            lite_support#imageprocessor_architecture
-        val imageProcessor = ImageProcessor.Builder().build()
+        val imageProcessor = ImageProcessor.Builder()
+            .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+            .build()
 
         // Check compatible bitmap config
         if (image.config != Bitmap.Config.ARGB_8888) {

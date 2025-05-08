@@ -96,7 +96,7 @@ class ClassifierWorker @AssistedInject constructor(
                 val result = sketch.execute(request)
                 val bitmap = (result.image as? BitmapImage)?.bitmap
                 if (bitmap != null) {
-                    printWarning("ClassifierWorker Obtained bitmap...processing")
+                    printWarning("ClassifierWorker Bitmap Obtained...processing")
                 } else {
                     printWarning("ClassifierWorker Bitmap is null, skipping")
                     return@fastForEachIndexed
