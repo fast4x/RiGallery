@@ -314,6 +314,7 @@ dependencies {
     // TensorFlow Lite
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.task.vision)
+    implementation(libs.tensorflow.lite.gpu.delegate)
     implementation(libs.tensorflow.lite.gpu)
 
     // Tests
