@@ -363,7 +363,7 @@ open class MediaViewModel @Inject constructor(
                     .toLocalDateTime()
 
 
-                println("MediaViewModel filterMedia month: ${dt.monthValue}")
+                println("MediaViewModel filterMedia year: ${dt.year}")
 //                if (it.id in mediaWithLocation.value.map { it.id }) {
 //                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
 //                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
@@ -405,7 +405,9 @@ open class MediaViewModel @Inject constructor(
                 (dt.dayOfWeek == DayOfWeek.THURSDAY && context.getString(R.string.tag_thursday).toString() in tags) ||
                 (dt.dayOfWeek == DayOfWeek.FRIDAY && context.getString(R.string.tag_friday).toString() in tags) ||
                 (dt.dayOfWeek == DayOfWeek.SATURDAY && context.getString(R.string.tag_saturday).toString() in tags) ||
-                (dt.dayOfWeek == DayOfWeek.SUNDAY && context.getString(R.string.tag_sunday).toString() in tags)
+                (dt.dayOfWeek == DayOfWeek.SUNDAY && context.getString(R.string.tag_sunday).toString() in tags)  ||
+
+                ("${context.getString(R.string.tag_year).lowercase()}:${dt.year}".toString() in tags)
 
 
             }

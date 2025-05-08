@@ -15,19 +15,14 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -65,7 +60,6 @@ import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
-import it.fast4x.rigallery.core.presentation.components.LoadingMedia
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaGridView
 import it.fast4x.rigallery.feature_node.presentation.search.components.SearchBarElevation.Collapsed
@@ -100,6 +94,9 @@ fun MainSearchBar(
     val mediaWithLocation = mediaViewModel.mediaWithLocation.collectAsStateWithLifecycle()
 
     val state = mediaViewModel.searchMediaState.collectAsStateWithLifecycle()
+
+    val mediaFlowState = mediaViewModel.mediaFlow.collectAsStateWithLifecycle()
+
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(state.value.media, query, canQuery) {
@@ -288,6 +285,7 @@ fun MainSearchBar(
                 ) {
                     SearchHistory(
                         mediaWithLocation,
+                        mediaFlowState
                     ) {
                         canQuery = true
                         query = it

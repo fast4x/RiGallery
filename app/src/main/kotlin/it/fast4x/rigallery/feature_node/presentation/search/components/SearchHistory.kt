@@ -11,12 +11,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.feature_node.domain.model.Media
+import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
 import kotlinx.coroutines.Dispatchers
+import java.time.Instant
+import java.time.ZoneId
 
 @Composable
 fun SearchHistory(
     mediaWithLocation: State<List<Media.UriMedia>>,
+    mediaFlowState: State<MediaState<Media.UriMedia>>,
     search: (query: String) -> Unit
 ) {
     var historySet by rememberSearchHistory()
@@ -85,11 +89,22 @@ fun SearchHistory(
     val albumsState =
         albumsViewModel.albumsFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
 
+    val mediaYearsItems = mediaFlowState.value.media
+        .map {
+            val dt = Instant.ofEpochSecond(it.definedTimestamp)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime()
+            dt.year
+        }
+        .distinct()
+
     //TODO add suggestion set
     val suggestionSet = listOf(
         "0" to "Screenshots",
         "1" to "Camera",
     )
+
+
 
     SearchHistoryGrid(
         historyItems = historyItems,
@@ -97,6 +112,7 @@ fun SearchHistory(
         countriesTagsItems = countriesTagsItems,
         localitiesTagsItems = localitiesTagsItems,
         albumsTagsItems = albumsState.value.albums,
+        mediaYearsItems = mediaYearsItems,
         suggestionSet = suggestionSet,
         search = search
     )

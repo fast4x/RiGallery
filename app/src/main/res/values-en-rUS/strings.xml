@@ -364,6 +364,7 @@
     <string name="tag_saturday">saturday</string>
     <string name="tag_sunday">sunday</string>
     <string name="smart_categories">Smart Categories</string>
+    <string name="tag_year">year</string>
     <plurals name="item_count">
         <item quantity="one">%s item</item>
         <item quantity="other">%s items</item>

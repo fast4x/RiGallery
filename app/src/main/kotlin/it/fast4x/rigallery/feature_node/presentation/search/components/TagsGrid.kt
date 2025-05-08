@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material.icons.outlined.Album
+import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.LocationCity
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material3.FilterChip
@@ -359,6 +360,56 @@ fun DayTagsGrid(
                         MaterialTheme.shapes.small
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.small)
+                    .animateItem()
+            )
+        }
+    }
+}
+
+@Composable
+fun YearTagsGrid(
+    searchTag: (String) -> Unit,
+    tagsItems: List<Int>,
+    expanded: Boolean = false
+){
+    val rows = if (expanded && tagsItems.size > 3) 3 else 1
+    val baseHeight = 60.dp
+    val height = if (expanded && tagsItems.size > 3) baseHeight*rows else baseHeight
+    val tagName = stringResource(R.string.tag_year)
+
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(rows),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(height)
+    ) {
+        items(tagsItems.size) { index ->
+            val tag = tagsItems[index].toString()
+            //val tagLabel = tagsItems[index].label
+            FilterChip(
+                selected = true,
+                onClick = { searchTag("#$tagName:$tag") },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.DateRange,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    selectedContainerColor = Color.Transparent,
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground
+                ),
+                modifier = Modifier
+                    .border(
+                        2.dp,
+                        MaterialTheme.colorScheme.secondary,
+                        MaterialTheme.shapes.medium
+                    )
+                    .background(Color.Transparent, MaterialTheme.shapes.medium)
                     .animateItem()
             )
         }

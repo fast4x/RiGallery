@@ -39,7 +39,8 @@ fun SearchHistoryGrid(
     historyTagsItems: SnapshotStateList<Pair<String, String>>,
     countriesTagsItems: List<String?>,
     localitiesTagsItems: List<String?>,
-    albumsTagsItems: List<Album>
+    albumsTagsItems: List<Album>,
+    mediaYearsItems: List<Int>
 ) {
 
     var historySet by rememberSearchHistory()
@@ -171,6 +172,24 @@ fun SearchHistoryGrid(
         item(span = { GridItemSpan(maxLineSpan) }) {
             DayTagsGrid (
                 searchTag = search,
+                expanded = expanded
+            )
+        }
+
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Text(
+                text = "Year", //stringResource(R.string.year),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .padding(top = 16.dp)
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            YearTagsGrid (
+                searchTag = search,
+                tagsItems = mediaYearsItems,
                 expanded = expanded
             )
         }
