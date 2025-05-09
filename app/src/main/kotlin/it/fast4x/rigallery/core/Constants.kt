@@ -37,7 +37,7 @@ object Constants {
     /**
      * Value in ms
      */
-    const val DEFAULT_LOW_VELOCITY_SWIPE_DURATION = 50
+    const val DEFAULT_LOW_VELOCITY_SWIPE_DURATION = 200 //50
 
     /**
      * Smooth enough at 300ms
