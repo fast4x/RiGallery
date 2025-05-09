@@ -21,6 +21,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -53,7 +54,9 @@ import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.RestoreFromTrash
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -740,7 +743,8 @@ fun <T : Media> MediaViewActions2(
             BarButton(currentMedia, enabled = enabled,
                 title = if (isAutoAdvanceEnabled) stringResource(R.string.slideshow_pause) else stringResource(R.string.slideshow_play),
                 icon = if (isAutoAdvanceEnabled) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
-                onClick = { if (isAutoAdvanceEnabled) onAutoAdvance(false) else onAutoAdvance(true) }
+                onClick = { if (isAutoAdvanceEnabled) onAutoAdvance(false) else onAutoAdvance(true) },
+                showLoader = if (isAutoAdvanceEnabled) true else false
             )
             // Info Component
             InfoButton(currentMedia, enabled = enabled, onInfoClick = infoMedia )
@@ -961,6 +965,7 @@ fun <T : Media> BarButton(
     title: String,
     icon: ImageVector = Icons.Outlined.Info,
     followTheme: Boolean = false,
+    showLoader: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     BottomBarColumn(
@@ -969,6 +974,7 @@ fun <T : Media> BarButton(
         followTheme = followTheme,
         title = title,
         enabled = enabled,
+        showLoader = showLoader,
         onItemClick = {
             onClick?.invoke()
         }
@@ -1128,6 +1134,7 @@ fun <T : Media> BottomBarColumn(
     title: String,
     enabled: Boolean = true,
     followTheme: Boolean = false,
+    showLoader: Boolean = false,
     onItemLongClick: ((T) -> Unit)? = null,
     onItemClick: (T) -> Unit
 ) {
@@ -1160,13 +1167,23 @@ fun <T : Media> BottomBarColumn(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            imageVector = imageVector,
-            colorFilter = ColorFilter.tint(tintColor),
-            contentDescription = title,
-            modifier = Modifier
-                .height(32.dp)
-        )
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            if (showLoader)
+                CircularProgressIndicator(
+                    modifier = Modifier.size(32.dp).align(Alignment.Center),
+                    trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                    color = tintColor
+                )
+            Image(
+                imageVector = imageVector,
+                colorFilter = ColorFilter.tint(tintColor),
+                contentDescription = title,
+                modifier = Modifier
+                    .height(32.dp).align(Alignment.Center)
+            )
+        }
         Spacer(modifier = Modifier.size(4.dp))
         Text(
             text = title,
