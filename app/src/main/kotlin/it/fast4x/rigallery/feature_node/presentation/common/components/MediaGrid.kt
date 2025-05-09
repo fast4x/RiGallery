@@ -416,11 +416,6 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 .mediaSharedElement(
                                     media = it.media,
                                     animatedVisibilityScope = animatedContentScope
-                                )
-                                .animateItem(
-                                    fadeInSpec = tween(durationMillis = 250),
-                                    fadeOutSpec = tween(durationMillis = 100),
-                                    placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                                 ),
                             media = it.media,
                             selectionState = selectionState,
@@ -492,11 +487,6 @@ private fun <T: Media> MediaGridContent(
                         .mediaSharedElement(
                             media = media,
                             animatedVisibilityScope = animatedContentScope
-                        )
-                        .animateItem(
-                            fadeInSpec = tween(durationMillis = 250),
-                            fadeOutSpec = tween(durationMillis = 100),
-                            placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                         ),
                     media = media,
                     selectionState = selectionState,

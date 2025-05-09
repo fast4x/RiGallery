@@ -32,7 +32,7 @@ navigation-runtime-ktx = "2.8.9"
 profileinstaller = "1.4.1"
 room = "2.7.1"
 accompanist = "0.37.0"
-datastore = "1.1.4" #no upgrade to 1.1.5 there's an issue on the package
+datastore = "1.1.6"
 securityCrypto = "1.1.0-alpha07"
 sketch = "4.0.6"
 startupRuntime = "1.2.0"
@@ -159,7 +159,6 @@ metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref
 #TensorFlow
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteTaskVision" }
-tensorflow-lite-gpu-delegate = { module = "org.tensorflow:tensorflow-lite-gpu-delegate-plugin", version.ref = "tensorflowLiteTaskVision" }
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 
 [plugins]

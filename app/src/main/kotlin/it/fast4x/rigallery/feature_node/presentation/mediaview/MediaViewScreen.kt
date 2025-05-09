@@ -430,11 +430,11 @@ fun <T : Media> MediaViewScreen(
                     }
                     with(sharedTransitionScope) {
                         MediaPreviewComponent(
-                            modifier = Modifier
-                                .mediaSharedElement(
-                                    media = media!!,
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
+                            modifier = Modifier,
+//                                .mediaSharedElement(
+//                                    media = media!!,
+//                                    animatedVisibilityScope = animatedContentScope
+//                                ),
                             media = media,
                             uiEnabled = showUI,
                             playWhenReady = canPlay,

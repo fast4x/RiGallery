@@ -421,11 +421,6 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                                 .mediaSharedElement(
                                     media = it.media,
                                     animatedVisibilityScope = animatedContentScope
-                                )
-                                .animateItem(
-                                    fadeInSpec = tween(durationMillis = 250),
-                                    fadeOutSpec = tween(durationMillis = 100),
-                                    placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                                 ),
                             media = it.media,
                             staggered = true,
@@ -496,11 +491,6 @@ private fun <T: Media> MediaStaggeredGridContent(
                         .mediaSharedElement(
                             media = media,
                             animatedVisibilityScope = animatedContentScope
-                        )
-                        .animateItem(
-                            fadeInSpec = tween(durationMillis = 250),
-                            fadeOutSpec = tween(durationMillis = 100),
-                            placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                         ),
                     media = media,
                     staggered = true,

@@ -55,7 +55,8 @@ fun <T: Media> MediaPreviewComponent(
                     playWhenReady = playWhenReady,
                     videoController = videoController,
                     onItemClick = onItemClick,
-                    onSwipeDown = onSwipeDown
+                    onSwipeDown = onSwipeDown,
+                    onSwipeUp = onSwipeUp
                 )
             }
 

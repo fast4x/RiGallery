@@ -63,7 +63,8 @@ fun <T : Media> VideoPlayer(
     playWhenReady: State<Boolean>,
     videoController: @Composable (ExoPlayer, MutableState<Boolean>, MutableLongState, Long, Int, Float) -> Unit,
     onItemClick: () -> Unit,
-    onSwipeDown: () -> Unit
+    onSwipeDown: () -> Unit,
+    onSwipeUp: () -> Unit = {},
 ) {
     var totalDuration by rememberSaveable(media) { mutableLongStateOf(0L) }
     val currentTime = rememberSaveable(media) { mutableLongStateOf(0L) }
@@ -219,7 +220,8 @@ fun <T : Media> VideoPlayer(
                     onClick = onItemClick,
                 )
                 .swipe(
-                    onSwipeDown = onSwipeDown
+                    onSwipeDown = onSwipeDown,
+                    onSwipeUp = onSwipeUp
                 )
                 .then(modifier),
         )
