@@ -367,7 +367,7 @@ open class MediaViewModel @Inject constructor(
                 val today = Instant.now().atZone(ZoneId.systemDefault()).toLocalDate()
 
 
-                println("MediaViewModel filterMedia year: ${dt.year}")
+                //println("MediaViewModel filterMedia year: ${dt.year}")
 //                if (it.id in mediaWithLocation.value.map { it.id }) {
 //                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
 //                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
