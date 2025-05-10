@@ -98,13 +98,14 @@ fun <T: Media> MediaImage(
         label = "strokeColor"
     )
 
-    val aspectRatio = rememberSaveable(media) {
+    val aspectRatio by remember(media) {
         mutableFloatStateOf(
             if (staggered)
                 Random.nextFloat() + 1f
             else 1f
          )
     }
+    //val aspectRatio by remember(media){ mutableFloatStateOf(1f) }
 
     Box(
         modifier = Modifier
@@ -123,31 +124,62 @@ fun <T: Media> MediaImage(
                     }
                 },
             )
-            .aspectRatio(aspectRatio.floatValue)
+            .padding(selectedSize)
+            .clip(RoundedCornerShape(selectedShapeSize))
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shape = RoundedCornerShape(selectedShapeSize)
+            )
+            .border(
+                width = strokeSize,
+                shape = RoundedCornerShape(selectedShapeSize),
+                color = strokeColor
+            )
+            .aspectRatio(aspectRatio)
             .then(modifier)
     ) {
-        Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .aspectRatio(aspectRatio.floatValue)
-                .padding(selectedSize)
-                .clip(RoundedCornerShape(selectedShapeSize))
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    shape = RoundedCornerShape(selectedShapeSize)
-                )
-                .border(
-                    width = strokeSize,
-                    shape = RoundedCornerShape(selectedShapeSize),
-                    color = strokeColor
-                )
-        ) {
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.Center)
+//                .padding(selectedSize)
+//                .clip(RoundedCornerShape(selectedShapeSize))
+//                .background(
+//                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+//                    shape = RoundedCornerShape(selectedShapeSize)
+//                )
+//                .border(
+//                    width = strokeSize,
+//                    shape = RoundedCornerShape(selectedShapeSize),
+//                    color = strokeColor
+//                )
+//                .combinedClickable(
+//                    enabled = canClick,
+//                    onClick = {
+//                        onItemClick(media)
+//                        if (selectionState.value) {
+//                            isSelected = !isSelected
+//                        }
+//                    },
+//                    onLongClick = {
+//                        onItemLongClick(media)
+//                        if (selectionState.value) {
+//                            isSelected = !isSelected
+//                        }
+//                    },
+//                )
+//                .aspectRatio(aspectRatio)
+//                .then(modifier)
+//        ) {
             AsyncImage(
                 modifier = Modifier
                     .fillMaxSize(),
                 request = ComposableImageRequest(media.getUri().toString()) {
                     key(media.id)
-                    crossfade(100)
+                    crossfade(
+                        durationMillis = 50,
+                        preferExactIntrinsicSize = true,
+                        alwaysUse = true
+                    )
                     resizeOnDraw()
                     scale(Scale.FILL)
                     setExtra(
@@ -162,7 +194,7 @@ fun <T: Media> MediaImage(
                 contentDescription = media.label,
                 contentScale = ContentScale.FillBounds,
             )
-        }
+        //}
 
         AnimatedVisibility(
             visible = remember(media) { media.isVideo },
