@@ -20,6 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +37,8 @@ import it.fast4x.rigallery.feature_node.domain.model.Album
 @Composable
 fun TagsGrid(
     searchTag: (String) -> Unit,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = if (expanded) 3 else 1
     val baseHeight = 60.dp
@@ -50,9 +53,26 @@ fun TagsGrid(
     ) {
         items(TagsType.entries.size) { index ->
             val tag = TagsType.entries[index].tag
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag(tag) },
+                onClick = {
+                    tagInAction.value = tag
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
@@ -79,6 +99,7 @@ fun TagsGrid(
 @Composable
 fun RecentTagsGrid(
     searchTag: (String) -> Unit,
+    addSearchTag: (String, Boolean) -> Unit,
     historyTagsItems: SnapshotStateList<Pair<String, String>>,
     expanded: Boolean = false
 ){
@@ -96,9 +117,27 @@ fun RecentTagsGrid(
         items(historyTagsItems.size) { index ->
             val tag = historyTagsItems[index].second
             val tagType = TagsType.entries.find { it.tag == tag }
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag(tag) },
+                onClick = {
+//                    tagInAction.value = tag
+//                    showTagAction.value = !showTagAction.value
+                    searchTag(tag)
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
@@ -128,7 +167,8 @@ fun RecentTagsGrid(
 @Composable
 fun MetadataTagsGrid(
     searchTag: (String) -> Unit,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = 1 //if (expanded) 3 else 1
     val baseHeight = 60.dp
@@ -143,9 +183,26 @@ fun MetadataTagsGrid(
     ) {
         items(MetadataTagsType.entries.size) { index ->
             val tag = MetadataTagsType.entries[index].tag
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag(tag) },
+                onClick = {
+                    tagInAction.value = tag
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
@@ -177,7 +234,8 @@ fun LocationTagsGrid(
     searchTag: (String) -> Unit,
     tagsItems: List<String?>,
     locationIsCountry: Boolean = true,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = if (expanded && tagsItems.size > 3) 3 else 1
     val baseHeight = 60.dp
@@ -193,9 +251,26 @@ fun LocationTagsGrid(
     ) {
         items(tagsItems.size) { index ->
             val tag = tagsItems[index]
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag.toString(),
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag("#$tagName:$tag") },
+                onClick = {
+                    tagInAction.value = "#$tagName:$tag"
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag.toString()) },
                 leadingIcon = {
                     Icon(
@@ -226,7 +301,8 @@ fun LocationTagsGrid(
 fun AlbumsTagsGrid(
     searchTag: (String) -> Unit,
     tagsItems: List<Album>,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = if (expanded && tagsItems.size > 3) 3 else 1
     val baseHeight = 60.dp
@@ -243,9 +319,25 @@ fun AlbumsTagsGrid(
         items(tagsItems.size) { index ->
             val tag = tagsItems[index].label
             //val tagLabel = tagsItems[index].label
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag("#$tagName:$tag") },
+                onClick = {
+                    tagInAction.value = "#$tagName:$tag"
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
@@ -275,7 +367,8 @@ fun AlbumsTagsGrid(
 @Composable
 fun MonthTagsGrid(
     searchTag: (String) -> Unit,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = if (expanded) 3 else 1
     val baseHeight = 60.dp
@@ -290,9 +383,26 @@ fun MonthTagsGrid(
     ) {
         items(MonthTagsType.entries.size) { index ->
             val tag = MonthTagsType.entries[index].tag
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag(tag) },
+                onClick = {
+                    tagInAction.value = tag
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
@@ -322,7 +432,8 @@ fun MonthTagsGrid(
 @Composable
 fun DayTagsGrid(
     searchTag: (String) -> Unit,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = if (expanded) 3 else 1
     val baseHeight = 60.dp
@@ -337,9 +448,26 @@ fun DayTagsGrid(
     ) {
         items(DayTagsType.entries.size) { index ->
             val tag = DayTagsType.entries[index].tag
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag(tag) },
+                onClick = {
+                    tagInAction.value = tag
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(
@@ -370,7 +498,8 @@ fun DayTagsGrid(
 fun YearTagsGrid(
     searchTag: (String) -> Unit,
     tagsItems: List<Int>,
-    expanded: Boolean = false
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit
 ){
     val rows = if (expanded && tagsItems.size > 3) 3 else 1
     val baseHeight = 60.dp
@@ -387,9 +516,26 @@ fun YearTagsGrid(
         items(tagsItems.size) { index ->
             val tag = tagsItems[index].toString()
             //val tagLabel = tagsItems[index].label
+
+            var tagInAction = remember { mutableStateOf("") }
+            var showTagAction = remember { mutableStateOf(false) }
+
+            if (showTagAction.value) {
+                TagAction(
+                    tag = tag,
+                    onSearch = { searchTag(tagInAction.value) },
+                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+                    onCombine = { addSearchTag(tagInAction.value, false) },
+                    onDismiss = { showTagAction.value = false }
+                )
+            }
+
             FilterChip(
                 selected = true,
-                onClick = { searchTag("#$tagName:$tag") },
+                onClick = {
+                    tagInAction.value = "#$tagName:$tag"
+                    showTagAction.value = !showTagAction.value
+                },
                 label = { Text(text = tag) },
                 leadingIcon = {
                     Icon(

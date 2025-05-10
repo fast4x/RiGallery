@@ -35,7 +35,7 @@ import it.fast4x.rigallery.feature_node.domain.model.Album
 fun SearchHistoryGrid(
     historyItems: SnapshotStateList<Pair<String, String>>,
     suggestionSet: List<Pair<String, String>>,
-    search: (String) -> Unit,
+    search: (String, Boolean) -> Unit,
     historyTagsItems: SnapshotStateList<Pair<String, String>>,
     countriesTagsItems: List<String?>,
     localitiesTagsItems: List<String?>,
@@ -46,6 +46,8 @@ fun SearchHistoryGrid(
     var historySet by rememberSearchHistory()
     var expanded by remember { mutableStateOf(false) }
     val textExpand = if (expanded) "Collapse" else "Expand" // stringResource(R.string.collapse) else stringResource(R.string.expand)
+
+    var searchTags = remember { mutableListOf<String>() }
 
     LazyVerticalGrid(
         state = rememberLazyGridState(),
@@ -99,7 +101,11 @@ fun SearchHistoryGrid(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 RecentTagsGrid(
                     historyTagsItems = historyTagsItems,
-                    searchTag = search,
+                    searchTag = {  search(it, true) },
+                    addSearchTag = { it, maybeCanQuery ->
+                        searchTags.add(it)
+                        search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                    },
                     expanded = expanded
                 )
             }
@@ -117,7 +123,11 @@ fun SearchHistoryGrid(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             TagsGrid(
-                searchTag = search,
+                searchTag = {  search(it, true) },
+                addSearchTag = { it, maybeCanQuery ->
+                    searchTags.add(it)
+                    search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                },
                 expanded = expanded
             )
         }
@@ -136,7 +146,11 @@ fun SearchHistoryGrid(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 AlbumsTagsGrid(
                     tagsItems = albumsTagsItems,
-                    searchTag = search,
+                    searchTag = {  search(it, true) },
+                    addSearchTag = { it, maybeCanQuery ->
+                        searchTags.add(it)
+                        search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                    },
                     expanded = expanded
                 )
             }
@@ -154,7 +168,11 @@ fun SearchHistoryGrid(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             MonthTagsGrid (
-                searchTag = search,
+                searchTag = {  search(it, true) },
+                addSearchTag = { it, maybeCanQuery ->
+                    searchTags.add(it)
+                    search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                },
                 expanded = expanded
             )
         }
@@ -171,7 +189,11 @@ fun SearchHistoryGrid(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             DayTagsGrid (
-                searchTag = search,
+                searchTag = {  search(it, true) },
+                addSearchTag = { it, maybeCanQuery ->
+                    searchTags.add(it)
+                    search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                },
                 expanded = expanded
             )
         }
@@ -188,7 +210,11 @@ fun SearchHistoryGrid(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             YearTagsGrid (
-                searchTag = search,
+                searchTag = {  search(it, true) },
+                addSearchTag = { it, maybeCanQuery ->
+                    searchTags.add(it)
+                    search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                },
                 tagsItems = mediaYearsItems,
                 expanded = expanded
             )
@@ -206,7 +232,11 @@ fun SearchHistoryGrid(
         }
         item(span = { GridItemSpan(maxLineSpan) }) {
             MetadataTagsGrid (
-                searchTag = search,
+                searchTag = {  search(it, true) },
+                addSearchTag = { it, maybeCanQuery ->
+                    searchTags.add(it)
+                    search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                },
                 expanded = expanded
             )
         }
@@ -225,7 +255,11 @@ fun SearchHistoryGrid(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LocationTagsGrid(
                     tagsItems = countriesTagsItems,
-                    searchTag = search,
+                    searchTag = {  search(it, true) },
+                    addSearchTag = { it, maybeCanQuery ->
+                        searchTags.add(it)
+                        search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                    },
                     expanded = expanded
                 )
             }
@@ -245,7 +279,11 @@ fun SearchHistoryGrid(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LocationTagsGrid(
                     tagsItems = localitiesTagsItems,
-                    searchTag = search,
+                    searchTag = {  search(it, true) },
+                    addSearchTag = { it, maybeCanQuery ->
+                        searchTags.add(it)
+                        search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                    },
                     locationIsCountry = false,
                     expanded = expanded
                 )
@@ -266,7 +304,7 @@ fun SearchHistoryGrid(
             items(historyItems.size) { index ->
                 HistoryItem(
                     historyQuery = historyItems[index],
-                    search = search,
+                    search = {  search(it, true) },
                 ) {
                     historySet = historySet.toMutableSet().apply { remove(it) }
                 }
@@ -286,7 +324,7 @@ fun SearchHistoryGrid(
             items(suggestionSet.size) { index ->
                 HistoryItem(
                     historyQuery = suggestionSet[index],
-                    search = search,
+                    search = {  search(it, true) },
                 )
             }
         }

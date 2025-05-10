@@ -388,4 +388,7 @@
     <string name="info">Information</string>
     <string name="slideshow_pause">Pause</string>
     <string name="slideshow_play">Play</string>
+    <string name="menu_combine">Combine %1$s</string>
+    <string name="menu_combine_and_search">Combine %1$s and Search</string>
+    <string name="menu_search">Search %1$s</string>
 </resources>

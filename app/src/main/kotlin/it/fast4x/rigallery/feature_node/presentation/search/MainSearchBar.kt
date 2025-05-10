@@ -286,10 +286,11 @@ fun MainSearchBar(
                     SearchHistory(
                         mediaWithLocation,
                         mediaFlowState
-                    ) {
-                        canQuery = true
+                    ) { it, maybeCanQuery ->
+                        canQuery = maybeCanQuery
                         query = it
-                        mediaViewModel.queryMedia(it)
+                        if (maybeCanQuery)
+                            mediaViewModel.queryMedia(it)
                     }
                 }
 

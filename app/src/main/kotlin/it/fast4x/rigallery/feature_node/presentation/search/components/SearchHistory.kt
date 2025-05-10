@@ -21,7 +21,7 @@ import java.time.ZoneId
 fun SearchHistory(
     mediaWithLocation: State<List<Media.UriMedia>>,
     mediaFlowState: State<MediaState<Media.UriMedia>>,
-    search: (query: String) -> Unit
+    search: (String, Boolean) -> Unit
 ) {
     var historySet by rememberSearchHistory()
     var historyTagsSet by rememberSearchTagsHistory()
