@@ -39,6 +39,7 @@ import it.fast4x.rigallery.core.Settings.PREFERENCE_NAME
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.presentation.components.FilterKind
 import it.fast4x.rigallery.core.util.rememberPreference
+import it.fast4x.rigallery.feature_node.domain.util.MediaOrder
 import it.fast4x.rigallery.feature_node.domain.util.OrderType
 import it.fast4x.rigallery.feature_node.presentation.mediaview.rememberedDerivedState
 import it.fast4x.rigallery.feature_node.presentation.util.Screen

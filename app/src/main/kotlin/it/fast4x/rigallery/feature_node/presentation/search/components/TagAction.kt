@@ -61,7 +61,7 @@ fun TagAction(
             },
             leadingIcon = {
                 Icon(
-                    imageVector = Icons.Outlined.Check,
+                    imageVector = Icons.Outlined.Search,
                     contentDescription = null
                 )
             }
