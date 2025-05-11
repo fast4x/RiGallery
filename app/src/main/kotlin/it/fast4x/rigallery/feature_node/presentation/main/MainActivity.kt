@@ -14,15 +14,18 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -38,6 +41,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
+import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -58,6 +62,20 @@ class MainActivity : AppCompatActivity() {
 
             val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
             analyzerViewModel.startAnalysis()
+
+            val mediaViewModel = hiltViewModel<MediaViewModel>()
+            val langCode = mediaViewModel.languageApp.collectAsState()
+
+            val systemLangCode =
+                AppCompatDelegate.getApplicationLocales().get(0).toString()
+
+            val sysLocale: LocaleListCompat =
+                LocaleListCompat.forLanguageTags(systemLangCode)
+            val appLocale: LocaleListCompat =
+                LocaleListCompat.forLanguageTags(langCode.value)
+            AppCompatDelegate.setApplicationLocales(if (langCode.value == "") sysLocale else appLocale)
+
+            println("MainActivity Languages: ${langCode.value} sysLocale $sysLocale appLocale $appLocale")
 
             GalleryTheme {
                 val navController = rememberNavController()

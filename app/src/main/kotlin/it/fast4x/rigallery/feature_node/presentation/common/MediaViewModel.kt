@@ -35,6 +35,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
+import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isFavorite
@@ -130,6 +131,10 @@ open class MediaViewModel @Inject constructor(
     val mediaType =
         repository.getSetting(Settings.Misc.MEDIATYPE, MediaType.All.ordinal)
             .stateIn(viewModelScope, SharingStarted.Eagerly, MediaType.All.ordinal)
+
+    val languageApp =
+        repository.getSetting(Settings.Misc.LANGUAGE_APP, Languages.System.code)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, Languages.System.code)
 
     private val permissionState = MutableStateFlow(false)
 

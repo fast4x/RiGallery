@@ -36,6 +36,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import it.fast4x.rigallery.core.Constants.albumCellsList
 import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.PREFERENCE_NAME
+import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.presentation.components.FilterKind
 import it.fast4x.rigallery.core.util.rememberPreference
@@ -47,6 +48,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
+import java.util.Locale
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = PREFERENCE_NAME)
 
@@ -369,7 +371,10 @@ object Settings {
 
         @Composable
         fun rememberLanguageApp() =
-            rememberPreference(key = LANGUAGE_APP, defaultValue = "en")
+            rememberPreference(key = LANGUAGE_APP, defaultValue = Languages.English.code)
+//                .apply {
+//                value = if (value == Languages.System.code) Locale.getDefault().toLanguageTag() else value
+//            }
 
 
         private val VIDEO_AUTOPLAY = booleanPreferencesKey("video_autoplay")
