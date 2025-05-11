@@ -51,7 +51,7 @@
     <string name="location_cd">Media Location</string>
     <string name="location_map_cd">Location Map</string>
     <string name="app_dev">by %s</string>
-    <string name="app_dev_name">IacobIonut01</string>
+    <string name="app_dev_name">Fast4x</string>
     <string name="donate">Donate</string>
     <string name="github">Github</string>
     <string name="donate_button_cd">Donate Button</string>
@@ -310,13 +310,13 @@
     <string name="type_size">Size</string>
     <string name="encrypting_media">Encrypting media...</string>
     <string name="decrypt_vault">Decrypt Vault</string>
-    <string name="restore_vault_summary">The current vault and its content will be decrypted and restored.\nThis action will make your content accessible again in the Gallery.</string>
+    <string name="restore_vault_summary">The current vault and its content will be decrypted and restored.</string>
     <string name="restore_vault_title">Confirm Decryption?</string>
     <string name="yes">Yes</string>
     <string name="vault_deletion_title">Confirm Deletion?</string>
-    <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.\nThis action cannot be undone.</string>
+    <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.</string>
     <string name="create_new_vault_title">Create new vault?</string>
-    <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)\n\nEncryption key can be accessed inside the vault and will be used in order to restore any vaults.</string>
+    <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)</string>
     <string name="select_a_vault">Select a vault</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
