@@ -1,7 +1,9 @@
 package it.fast4x.rigallery.feature_node.presentation.search.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -47,7 +50,7 @@ fun SearchHistoryGrid(
     var expanded by remember { mutableStateOf(false) }
     val textExpand = if (expanded) "Collapse" else "Expand" // stringResource(R.string.collapse) else stringResource(R.string.expand)
 
-    var searchTags = remember { mutableListOf<String>() }
+    var searchTags = remember { mutableStateListOf<String>() }
 
     LazyVerticalGrid(
         state = rememberLazyGridState(),
@@ -56,36 +59,96 @@ fun SearchHistoryGrid(
         verticalArrangement = Arrangement.spacedBy(2.dp),
         modifier = Modifier.padding(horizontal = 5.dp).padding(bottom = 50.dp)
     ) {
-        item(span = { GridItemSpan(maxLineSpan) }) {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
+
+        stickyHeader {
+            Column(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
             ) {
-                Text(
-                    text = textExpand,
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleMedium,
+                if (searchTags.isNotEmpty()) {
+                    Row {
+                        //item(span = { GridItemSpan(maxLineSpan) }) {
+                        Text(
+                            text = "Click to search tags",//stringResource(R.string.recent_tag),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .padding(top = 16.dp)
+                        )
+                        //}
+                    }
+                    Row {
+                        //item(span = { GridItemSpan(maxLineSpan) }) {
+                        SelectedTagsGrid(
+                            tagsItems = searchTags,
+                            onClick = { search(searchTags.distinct().joinToString(" "), true) },
+                            expanded = expanded
+                        )
+                        //}
+                    }
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable{
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp)
+                ) {
+                    Text(
+                        text = textExpand,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .clickable {
+                                expanded = !expanded
+                            }
+                    )
+                    IconButton(
+                        onClick = {
                             expanded = !expanded
                         }
-                )
-                IconButton(
-                    onClick = {
-                        expanded = !expanded
+                    ) {
+                        Icon(
+                            imageVector = if (expanded) Icons.Outlined.ArrowUpward else Icons.Outlined.ArrowDownward,
+                            modifier = Modifier.fillMaxHeight(),
+                            contentDescription = null
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = if (expanded) Icons.Outlined.ArrowUpward else Icons.Outlined.ArrowDownward,
-                        modifier = Modifier.fillMaxHeight(),
-                        contentDescription = null
-                    )
                 }
             }
         }
+
+//        item(span = { GridItemSpan(maxLineSpan) }) {
+//            Row(
+//                horizontalArrangement = Arrangement.Center,
+//                verticalAlignment = Alignment.CenterVertically,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(vertical = 4.dp)
+//            ) {
+//                Text(
+//                    text = textExpand,
+//                    color = MaterialTheme.colorScheme.primary,
+//                    style = MaterialTheme.typography.titleMedium,
+//                    modifier = Modifier
+//                        .clickable{
+//                            expanded = !expanded
+//                        }
+//                )
+//                IconButton(
+//                    onClick = {
+//                        expanded = !expanded
+//                    }
+//                ) {
+//                    Icon(
+//                        imageVector = if (expanded) Icons.Outlined.ArrowUpward else Icons.Outlined.ArrowDownward,
+//                        modifier = Modifier.fillMaxHeight(),
+//                        contentDescription = null
+//                    )
+//                }
+//            }
+//        }
 
         if (historyTagsItems.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
@@ -103,7 +166,9 @@ fun SearchHistoryGrid(
                     historyTagsItems = historyTagsItems,
                     searchTag = {  search(it, true) },
                     addSearchTag = { it, maybeCanQuery ->
-                        searchTags.add(it)
+                        if (searchTags.contains(it))
+                            searchTags.remove(it)
+                        else searchTags.add(it)
                         search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                     },
                     expanded = expanded
@@ -125,9 +190,12 @@ fun SearchHistoryGrid(
             TagsGrid(
                 searchTag = {  search(it, true) },
                 addSearchTag = { it, maybeCanQuery ->
-                    searchTags.add(it)
+                    if (searchTags.contains(it))
+                        searchTags.remove(it)
+                    else searchTags.add(it)
                     search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                 },
+                selectedTags = searchTags,
                 expanded = expanded
             )
         }
@@ -148,9 +216,12 @@ fun SearchHistoryGrid(
                     tagsItems = albumsTagsItems,
                     searchTag = {  search(it, true) },
                     addSearchTag = { it, maybeCanQuery ->
-                        searchTags.add(it)
+                        if (searchTags.contains(it))
+                            searchTags.remove(it)
+                        else searchTags.add(it)
                         search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                     },
+                    selectedTags = searchTags,
                     expanded = expanded
                 )
             }
@@ -170,9 +241,12 @@ fun SearchHistoryGrid(
             MonthTagsGrid (
                 searchTag = {  search(it, true) },
                 addSearchTag = { it, maybeCanQuery ->
-                    searchTags.add(it)
+                    if (searchTags.contains(it))
+                        searchTags.remove(it)
+                    else searchTags.add(it)
                     search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                 },
+                selectedTags = searchTags,
                 expanded = expanded
             )
         }
@@ -191,9 +265,12 @@ fun SearchHistoryGrid(
             DayTagsGrid (
                 searchTag = {  search(it, true) },
                 addSearchTag = { it, maybeCanQuery ->
-                    searchTags.add(it)
+                    if (searchTags.contains(it))
+                        searchTags.remove(it)
+                    else searchTags.add(it)
                     search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                 },
+                selectedTags = searchTags,
                 expanded = expanded
             )
         }
@@ -212,9 +289,12 @@ fun SearchHistoryGrid(
             YearTagsGrid (
                 searchTag = {  search(it, true) },
                 addSearchTag = { it, maybeCanQuery ->
-                    searchTags.add(it)
+                    if (searchTags.contains(it))
+                        searchTags.remove(it)
+                    else searchTags.add(it)
                     search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                 },
+                selectedTags = searchTags,
                 tagsItems = mediaYearsItems,
                 expanded = expanded
             )
@@ -234,9 +314,12 @@ fun SearchHistoryGrid(
             MetadataTagsGrid (
                 searchTag = {  search(it, true) },
                 addSearchTag = { it, maybeCanQuery ->
-                    searchTags.add(it)
+                    if (searchTags.contains(it))
+                        searchTags.remove(it)
+                    else searchTags.add(it)
                     search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                 },
+                selectedTags = searchTags,
                 expanded = expanded
             )
         }
@@ -254,13 +337,16 @@ fun SearchHistoryGrid(
             }
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LocationTagsGrid(
-                    tagsItems = countriesTagsItems,
                     searchTag = {  search(it, true) },
+                    tagsItems = countriesTagsItems,
+                    expanded = expanded,
                     addSearchTag = { it, maybeCanQuery ->
-                        searchTags.add(it)
+                        if (searchTags.contains(it))
+                            searchTags.remove(it)
+                        else searchTags.add(it)
                         search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                     },
-                    expanded = expanded
+                    selectedTags = searchTags
                 )
             }
         }
@@ -281,10 +367,13 @@ fun SearchHistoryGrid(
                     tagsItems = localitiesTagsItems,
                     searchTag = {  search(it, true) },
                     addSearchTag = { it, maybeCanQuery ->
-                        searchTags.add(it)
+                        if (searchTags.contains(it))
+                            searchTags.remove(it)
+                        else searchTags.add(it)
                         search(searchTags.distinct().joinToString(" "), maybeCanQuery)
                     },
                     locationIsCountry = false,
+                    selectedTags = searchTags,
                     expanded = expanded
                 )
             }

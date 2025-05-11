@@ -364,7 +364,13 @@ object Settings {
         fun rememberWeeklyDateFormat() =
             rememberPreference(key = WEEKLY_DATE_FORMAT, defaultValue = Constants.WEEKLY_DATE_FORMAT)
 
-        fun getSetting(context: Context, key: Preferences.Key<String>) = context.dataStore.data.map { it[key] }
+
+        val LANGUAGE_APP = stringPreferencesKey("language_app")
+
+        @Composable
+        fun rememberLanguageApp() =
+            rememberPreference(key = LANGUAGE_APP, defaultValue = "en")
+
 
         private val VIDEO_AUTOPLAY = booleanPreferencesKey("video_autoplay")
 
@@ -389,6 +395,8 @@ object Settings {
         @Composable
         fun rememberIgnoreVideos() =
             rememberPreference(key = IGNORE_VIDEOS, defaultValue = false)
+
+        fun getSetting(context: Context, key: Preferences.Key<String>) = context.dataStore.data.map { it[key] }
     }
 }
 
