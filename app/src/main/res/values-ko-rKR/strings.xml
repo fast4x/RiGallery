@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">갤러리</string>
-    <string name="nav_albums">앨범</string>
     <string name="searchbar_title"><![CDATA[사진 및 동영상 검색]]></string>
     <string name="header_today">오늘</string>
     <string name="header_yesterday">어제</string>
@@ -58,8 +56,6 @@
     <string name="github">Github</string>
     <string name="donate_button_cd">기부 버튼</string>
     <string name="github_button_cd">Github 버튼</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">다음으로 사용</string>
     <string name="set_as">"다음으로 설정: "</string>
     <string name="action_cancel">취소</string>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">معرض الصور</string>
-    <string name="nav_albums">الألبومات</string>
     <string name="searchbar_title"><![CDATA[البحث في الصور والفيديوهات]]></string>
     <string name="header_today">اليوم</string>
     <string name="header_yesterday">يوم أمس</string>
@@ -58,8 +56,6 @@
     <string name="github">غيت هاب</string>
     <string name="donate_button_cd">زر التبرع</string>
     <string name="github_button_cd">زر غيت هاب</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">استخدام كـ</string>
     <string name="set_as">"تعيين كـ: "</string>
     <string name="action_cancel">إلغاء</string>

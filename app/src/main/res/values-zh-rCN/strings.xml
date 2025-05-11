@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">图库</string>
-    <string name="nav_albums">专辑</string>
     <string name="searchbar_title"><![CDATA[搜索图片和视频]]></string>
     <string name="header_today">今天</string>
     <string name="header_yesterday">昨天</string>
@@ -58,8 +56,6 @@
     <string name="github">GitHub</string>
     <string name="donate_button_cd">捐赠按钮</string>
     <string name="github_button_cd">Github按钮</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">设置为</string>
     <string name="set_as">"设为： "</string>
     <string name="action_cancel">取消</string>

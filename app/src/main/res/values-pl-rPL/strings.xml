@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Galeria</string>
-    <string name="nav_albums">Albumy</string>
     <string name="searchbar_title"><![CDATA[Szukaj zdjęć lub filmów]]></string>
     <string name="header_today">Dzisiaj</string>
     <string name="header_yesterday">Wczoraj</string>
@@ -58,8 +56,6 @@
     <string name="github">Github</string>
     <string name="donate_button_cd">Przycisk wsparcia</string>
     <string name="github_button_cd">Przycisk Github</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">Użyj jako</string>
     <string name="set_as">"Ustaw jako: "</string>
     <string name="action_cancel">Anuluj</string>

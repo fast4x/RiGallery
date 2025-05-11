@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Galerij</string>
-    <string name="nav_albums">Albums</string>
     <string name="searchbar_title"><![CDATA[Foto\'s en video\'s zoeken]]></string>
     <string name="header_today">Vandaag</string>
     <string name="header_yesterday">Gisteren</string>
@@ -58,8 +56,6 @@
     <string name="github">Github</string>
     <string name="donate_button_cd">Doneer knop</string>
     <string name="github_button_cd">Github-knop</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">Gebruiken als</string>
     <string name="set_as">"Ingesteld als: "</string>
     <string name="action_cancel">Annuleer</string>

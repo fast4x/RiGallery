@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Галерея</string>
-    <string name="nav_albums">Альбомы</string>
     <string name="searchbar_title"><![CDATA[Поиск фото и видео]]></string>
     <string name="header_today">Сегодня</string>
     <string name="header_yesterday">Вчера</string>
@@ -58,8 +56,6 @@
     <string name="github">GitHub</string>
     <string name="donate_button_cd">Кнопка пожертвования</string>
     <string name="github_button_cd">Кнопка GitHub</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">Использовать как</string>
     <string name="set_as">"Установить как: "</string>
     <string name="action_cancel">Отмена</string>

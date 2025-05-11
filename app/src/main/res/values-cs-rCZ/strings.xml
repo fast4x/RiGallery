@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Galerie</string>
-    <string name="nav_albums">Alba</string>
     <string name="searchbar_title"><![CDATA[Hledat fotky a videa]]></string>
     <string name="header_today">Dnes</string>
     <string name="header_yesterday">Včera</string>
@@ -58,8 +56,6 @@
     <string name="github">GitHub</string>
     <string name="donate_button_cd">Tlačítko přispění</string>
     <string name="github_button_cd">Tlačítko GitHub</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">Použít jako</string>
     <string name="set_as">"Nastavit jako: "</string>
     <string name="action_cancel">Zrušit</string>

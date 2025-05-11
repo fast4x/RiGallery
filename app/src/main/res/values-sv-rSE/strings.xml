@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Galleri</string>
-    <string name="nav_albums">Album</string>
     <string name="searchbar_title"><![CDATA[Sök foton & videor]]></string>
     <string name="header_today">I dag</string>
     <string name="header_yesterday">I går</string>
@@ -58,8 +56,6 @@
     <string name="github">Github</string>
     <string name="donate_button_cd">Donera-knapp</string>
     <string name="github_button_cd">Github-knapp</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">Använd som</string>
     <string name="set_as">"Ange som: "</string>
     <string name="action_cancel">Avbryt</string>

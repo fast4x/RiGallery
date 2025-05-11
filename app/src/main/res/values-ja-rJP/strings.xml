@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ギャラリー</string>
-    <string name="nav_albums">アルバム</string>
     <string name="searchbar_title"><![CDATA[写真と動画を検索]]></string>
     <string name="header_today">今日</string>
     <string name="header_yesterday">昨日</string>
@@ -58,8 +56,6 @@
     <string name="github">GitHub</string>
     <string name="donate_button_cd">寄付ボタン</string>
     <string name="github_button_cd">GitHub ボタン</string>
-    <string name="donate_url">https://www.paypal.com/paypalme/iacobionut01</string>
-    <string name="github_url">https://github.com/IacobIonut01/Gallery</string>
     <string name="use_as">他で使用</string>
     <string name="set_as">"設定: "</string>
     <string name="action_cancel">キャンセル</string>
