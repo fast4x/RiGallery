@@ -7,6 +7,64 @@
 <a href="https://github.com/fast4x/RiGallery/releases/latest"><img src="https://img.shields.io/github/v/release/fast4x/RiGallery?label=Release"></a>
 -->
 
+## ✨ Features
+- Multilanguages, support system language but can change it in other language from settings
+- Supports many video and image formats
+- Grid or mosaic display
+- Slideshow
+- Modify images
+- Add effects
+- Vault
+- Favorites
+- Smart categories
+- Albums
+- Search all media with terms and/or tags, support also multiple tags
+- Ignored media and/or albums
+- Trash
+<br><br>
+
+
+## 🌐 Languages available
+- Afrikaans
+- Arabic
+- Belarusian
+- Bengali
+- Bulgarian
+- Catalan
+- Chinese Simplified
+- Chinese Traditional
+- Czech
+- Danish
+- Dutch
+- English
+- Finnish
+- French
+- Galician
+- German
+- Greek
+- Hebrew
+- Hindi
+- Hungarian
+- Indonesian
+- Interlingua
+- Irish
+- Japanese
+- Korean
+- Norwegian
+- Odia
+- Polish
+- Portughese
+- Portughese, Brasilian
+- Romanian
+- Russian
+- Serbian (Cyrillic)
+- Spanich
+- Swedish
+- Turkish
+- Ukrainian
+- Vietnamese
+<br><br>
+
 ## 📲 Installation
 The first version will be released soon
 <br><br>
@@ -21,10 +79,6 @@ If you want:
 
 ## 🔤 Translate into your language
 Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8b330e379e2097692431908), help with the translations.
-<br><br>
-
-## 🌐 Languages available
-- **Afrikaans**
 <br><br>
 
 ## 🫂 Acknowledgments
