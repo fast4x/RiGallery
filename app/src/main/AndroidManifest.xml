@@ -126,7 +126,7 @@
             android:launchMode="singleTask"
             android:configChanges="keyboard|keyboardHidden|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:theme="@style/Theme.Gallery">
-            <intent-filter android:label="@string/app_name">
+            <intent-filter android:label="${appName}">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.android.camera.action.REVIEW" />
                 <action android:name="android.provider.action.REVIEW" />
@@ -172,7 +172,7 @@
             android:launchMode="singleTask"
             android:configChanges="keyboard|keyboardHidden|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:theme="@style/Theme.Gallery">
-            <intent-filter android:label="@string/app_name">
+            <intent-filter android:label="${appName}">
                 <action android:name="android.intent.action.PICK"/>
                 <action android:name="android.intent.action.GET_CONTENT"/>
 
@@ -203,7 +203,7 @@
             android:configChanges="keyboard|keyboardHidden|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:launchMode="singleTop"
             android:exported="true">
-            <intent-filter android:label="@string/app_name">
+            <intent-filter android:label="${appName}">
                 <action android:name="android.intent.action.EDIT"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
