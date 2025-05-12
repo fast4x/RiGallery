@@ -2,7 +2,7 @@
 <img src ="/docs/logo.webp" width="150" height="150" />
 
 # RiGallery
-**A FOSS Android Media Gallery**
+**An Advanced Android Media Gallery**
 </div>
 <br><br>
 <!--
