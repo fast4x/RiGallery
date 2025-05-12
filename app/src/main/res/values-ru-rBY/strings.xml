@@ -386,4 +386,6 @@
     <string name="menu_combine">Combine %1$s</string>
     <string name="menu_combine_and_search">Combine %1$s and Search</string>
     <string name="menu_search">Search %1$s</string>
+    <string name="nav_albums">Albums</string>
+    <string name="app_name">RiGallery</string>
 </resources>
