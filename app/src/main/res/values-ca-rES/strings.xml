@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="searchbar_title"><![CDATA[Search photos & videos]]></string>
-    <string name="header_today">Today</string>
-    <string name="header_yesterday">Yesterday</string>
+    <string name="header_today">Avui</string>
+    <string name="header_yesterday">Ahir</string>
     <string name="request_permissions">Request permissions</string>
-    <string name="filter">Filter</string>
+    <string name="filter">Filtre</string>
     <string name="filter_recent">Recent</string>
-    <string name="filter_nameAZ">Name (A-Z)</string>
+    <string name="filter_nameAZ">Nom (A-Z)</string>
     <string name="filter_nameZA">Name (Z-A)</string>
     <string name="filter_old">Old</string>
     <string name="selected_s">Selected %s</string>
@@ -310,13 +310,13 @@
     <string name="type_size">Size</string>
     <string name="encrypting_media">Encrypting media...</string>
     <string name="decrypt_vault">Decrypt Vault</string>
-    <string name="restore_vault_summary">The current vault and its content will be decrypted and restored.\nThis action will make your content accessible again in the Gallery.</string>
+    <string name="restore_vault_summary">The current vault and its content will be decrypted and restored.</string>
     <string name="restore_vault_title">Confirm Decryption?</string>
     <string name="yes">Yes</string>
     <string name="vault_deletion_title">Confirm Deletion?</string>
-    <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.\nThis action cannot be undone.</string>
+    <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.</string>
     <string name="create_new_vault_title">Create new vault?</string>
-    <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)\n\nEncryption key can be accessed inside the vault and will be used in order to restore any vaults.</string>
+    <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)</string>
     <string name="select_a_vault">Select a vault</string>
     <string name="mosaic_grid">Mosaic Grid</string>
     <string name="mosaic_grid_info">Show media in a mosaic grid</string>
