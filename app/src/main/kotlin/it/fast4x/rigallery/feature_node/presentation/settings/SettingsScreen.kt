@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -68,6 +69,7 @@ import it.fast4x.rigallery.core.Settings.Misc.rememberFullBrightnessView
 import it.fast4x.rigallery.core.Settings.Misc.rememberLastScreen
 import it.fast4x.rigallery.core.Settings.Misc.rememberVideoAutoplay
 import it.fast4x.rigallery.core.SettingsEntity
+import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.enums.Option
 import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
@@ -241,6 +243,33 @@ fun rememberSettingsList(
 ): SnapshotStateList<SettingsEntity> {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+
+    var showLaunguageAppMenu by remember { mutableStateOf(false) }
+    var launguageApp by Settings.Misc.rememberLanguageApp()
+    val languageAppPref = remember(launguageApp) {
+        SettingsEntity.Preference(
+            title = "Language", //context.getString(R.string.show_media_type),
+            summary = Languages.languageFromcode(launguageApp).toString(),
+            onClick = { showLaunguageAppMenu = true },
+            screenPosition = Position.Top
+        )
+    }
+    OptionSheetMenu(
+        title = "Language",
+        options = Languages.entries.map{ option ->
+            Option(
+                ordinal = option.ordinal,
+                name = option.name,
+                title = option.name,
+                icon = Icons.Outlined.Language
+            )
+        },
+        visible = showLaunguageAppMenu,
+        onSelected = { launguageApp = Languages.entries[it].code },
+        onDismiss = { showLaunguageAppMenu = false }
+    )
+
+
     var forceTheme by Settings.Misc.rememberForceTheme()
     val forceThemeValuePref = remember(forceTheme) {
         SettingsEntity.SwitchPreference(
@@ -530,6 +559,8 @@ fun rememberSettingsList(
         )
     ) {
         mutableStateListOf<SettingsEntity>().apply {
+            add(SettingsEntity.Header(title = "Language"))
+            add(languageAppPref)
             /** ********************* **/
             /** ********************* **/
             add(SettingsEntity.Header(title = context.getString(R.string.settings_theme_header)))

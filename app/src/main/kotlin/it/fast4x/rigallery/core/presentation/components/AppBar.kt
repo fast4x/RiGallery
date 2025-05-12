@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.core.presentation.components
@@ -34,10 +36,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HideSource
+import androidx.compose.material.icons.filled.QueryStats
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Album
+import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.MoreVert
@@ -97,7 +103,8 @@ import kotlinx.coroutines.launch
 fun rememberNavigationItems(): List<NavigationItem> {
     val timelineTitle = stringResource(R.string.nav_timeline)
     val albumsTitle = stringResource(R.string.nav_albums)
-    val libraryTitle = stringResource(R.string.library)
+    //val libraryTitle = stringResource(R.string.library)
+    val smartCategoriesTitle = stringResource(R.string.smart_categories)
     val favoritesTitle = stringResource(R.string.favorites)
     return remember {
         mutableListOf(
@@ -109,7 +116,7 @@ fun rememberNavigationItems(): List<NavigationItem> {
             NavigationItem(
                 name = albumsTitle,
                 route = Screen.AlbumsScreen.route,
-                icon = Icons.Outlined.PhotoAlbum,
+                icon = Icons.Outlined.Album,
             ),
 //            NavigationItem(
 //                name = libraryTitle,
@@ -117,9 +124,9 @@ fun rememberNavigationItems(): List<NavigationItem> {
 //                icon = Icons.Outlined.PhotoLibrary
 //            ),
             NavigationItem(
-                name = libraryTitle,
+                name = smartCategoriesTitle,
                 route = Screen.CategoriesScreen(),
-                icon = Icons.Outlined.ImageSearch
+                icon = Icons.Outlined.Category
             ),
             NavigationItem(
                 name = favoritesTitle,
@@ -170,6 +177,14 @@ fun AppBarContainer(
 //                    expandedDropDown.value = false
 //                }
 //            ),
+            OptionItem(
+                text = "Analysis media" ,//context.getString(R.string.ignored_albums),
+                icon = Icons.Filled.QueryStats,
+                onClick = {
+                    navController.navigate(Screen.AnalysisScreen.route)
+                    expandedDropDown.value = false
+                }
+            ),
             OptionItem(
                 text = context.getString(R.string.ignored_albums),
                 icon = Icons.Filled.VisibilityOff,

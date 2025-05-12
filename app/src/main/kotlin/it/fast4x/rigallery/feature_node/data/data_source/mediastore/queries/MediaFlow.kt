@@ -56,10 +56,12 @@ class MediaFlow(
             when (it) {
                 MediaType.IMAGE -> MediaQuery.Selection.image
                 MediaType.VIDEO -> MediaQuery.Selection.video
+                MediaType.AUDIO -> MediaQuery.Selection.audio
             }
         } ?: when (buckedId) {
             MediaStoreBuckets.MEDIA_STORE_BUCKET_PHOTOS.id -> MediaQuery.Selection.image
             MediaStoreBuckets.MEDIA_STORE_BUCKET_VIDEOS.id -> MediaQuery.Selection.video
+            MediaStoreBuckets.MEDIA_STORE_BUCKET_AUDIOS.id -> MediaQuery.Selection.audio
             else -> MediaQuery.Selection.imageOrVideo
         }
         val albumFilter = when (buckedId) {
@@ -70,7 +72,8 @@ class MediaFlow(
 
             MediaStoreBuckets.MEDIA_STORE_BUCKET_TIMELINE.id,
             MediaStoreBuckets.MEDIA_STORE_BUCKET_PHOTOS.id,
-            MediaStoreBuckets.MEDIA_STORE_BUCKET_VIDEOS.id -> null
+            MediaStoreBuckets.MEDIA_STORE_BUCKET_VIDEOS.id,
+            MediaStoreBuckets.MEDIA_STORE_BUCKET_AUDIOS.id -> null
 
             else -> MediaStore.Files.FileColumns.BUCKET_ID eq Query.ARG
         }
@@ -142,7 +145,10 @@ class MediaFlow(
         val mimeType = it.getString(indexCache[i++])
         val isFavorite = it.getInt(indexCache[i++])
         val isTrashed = it.getInt(indexCache[i++])
-        val expiryTimestamp = it.tryGetLong(indexCache[i])
+        val expiryTimestamp = it.tryGetLong(indexCache[i++])
+        val height = it.getInt(indexCache[i++])
+        val width = it.getInt(indexCache[i++])
+        val orientation = it.getInt(indexCache[i++])
         val contentUri = if (mimeType.contains("image"))
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         else
@@ -165,7 +171,10 @@ class MediaFlow(
             favorite = isFavorite,
             trashed = isTrashed,
             size = size,
-            mimeType = mimeType
+            mimeType = mimeType,
+            height = height,
+            width = width,
+            orientation = orientation,
         )
     }
 }

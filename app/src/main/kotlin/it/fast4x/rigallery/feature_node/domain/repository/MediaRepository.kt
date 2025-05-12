@@ -1,7 +1,9 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
- */
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
+ *  */
 
 package it.fast4x.rigallery.feature_node.domain.repository
 
@@ -180,4 +182,11 @@ interface MediaRepository {
 
     fun getMediaIgnored(): Flow<List<UriMedia>>
 
+    suspend fun resetAnalizedMedia()
+
+    fun getAnalyzedMediaCount(): Flow<Int>
+
+    fun getNotAnalyzedMediaCount(): Flow<Int>
+
+    fun getMediaWithLocation(): Flow<List<UriMedia>>
 }

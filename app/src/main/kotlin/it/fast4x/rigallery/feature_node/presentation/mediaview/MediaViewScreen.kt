@@ -13,12 +13,16 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -112,6 +116,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.rememberExifMetadata
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
@@ -190,6 +195,8 @@ fun <T : Media> MediaViewScreen(
             }
         }
     }
+
+
 
     val currentDateFormat by rememberDateHeaderFormat()
 
@@ -326,6 +333,19 @@ fun <T : Media> MediaViewScreen(
         }
     }
 
+    val pageInteractionSource = remember { MutableInteractionSource() }
+    var isAutoAdvanceEnabled by remember { mutableStateOf(false) }
+
+    if (isAutoAdvanceEnabled) {
+        LaunchedEffect(pagerState, pageInteractionSource) {
+            while (true) {
+                delay(4000)
+                val nextPage = (pagerState.currentPage + 1) % mediaState.value.media.size
+                pagerState.animateScrollToPage(nextPage)
+            }
+        }
+    }
+
     // set HDR Gain map
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
         LaunchedEffect(mediaState.value) {
@@ -430,11 +450,11 @@ fun <T : Media> MediaViewScreen(
                     }
                     with(sharedTransitionScope) {
                         MediaPreviewComponent(
-                            modifier = Modifier
-                                .mediaSharedElement(
-                                    media = media!!,
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
+                            modifier = Modifier,
+//                                .mediaSharedElement(
+//                                    media = media!!,
+//                                    animatedVisibilityScope = animatedContentScope
+//                                ),
                             media = media,
                             uiEnabled = showUI,
                             playWhenReady = canPlay,
@@ -562,9 +582,12 @@ fun <T : Media> MediaViewScreen(
                     }
                 }
             }
-            val exifInterface = rememberExifInterface(currentMedia as T, true)
-            val exifMetadata = rememberExifMetadata(currentMedia as T, exifInterface)
-            val locationData = rememberLocationData(exifMetadata, currentMedia as T)
+
+            val currMedia = currentMedia ?: return@FullBrightnessWindow
+            val exifInterface = rememberExifInterface(currMedia, true)
+
+            val exifMetadata = rememberExifMetadata(currMedia, exifInterface)
+            val locationData = rememberLocationData(exifMetadata, currMedia)
             MediaViewAppBar(
                 modifier = Modifier.padding(
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
@@ -679,7 +702,9 @@ fun <T : Media> MediaViewScreen(
                                             }
                                         }
                                     }
-                                }
+                                },
+                                isAutoAdvanceEnabled = isAutoAdvanceEnabled,
+                                onAutoAdvance = { isAutoAdvanceEnabled = it }
                             )
                         }
                     }

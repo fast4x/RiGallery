@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0 license
  */
 
 package it.fast4x.rigallery.feature_node.presentation.search
@@ -12,23 +14,15 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ImageSearch
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -50,7 +44,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
@@ -63,12 +56,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
-import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
-import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
+import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
-import it.fast4x.rigallery.core.presentation.components.LoadingMedia
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaGridView
 import it.fast4x.rigallery.feature_node.presentation.search.components.SearchBarElevation.Collapsed
@@ -93,19 +84,53 @@ fun MainSearchBar(
     menuItems: @Composable (RowScope.() -> Unit)? = null,
 ) {
     var historySet by rememberSearchHistory()
+    var historyTagsSet by rememberSearchTagsHistory()
     var canQuery by rememberSaveable { mutableStateOf(false) }
     var query by rememberSaveable { mutableStateOf("") }
     val mediaViewModel: MediaViewModel = hiltViewModel<MediaViewModel>().also {
         it.mediaFlow.collectAsStateWithLifecycle()
     }
+
+    val mediaWithLocation = mediaViewModel.mediaWithLocation.collectAsStateWithLifecycle()
+
     val state = mediaViewModel.searchMediaState.collectAsStateWithLifecycle()
+
+    val mediaFlowState = mediaViewModel.mediaFlow.collectAsStateWithLifecycle()
+
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(state.value.media) {
+    LaunchedEffect(state.value.media, query, canQuery) {
+        println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
         if (query.isNotEmpty() && state.value.media.isEmpty() && canQuery) {
+
+            if (query.isNotEmpty()) {
+                if (query.startsWith("#"))
+                    historyTagsSet = historyTagsSet.toMutableSet().apply {
+                        removeIf { historyQuery -> historyQuery.contains(query) }
+                        add("${System.currentTimeMillis()}/$query")
+                    }
+                else
+                    historySet = historySet.toMutableSet().apply {
+                        removeIf { historyQuery -> historyQuery.contains(query) }
+                        add("${System.currentTimeMillis()}/$query")
+                    }
+            }
+
             mediaViewModel.queryMedia(query)
         }
     }
+
+    val lastQueryIsEmpty =
+        remember(mediaViewModel.lastQuery.value) { mediaViewModel.lastQuery.value.isEmpty() }
+
+    val mediaIsEmpty = remember(state) { state.value.media.isEmpty() && !state.value.isLoading }
+
+//    LaunchedEffect(query) {
+//        println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
+//        if (query.isNotEmpty() && state.value.media.isEmpty() && canQuery) {
+//            mediaViewModel.queryMedia(query)
+//        }
+//    }
 
     val alpha by animateFloatAsState(
         targetValue = if (selectionState != null && selectionState.value) 0.6f else 1f,
@@ -155,6 +180,7 @@ fun MainSearchBar(
                 SearchBarDefaults.InputField(
                     query = query,
                     onQueryChange = {
+                        println("MainSearchBar: onQueryChange query: $it")
                         scope.launch {
                             query = it
                             if (it != mediaViewModel.lastQuery.value && mediaViewModel.lastQuery.value.isNotEmpty()) {
@@ -164,11 +190,18 @@ fun MainSearchBar(
                         }
                     },
                     onSearch = {
+                        println("MainSearchBar: onSearch query: $it")
                         if (it.isNotEmpty()) {
-                            historySet = historySet.toMutableSet().apply {
-                                removeIf { historyQuery -> historyQuery.contains(it) }
-                                add("${System.currentTimeMillis()}/$it")
-                            }
+                            if (it.startsWith("#"))
+                                historyTagsSet = historyTagsSet.toMutableSet().apply {
+                                    removeIf { historyQuery -> historyQuery.contains(it) }
+                                    add("${System.currentTimeMillis()}/$it")
+                                }
+                            else
+                                historySet = historySet.toMutableSet().apply {
+                                    removeIf { historyQuery -> historyQuery.contains(it) }
+                                    add("${System.currentTimeMillis()}/$it")
+                                }
                         }
                         mediaViewModel.queryMedia(it)
                         canQuery = true
@@ -192,19 +225,37 @@ fun MainSearchBar(
                                     if (query.isNotEmpty()) query = ""
                                     mediaViewModel.clearQuery()
                                 }
-                            }) {
-                            val leadingIcon = remember(activeState.value) {
-                                if (activeState.value)
-                                    Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Search
                             }
+                        ) {
+                                val leadingIcon = remember(activeState.value) {
+                                    if (activeState.value)
+                                        Icons.AutoMirrored.Outlined.ArrowBack else Icons.Outlined.Search
+                                }
+                                Icon(
+                                    imageVector = leadingIcon,
+                                    modifier = Modifier.fillMaxHeight(),
+                                    contentDescription = null
+                                )
+                            }
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            enabled = query.isNotEmpty(),
+                            onClick = {
+                                scope.launch {
+                                    canQuery = true
+                                    if (query.isNotEmpty()) query = ""
+                                    mediaViewModel.clearQuery()
+                                }
+                            }
+                        ) {
                             Icon(
-                                imageVector = leadingIcon,
+                                imageVector = Icons.Outlined.Close,
                                 modifier = Modifier.fillMaxHeight(),
                                 contentDescription = null
                             )
                         }
-                    },
-                    trailingIcon = {
+
                         // TODO ICON ACTION IN THE SEARCH BAR
 //                        Row {
 //                            androidx.compose.animation.AnimatedVisibility(
@@ -226,17 +277,20 @@ fun MainSearchBar(
             colors = colors,
             tonalElevation = elevation,
             content = {
-                val lastQueryIsEmpty =
-                    remember(mediaViewModel.lastQuery.value) { mediaViewModel.lastQuery.value.isEmpty() }
+
                 AnimatedVisibility(
                     visible = lastQueryIsEmpty,
                     enter = enterAnimation,
                     exit = exitAnimation
                 ) {
-                    SearchHistory {
-                        canQuery = true
+                    SearchHistory(
+                        mediaWithLocation,
+                        mediaFlowState
+                    ) { it, maybeCanQuery ->
+                        canQuery = maybeCanQuery
                         query = it
-                        mediaViewModel.queryMedia(it)
+                        if (maybeCanQuery)
+                            mediaViewModel.queryMedia(it)
                     }
                 }
 
@@ -245,28 +299,28 @@ fun MainSearchBar(
                     enter = enterAnimation,
                     exit = exitAnimation
                 ) {
-                    val mediaIsEmpty = remember(state) { state.value.media.isEmpty() && !state.value.isLoading }
-                    if (mediaIsEmpty) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 72.dp),
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.ImageSearch,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .size(64.dp)
-                            )
-                            Text(
-                                text = stringResource(R.string.no_media_found),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                    } else {
+
+//                    if (mediaIsEmpty) {
+//                        Column(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(top = 72.dp),
+//                            verticalArrangement = Arrangement.spacedBy(16.dp),
+//                            horizontalAlignment = Alignment.CenterHorizontally
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Outlined.ImageSearch,
+//                                contentDescription = null,
+//                                tint = MaterialTheme.colorScheme.primary,
+//                                modifier = Modifier
+//                                    .size(64.dp)
+//                            )
+//                            Text(
+//                                text = stringResource(R.string.no_media_found),
+//                                style = MaterialTheme.typography.titleMedium
+//                            )
+//                        }
+//                    } else {
                         val pd = PaddingValues(
                             bottom = bottomPadding + 16.dp
                         )
@@ -280,20 +334,24 @@ fun MainSearchBar(
                                 onMediaClick = {
                                     navigate(Screen.MediaViewScreen.route + "?mediaId=${it.id}&query=true")
                                 },
-                                emptyContent = { EmptyMedia() },
+                                emptyContent = {
+                                        EmptyMedia()
+                                },
                                 animatedContentScope = animatedContentScope,
                                 sharedTransitionScope = sharedTransitionScope
                             )
-                            androidx.compose.animation.AnimatedVisibility(
-                                visible = state.value.isLoading,
-                                enter = enterAnimation,
-                                exit = exitAnimation
-                            ) {
-                                LoadingMedia()
-                            }
+
+                        // emptymedia include loading indicator
+//                            androidx.compose.animation.AnimatedVisibility(
+//                                visible = state.value.isLoading,
+//                                enter = enterAnimation,
+//                                exit = exitAnimation
+//                            ) {
+//                                LoadingMedia()
+//                            }
 
 
-                    }
+                    //}
                 }
             },
         )

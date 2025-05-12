@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0 license
  */
 
 package it.fast4x.rigallery.feature_node.presentation.common
@@ -57,6 +59,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings
@@ -150,17 +153,18 @@ fun <T: Media> MediaScreen(
                             )
                         },
                         navigationIcon = {
-//                            NavigationButton(
-//                                albumId = albumId,
-//                                target = target,
-//                                navigateUp = navigateUp,
-//                                clearSelection = {
-//                                    selectionState.value = false
-//                                    selectedMedia.clear()
-//                                },
-//                                selectionState = selectionState,
-//                                alwaysGoBack = true,
-//                            )
+                            if (target != TARGET_FAVORITES)
+                                NavigationButton(
+                                    albumId = albumId,
+                                    target = target,
+                                    navigateUp = navigateUp,
+                                    clearSelection = {
+                                        selectionState.value = false
+                                        selectedMedia.clear()
+                                    },
+                                    selectionState = selectionState,
+                                    alwaysGoBack = true,
+                                )
                         },
                         actions = {
                             NavigationActions(

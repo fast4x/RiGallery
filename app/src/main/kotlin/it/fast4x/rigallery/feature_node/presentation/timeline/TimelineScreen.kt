@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.timeline
@@ -16,11 +18,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.hilt.navigation.compose.hiltViewModel
 import it.fast4x.rigallery.BuildConfig
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
+import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaScreen
 import it.fast4x.rigallery.feature_node.presentation.timeline.components.TimelineNavActions
 
@@ -47,6 +51,7 @@ inline fun <reified T: Media> TimelineScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedContentScope,
 ) {
+
     MediaScreen(
         paddingValues = paddingValues,
         albumId = albumId,

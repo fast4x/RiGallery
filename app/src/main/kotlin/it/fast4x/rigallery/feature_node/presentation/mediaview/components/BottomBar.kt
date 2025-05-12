@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.mediaview.components
@@ -19,6 +21,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,9 +50,13 @@ import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Pause
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.RestoreFromTrash
 import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -117,7 +124,6 @@ import it.fast4x.rigallery.feature_node.presentation.exif.MetadataEditSheet
 import it.fast4x.rigallery.feature_node.presentation.exif.MoveMediaSheet
 import it.fast4x.rigallery.feature_node.presentation.trashed.components.TrashDialog
 import it.fast4x.rigallery.feature_node.presentation.trashed.components.TrashDialogAction
-import it.fast4x.rigallery.feature_node.presentation.util.MapBoxURL
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.connectivityState
 import it.fast4x.rigallery.feature_node.presentation.util.launchEditIntent
@@ -135,7 +141,6 @@ import it.fast4x.rigallery.feature_node.presentation.util.writeRequest
 import it.fast4x.rigallery.feature_node.presentation.vault.components.SelectVaultSheet
 import it.fast4x.rigallery.ui.theme.Shapes
 import com.github.panpf.sketch.AsyncImage
-import com.github.panpf.sketch.AsyncImageState
 import com.github.panpf.sketch.rememberAsyncImagePainter
 import it.fast4x.rigallery.feature_node.presentation.util.OpenStreetMapUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -703,6 +708,8 @@ fun <T : Media> MediaViewActions2(
     deleteMedia: ((Vault, T, () -> Unit) -> Unit)?,
     restoreMedia: ((Vault, T, () -> Unit) -> Unit)?,
     infoMedia: () -> Unit,
+    isAutoAdvanceEnabled: Boolean,
+    onAutoAdvance: (Boolean) -> Unit,
     currentVault: Vault?
 ) {
     if (currentMedia != null) {
@@ -732,6 +739,13 @@ fun <T : Media> MediaViewActions2(
                 }
             }
         } else {
+            // Auto Advance Component
+            BarButton(currentMedia, enabled = enabled,
+                title = if (isAutoAdvanceEnabled) stringResource(R.string.slideshow_pause) else stringResource(R.string.slideshow_play),
+                icon = if (isAutoAdvanceEnabled) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
+                onClick = { if (isAutoAdvanceEnabled) onAutoAdvance(false) else onAutoAdvance(true) },
+                showLoader = if (isAutoAdvanceEnabled) true else false
+            )
             // Info Component
             InfoButton(currentMedia, enabled = enabled, onInfoClick = infoMedia )
             // Share Component
@@ -945,6 +959,29 @@ fun <T : Media> InfoButton(
 }
 
 @Composable
+fun <T : Media> BarButton(
+    media: T,
+    enabled: Boolean,
+    title: String,
+    icon: ImageVector = Icons.Outlined.Info,
+    followTheme: Boolean = false,
+    showLoader: Boolean = false,
+    onClick: (() -> Unit)? = null
+) {
+    BottomBarColumn(
+        currentMedia = media,
+        imageVector = icon,
+        followTheme = followTheme,
+        title = title,
+        enabled = enabled,
+        showLoader = showLoader,
+        onItemClick = {
+            onClick?.invoke()
+        }
+    )
+}
+
+@Composable
 fun <T : Media> FavoriteButton(
     media: T,
     handler: MediaHandleUseCase,
@@ -1097,6 +1134,7 @@ fun <T : Media> BottomBarColumn(
     title: String,
     enabled: Boolean = true,
     followTheme: Boolean = false,
+    showLoader: Boolean = false,
     onItemLongClick: ((T) -> Unit)? = null,
     onItemClick: (T) -> Unit
 ) {
@@ -1129,13 +1167,23 @@ fun <T : Media> BottomBarColumn(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            imageVector = imageVector,
-            colorFilter = ColorFilter.tint(tintColor),
-            contentDescription = title,
-            modifier = Modifier
-                .height(32.dp)
-        )
+        Box(
+            modifier = Modifier.height(32.dp)
+        ) {
+            if (showLoader)
+                CircularProgressIndicator(
+                    modifier = Modifier.size(32.dp).align(Alignment.Center),
+                    trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+                    color = tintColor
+                )
+            Image(
+                imageVector = imageVector,
+                colorFilter = ColorFilter.tint(tintColor),
+                contentDescription = title,
+                modifier = Modifier
+                    .height(32.dp).align(Alignment.Center)
+            )
+        }
         Spacer(modifier = Modifier.size(4.dp))
         Text(
             text = title,

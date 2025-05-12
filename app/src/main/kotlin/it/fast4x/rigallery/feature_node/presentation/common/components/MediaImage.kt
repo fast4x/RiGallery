@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+  * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.common.components
@@ -30,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -52,6 +55,7 @@ import com.github.panpf.sketch.AsyncImage
 import com.github.panpf.sketch.cache.CachePolicy
 import com.github.panpf.sketch.request.ComposableImageRequest
 import com.github.panpf.sketch.resize.Scale
+import com.github.panpf.sketch.transition.CrossfadeTransition
 import com.github.panpf.sketch.util.key
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -94,13 +98,14 @@ fun <T: Media> MediaImage(
         label = "strokeColor"
     )
 
-    val aspectRatio = remember(media) {
+    val aspectRatio by remember(media) {
         mutableFloatStateOf(
             if (staggered)
-                Random.nextFloat() * (1.5f - 0.5f) + 0.5f
+                Random.nextFloat() + 1f
             else 1f
          )
     }
+    //val aspectRatio by remember(media){ mutableFloatStateOf(1f) }
 
     Box(
         modifier = Modifier
@@ -119,30 +124,62 @@ fun <T: Media> MediaImage(
                     }
                 },
             )
-            .aspectRatio(aspectRatio.floatValue)
+            .padding(selectedSize)
+            .clip(RoundedCornerShape(selectedShapeSize))
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shape = RoundedCornerShape(selectedShapeSize)
+            )
+            .border(
+                width = strokeSize,
+                shape = RoundedCornerShape(selectedShapeSize),
+                color = strokeColor
+            )
+            .aspectRatio(aspectRatio)
             .then(modifier)
     ) {
-        Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .aspectRatio(aspectRatio.floatValue)
-                .padding(selectedSize)
-                .clip(RoundedCornerShape(selectedShapeSize))
-                .background(
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    shape = RoundedCornerShape(selectedShapeSize)
-                )
-                .border(
-                    width = strokeSize,
-                    shape = RoundedCornerShape(selectedShapeSize),
-                    color = strokeColor
-                )
-        ) {
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.Center)
+//                .padding(selectedSize)
+//                .clip(RoundedCornerShape(selectedShapeSize))
+//                .background(
+//                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+//                    shape = RoundedCornerShape(selectedShapeSize)
+//                )
+//                .border(
+//                    width = strokeSize,
+//                    shape = RoundedCornerShape(selectedShapeSize),
+//                    color = strokeColor
+//                )
+//                .combinedClickable(
+//                    enabled = canClick,
+//                    onClick = {
+//                        onItemClick(media)
+//                        if (selectionState.value) {
+//                            isSelected = !isSelected
+//                        }
+//                    },
+//                    onLongClick = {
+//                        onItemLongClick(media)
+//                        if (selectionState.value) {
+//                            isSelected = !isSelected
+//                        }
+//                    },
+//                )
+//                .aspectRatio(aspectRatio)
+//                .then(modifier)
+//        ) {
             AsyncImage(
                 modifier = Modifier
                     .fillMaxSize(),
                 request = ComposableImageRequest(media.getUri().toString()) {
-                    crossfade()
+                    key(media.id)
+                    crossfade(
+                        durationMillis = 50,
+                        preferExactIntrinsicSize = true,
+                        alwaysUse = true
+                    )
                     resizeOnDraw()
                     scale(Scale.FILL)
                     setExtra(
@@ -155,9 +192,9 @@ fun <T: Media> MediaImage(
                     )
                 },
                 contentDescription = media.label,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
             )
-        }
+        //}
 
         AnimatedVisibility(
             visible = remember(media) { media.isVideo },

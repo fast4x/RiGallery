@@ -1,10 +1,14 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.core.presentation.components
 
+import android.content.ClipData
+import android.content.Context.CLIPBOARD_SERVICE
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,8 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ClipboardManager
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -36,7 +38,8 @@ fun Error(
     title: String = stringResource(R.string.error_title),
     errorMessage: String? = null
 ) {
-    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+    val context = LocalContext.current
+    val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
     val toastBuilder = Toast.makeText(LocalContext.current, errorMessage, Toast.LENGTH_SHORT)
     Column(
         modifier = modifier.fillMaxSize(),
@@ -60,7 +63,7 @@ fun Error(
             Button(
                 modifier = Modifier.wrapContentSize(),
                 onClick = {
-                    clipboardManager.setText(AnnotatedString(errorMessage))
+                    clipboardManager.setPrimaryClip(ClipData.newPlainText("", AnnotatedString(errorMessage)))
                     toastBuilder.show()
                 }
             ) {

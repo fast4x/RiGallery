@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.api.BaseVariantOutputImpl
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import java.io.FileInputStream
 import java.util.Properties
@@ -51,13 +50,13 @@ android {
 
     buildTypes {
         getByName("debug") {
-            buildConfigField("String", "MAPS_TOKEN", getApiKey())
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = "-debug"
             manifestPlaceholders += mapOf(
                 "appProvider" to "it.fast4x.rigallery.debug.media_provider",
                 "appName" to "$applicationName-Debug"
             )
+            buildConfigField("String", "MAPS_TOKEN", getApiKey())
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
             buildConfigField("Boolean", "ALLOW_ALL_FILES_ACCESS", allowAllFilesAccess)
             buildConfigField(
                 "String",
@@ -153,7 +152,7 @@ android {
             include("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
 
             // Specifies that you don't want to also generate a universal APK that includes all ABIs.
-            isUniversalApk = true
+            isUniversalApk = false
         }
     }
 
@@ -259,6 +258,7 @@ dependencies {
     implementation(libs.avif.coder.coil)
 
     // Sketch
+    implementation(libs.sketch.singleton)
     implementation(libs.sketch.compose)
     implementation(libs.sketch.view)
     implementation(libs.sketch.animated.gif)
@@ -280,12 +280,14 @@ dependencies {
     // Exif Interface
     implementation(libs.androidx.exifinterface)
 
+    // Metadata
+    implementation(libs.metadata.extractor)
+
     // Datastore Preferences
     implementation(libs.datastore.prefs)
-    implementation(libs.datastore.ext)
 
     // Fuzzy Search
-    implementation(libs.fuzzywuzzy)
+    //implementation(libs.fuzzywuzzy)
 
     // Aire
     implementation(libs.aire)

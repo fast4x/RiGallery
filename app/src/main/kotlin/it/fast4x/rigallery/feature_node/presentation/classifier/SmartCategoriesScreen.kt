@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -26,16 +25,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.outlined.Scanner
+import androidx.compose.material.icons.outlined.Category
+import androidx.compose.material.icons.outlined.SmartDisplay
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -43,7 +37,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -63,27 +56,24 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaImage
+import it.fast4x.rigallery.feature_node.presentation.common.components.ScannerButton
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
-import it.fast4x.rigallery.feature_node.presentation.library.NoCategories
+import it.fast4x.rigallery.feature_node.presentation.library.ButtonToStartProcess
 import it.fast4x.rigallery.feature_node.presentation.library.components.LibrarySmallItem
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoriesScreen(
+fun SmartCategoriesScreen(
     navigateUp: () -> Unit,
     navigate: (String) -> Unit,
 ) {
@@ -109,7 +99,7 @@ fun CategoriesScreen(
                 TopAppBar(
                     title = {
                         TwoLinedDateToolbarTitle(
-                            albumName = stringResource(R.string.categories),
+                            albumName = stringResource(R.string.smart_categories),
                             dateHeader = stringResource(R.string.classified_media, classifiedCount)
                         )
                     },
@@ -299,13 +289,17 @@ fun CategoriesMediaGrid(
             ) {
 
                 if (categoriesIsEmpty) {
-                    NoCategories {
+                    ButtonToStartProcess(
+                        title = stringResource(R.string.create_smart_categories),
+                    ) {
                         viewModel.startClassification()
                     }
                 }
 
                 if (!categoriesIsEmpty || isRunning) {
                     ScannerButton(
+                        scanForNewText = stringResource(R.string.create_smart_categories),
+                        image = Icons.Outlined.Category,
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -326,8 +320,8 @@ fun CategoriesMediaGrid(
 
                 if (!categoriesIsEmpty && !isRunning) {
                     LibrarySmallItem(
-                        title = stringResource(R.string.delete_all_categories),
-                        subtitle = stringResource(R.string.delete_all_categories_summary),
+                        title = stringResource(R.string.delete_smart_categories),
+                        //subtitle = stringResource(R.string.delete_all_categories_summary),
                         icon = Icons.Default.Delete,
                         contentColor = MaterialTheme.colorScheme.error,
                         modifier = Modifier
@@ -337,8 +331,8 @@ fun CategoriesMediaGrid(
                 }
 
                 LibrarySmallItem(
-                    title = stringResource(R.string.disclaimer),
-                    subtitle = stringResource(R.string.disclaimer_classification),
+                    title = stringResource(R.string.info),
+                    subtitle = stringResource(R.string.info_create_smart_categories),
                     icon = Icons.Default.Info,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     containerColor = Color.Transparent,
@@ -349,92 +343,3 @@ fun CategoriesMediaGrid(
     }
 }
 
-@Composable
-fun ScannerButton(
-    modifier: Modifier = Modifier,
-    contentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer,
-    indicatorCounter: Float = 0f,
-    isRunning: Boolean = false
-) {
-    ListItem(
-        colors = ListItemDefaults.colors(
-            containerColor = contentColor.copy(alpha = 0.1f),
-            headlineColor = contentColor
-        ),
-        modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
-            .then(modifier),
-        headlineContent = {
-            val scanningMediaText = stringResource(R.string.scanning_media)
-            val scanForNewCategoriesText = stringResource(R.string.scan_for_new_categories)
-            val text = remember(isRunning) {
-                if (isRunning) scanningMediaText else scanForNewCategoriesText
-            }
-            Text(
-                modifier = Modifier
-                    .then(if (isRunning) Modifier.padding(top = 8.dp) else Modifier),
-                text = text,
-                style = MaterialTheme.typography.labelLarge,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
-        },
-        leadingContent = {
-            Icon(
-                imageVector = Icons.Outlined.Scanner,
-                tint = contentColor,
-                contentDescription = stringResource(R.string.scan_for_new_categories)
-            )
-        },
-        trailingContent = {
-            AnimatedVisibility(
-                visible = isRunning,
-                enter = enterAnimation,
-                exit = exitAnimation
-            ) {
-                Text(
-                    text = remember(indicatorCounter) {
-                        String.format(
-                            Locale.getDefault(),
-                            "%.1f",
-                            indicatorCounter.coerceIn(0f..100f)
-                        ) + "%"
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = contentColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-            }
-        },
-        supportingContent = if (isRunning) {
-            {
-                Column(
-                    modifier = Modifier.padding(vertical = 16.dp)
-                ) {
-                    AnimatedVisibility(
-                        visible = indicatorCounter < 100f
-                    ) {
-                        LinearProgressIndicator(
-                            modifier = Modifier.fillMaxWidth(),
-                            progress = { (indicatorCounter / 100f).coerceAtLeast(0f) },
-                            color = contentColor,
-                        )
-                    }
-
-                    AnimatedVisibility(
-                        visible = indicatorCounter == 100f
-                    ) {
-                        LinearProgressIndicator(
-                            modifier = Modifier.fillMaxWidth(),
-                            color = contentColor,
-                        )
-                    }
-                }
-            }
-        } else null
-    )
-}

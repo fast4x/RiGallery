@@ -1,6 +1,9 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
+ *
  */
 
 package it.fast4x.rigallery.core.presentation.components
@@ -8,22 +11,17 @@ package it.fast4x.rigallery.core.presentation.components
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -34,7 +32,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
-import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.Constants.Animation.navigateInAnimation
 import it.fast4x.rigallery.core.Constants.Animation.navigateUpAnimation
@@ -43,13 +40,13 @@ import it.fast4x.rigallery.core.Constants.Target.TARGET_IGNOREDMEDIA
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Settings.Album.rememberHideTimelineOnAlbum
 import it.fast4x.rigallery.core.Settings.Misc.rememberLastScreen
-import it.fast4x.rigallery.core.Settings.Misc.rememberTimelineGroupByMonth
 import it.fast4x.rigallery.core.presentation.components.util.OnLifecycleEvent
 import it.fast4x.rigallery.core.presentation.components.util.permissionGranted
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsScreen
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
-import it.fast4x.rigallery.feature_node.presentation.classifier.CategoriesScreen
+import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisScreen
+import it.fast4x.rigallery.feature_node.presentation.classifier.SmartCategoriesScreen
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewModel
 import it.fast4x.rigallery.feature_node.presentation.classifier.CategoryViewScreen
 import it.fast4x.rigallery.feature_node.presentation.common.ChanneledViewModel
@@ -158,10 +155,6 @@ fun NavigationComp(
         timelineViewModel.updatePermissionState(permissionState)
     }
 
-//    LaunchedEffect(Unit, groupTimelineByMonth) {
-//        timelineViewModel.groupByMonth.value = groupTimelineByMonth
-//    }
-    // not necessary
     SharedTransitionLayout {
         NavHost(
             navController = navController,
@@ -542,7 +535,7 @@ fun NavigationComp(
             composable(
                 route = Screen.CategoriesScreen()
             ) {
-                CategoriesScreen(
+                SmartCategoriesScreen(
                     navigateUp = navPipe::navigateUp,
                     navigate = navPipe::navigate
                 )
@@ -619,6 +612,15 @@ fun NavigationComp(
                 DateFormatScreen(navigateUp = navPipe::navigateUp)
             }
 
+            composable(
+                route = Screen.AnalysisScreen()
+            ) {
+                AnalysisScreen(
+                    navigateUp = navPipe::navigateUp,
+                    navigate = navPipe::navigate
+                )
+
+            }
         }
     }
 }

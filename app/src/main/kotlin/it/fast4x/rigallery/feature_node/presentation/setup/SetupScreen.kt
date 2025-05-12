@@ -161,6 +161,7 @@ private val Context.requiredPermissionsList: Array<Pair<String, String>> get() {
         getString(R.string.read_media_images) to getString(R.string.read_media_images_summary),
         getString(R.string.read_media_videos) to getString(R.string.read_media_videos_summary),
         getString(R.string.access_media_location) to getString(R.string.access_media_location_summary),
-        getString(R.string.internet) to getString(R.string.internet_summary)
+        getString(R.string.internet) to getString(R.string.internet_summary),
+        getString(R.string.notification) to getString(R.string.notification_summary)
     )
 }

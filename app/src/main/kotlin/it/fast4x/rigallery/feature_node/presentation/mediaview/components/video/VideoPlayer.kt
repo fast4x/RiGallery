@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.mediaview.components.video
@@ -63,7 +65,8 @@ fun <T : Media> VideoPlayer(
     playWhenReady: State<Boolean>,
     videoController: @Composable (ExoPlayer, MutableState<Boolean>, MutableLongState, Long, Int, Float) -> Unit,
     onItemClick: () -> Unit,
-    onSwipeDown: () -> Unit
+    onSwipeDown: () -> Unit,
+    onSwipeUp: () -> Unit = {},
 ) {
     var totalDuration by rememberSaveable(media) { mutableLongStateOf(0L) }
     val currentTime = rememberSaveable(media) { mutableLongStateOf(0L) }
@@ -219,7 +222,8 @@ fun <T : Media> VideoPlayer(
                     onClick = onItemClick,
                 )
                 .swipe(
-                    onSwipeDown = onSwipeDown
+                    onSwipeDown = onSwipeDown,
+                    onSwipeUp = onSwipeUp
                 )
                 .then(modifier),
         )

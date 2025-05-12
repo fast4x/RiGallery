@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0 license
  */
 
 package it.fast4x.rigallery.core
@@ -20,7 +22,7 @@ object Constants {
     /**
      * Default logging tag
      */
-    const val TAG = "DotGallery"
+    const val TAG = "RiGallery"
 
     /**
      * Date format used in media groups
@@ -35,7 +37,7 @@ object Constants {
     /**
      * Value in ms
      */
-    const val DEFAULT_LOW_VELOCITY_SWIPE_DURATION = 50
+    const val DEFAULT_LOW_VELOCITY_SWIPE_DURATION = 200 //50
 
     /**
      * Smooth enough at 300ms
@@ -57,7 +59,8 @@ object Constants {
             listOf(
                 Manifest.permission.READ_MEDIA_IMAGES,
                 Manifest.permission.READ_MEDIA_VIDEO,
-                Manifest.permission.ACCESS_MEDIA_LOCATION
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS
             )
         )
     }

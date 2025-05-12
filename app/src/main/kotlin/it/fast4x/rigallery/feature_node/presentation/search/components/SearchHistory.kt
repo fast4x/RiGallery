@@ -1,25 +1,39 @@
 package it.fast4x.rigallery.feature_node.presentation.search.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
+import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
+import it.fast4x.rigallery.feature_node.domain.model.Media
+import it.fast4x.rigallery.feature_node.domain.model.MediaState
+import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
+import kotlinx.coroutines.Dispatchers
+import java.time.Instant
+import java.time.ZoneId
 
 @Composable
-fun SearchHistory(search: (query: String) -> Unit) {
+fun SearchHistory(
+    mediaWithLocation: State<List<Media.UriMedia>>,
+    mediaFlowState: State<MediaState<Media.UriMedia>>,
+    search: (String, Boolean) -> Unit
+) {
     var historySet by rememberSearchHistory()
+    var historyTagsSet by rememberSearchTagsHistory()
     val historyItems = remember(historySet) {
-        historySet.toList().mapIndexed { index, item ->
+        historySet.toList()
+            .filterNot {
+                it.substringAfter(
+                    delimiter = "/",
+                    missingDelimiterValue = it
+                ).startsWith("#")
+            }
+            .mapIndexed { index, item ->
             Pair(
                 item.substringBefore(
                     delimiter = "/",
@@ -30,50 +44,77 @@ fun SearchHistory(search: (query: String) -> Unit) {
                     missingDelimiterValue = item
                 )
             )
-        }.sortedByDescending { it.first }.take(5).toMutableStateList()
+        }.sortedByDescending { it.first }.take(10).toMutableStateList()
     }
+
+    val historyTagsItems = remember(historyTagsSet) {
+        historyTagsSet.toList()
+            .filter {
+                it.substringAfter(
+                    delimiter = "/",
+                    missingDelimiterValue = it
+                ).startsWith("#")
+            }
+            .mapIndexed { index, item ->
+                Pair(
+                    item.substringBefore(
+                        delimiter = "/",
+                        missingDelimiterValue = index.toString()
+                    ),
+                    item.substringAfter(
+                        delimiter = "/",
+                        missingDelimiterValue = item
+                    )
+                )
+            }.sortedByDescending { it.first }.take(10).toMutableStateList()
+    }
+
+
+
+    val countriesTagsItems = remember {
+        mediaWithLocation.value.mapNotNull {
+            it.location?.substringAfterLast(delimiter = ",", missingDelimiterValue = "")?.trim()
+        }.distinct().sortedByDescending { it }
+    }
+
+    val localitiesTagsItems = remember {
+        mediaWithLocation.value.mapNotNull {
+            it.location?.substringBefore(delimiter = ",", missingDelimiterValue = "")?.trim()
+        }.distinct().sortedByDescending { it }
+    }
+
+    println("SearchHistory: countries: $countriesTagsItems and localities: $localitiesTagsItems")
+
+    val albumsViewModel = hiltViewModel<AlbumsViewModel>()
+    val albumsState =
+        albumsViewModel.albumsFlow.collectAsStateWithLifecycle(context = Dispatchers.IO)
+
+    val mediaYearsItems = mediaFlowState.value.media
+        .map {
+            val dt = Instant.ofEpochSecond(it.definedTimestamp)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime()
+            dt.year
+        }
+        .distinct()
+
+    //TODO add suggestion set
     val suggestionSet = listOf(
         "0" to "Screenshots",
         "1" to "Camera",
-        "2" to "May 2022",
-        "3" to "Thursday"
     )
 
-    Column {
-        if (historyItems.isNotEmpty()) {
-            Text(
-                text = stringResource(R.string.history_recent_title),
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .padding(top = 16.dp)
-            )
 
 
-            repeat(historyItems.size) {
-                HistoryItem(
-                    historyQuery = historyItems[it],
-                    search = search,
-                ) {
-                    historySet = historySet.toMutableSet().apply { remove(it) }
-                }
-            }
-        }
-        Text(
-            text = stringResource(R.string.history_suggestions_title),
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-                .padding(top = 16.dp)
-        )
+    SearchHistoryGrid(
+        historyItems = historyItems,
+        historyTagsItems = historyTagsItems,
+        countriesTagsItems = countriesTagsItems,
+        localitiesTagsItems = localitiesTagsItems,
+        albumsTagsItems = albumsState.value.albums,
+        mediaYearsItems = mediaYearsItems,
+        suggestionSet = suggestionSet,
+        search = search
+    )
 
-        repeat(suggestionSet.size) {
-            HistoryItem(
-                historyQuery = suggestionSet[it],
-                search = search,
-            )
-        }
-    }
 }

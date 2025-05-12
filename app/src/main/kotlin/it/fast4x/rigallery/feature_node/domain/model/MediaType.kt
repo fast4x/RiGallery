@@ -14,6 +14,10 @@ enum class MediaType(
     VIDEO(
         MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
         MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO,
+    ),
+    AUDIO(
+        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+        MediaStore.Files.FileColumns.MEDIA_TYPE_AUDIO,
     );
 
     companion object {

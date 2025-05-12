@@ -9,6 +9,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -302,7 +303,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
         mediaState.value.headers.toMutableStateList()
     }
 
-    val displayMode by remember { mutableStateOf(1) }
+    val displayMode by remember { mutableIntStateOf(1) }
     var zoom by remember(displayMode) { mutableFloatStateOf(1f) }
     val zoomTransition: Float by animateFloatAsState(
         zoom,
@@ -344,8 +345,8 @@ private fun <T: Media> MediaGridContentWithHeaders(
             columns = GridCells.Fixed(columns),
             contentPadding = paddingValues,
             userScrollEnabled = canScroll,
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalArrangement = Arrangement.spacedBy(5.dp),
+            horizontalArrangement = Arrangement.spacedBy(1.dp),
+            verticalArrangement = Arrangement.spacedBy(1.dp),
         ) {
             topContent()
 
@@ -374,9 +375,10 @@ private fun <T: Media> MediaGridContentWithHeaders(
                     MediaItemHeader(
                         modifier = Modifier
                             .animateItem(
-                                fadeInSpec = null
+                                fadeInSpec = tween(durationMillis = 250),
+                                fadeOutSpec = tween(durationMillis = 100),
+                                placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                             ),
-                            //.pinchItem(key = it.key),
                         date = remember {
                             it.text
                                 .replace("Today", stringToday)
@@ -414,11 +416,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 .mediaSharedElement(
                                     media = it.media,
                                     animatedVisibilityScope = animatedContentScope
-                                )
-                                .animateItem(
-                                    fadeInSpec = null
                                 ),
-                                //.pinchItem(key = it.key),
                             media = it.media,
                             selectionState = selectionState,
                             selectedMedia = selectedMedia,
@@ -489,11 +487,7 @@ private fun <T: Media> MediaGridContent(
                         .mediaSharedElement(
                             media = media,
                             animatedVisibilityScope = animatedContentScope
-                        )
-                        .animateItem(
-                            fadeInSpec = null
                         ),
-                        //.pinchItem(key = media.toString()),
                     media = media,
                     selectionState = selectionState,
                     selectedMedia = selectedMedia,

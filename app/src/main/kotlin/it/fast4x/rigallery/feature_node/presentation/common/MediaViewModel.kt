@@ -1,10 +1,13 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0 license
  */
 
 package it.fast4x.rigallery.feature_node.presentation.common
 
+import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.runtime.Composable
@@ -20,7 +23,6 @@ import it.fast4x.rigallery.feature_node.domain.model.IgnoredAlbum
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.Media.UriMedia
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
-import it.fast4x.rigallery.feature_node.domain.model.TimelineSettings
 import it.fast4x.rigallery.feature_node.domain.model.Vault
 import it.fast4x.rigallery.feature_node.domain.model.VaultState
 import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
@@ -30,14 +32,20 @@ import it.fast4x.rigallery.feature_node.presentation.util.mapMediaToItem
 import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
 import it.fast4x.rigallery.feature_node.presentation.util.update
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
+import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.feature_node.domain.util.isAudio
+import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -46,13 +54,16 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.xdrop.fuzzywuzzy.FuzzySearch
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
 open class MediaViewModel @Inject constructor(
     private val repository: MediaRepository,
     val handler: MediaHandleUseCase,
+    @ApplicationContext val context: Context
 ) : ViewModel() {
 
     var lastQuery = mutableStateOf("")
@@ -94,6 +105,9 @@ open class MediaViewModel @Inject constructor(
     private val ignoredMediaList = repository.getMediaIgnored()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+    internal val mediaWithLocation = repository.getMediaWithLocation()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
     private val defaultDateFormat =
         repository.getSetting(Settings.Misc.DEFAULT_DATE_FORMAT, Constants.DEFAULT_DATE_FORMAT)
             .stateIn(viewModelScope, SharingStarted.Eagerly, Constants.DEFAULT_DATE_FORMAT)
@@ -117,6 +131,10 @@ open class MediaViewModel @Inject constructor(
     val mediaType =
         repository.getSetting(Settings.Misc.MEDIATYPE, MediaType.All.ordinal)
             .stateIn(viewModelScope, SharingStarted.Eagerly, MediaType.All.ordinal)
+
+    val languageApp =
+        repository.getSetting(Settings.Misc.LANGUAGE_APP, Languages.System.code)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, Languages.System.code)
 
     private val permissionState = MutableStateFlow(false)
 
@@ -147,8 +165,9 @@ open class MediaViewModel @Inject constructor(
             val data = (result.data ?: emptyList()).toMutableList().apply {
                 removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
                 removeAll { media -> media.id == ignoredMediaList.find { it.id == media.id }?.id }
-                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
-                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
+                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage || media.isAudio }
+                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo || media.isAudio }
+                //if (mediaType == MediaType.Audios.ordinal) removeAll { media -> media.isVideo || media.isImage }
             }
 
             updateDatabase()
@@ -292,8 +311,15 @@ open class MediaViewModel @Inject constructor(
                 return@launch
             } else {
                 _searchMediaState.tryEmit(MediaState(isLoading = true))
+                val tag = if (query.startsWith("#")) query.substringAfter("#").lowercase() else ""
+                val tagFiltersNot = query.lowercase().split("!#")
+                    .dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
+                val tagFilters = query.lowercase().split("#").filterNot {
+                    it in tagFiltersNot
+                }.dropWhile { it.isEmpty() || it.startsWith("!") || it.startsWith("#") }
                 _searchMediaState.collectMedia(
-                    data = mediaFlow.value.media.parseQuery(query),
+                    data = if (tag.isEmpty()) mediaFlow.value.media.parseQuery(query)
+                    else mediaFlow.value.media.filterMedia(tagFilters),
                     error = mediaFlow.value.error,
                     albumId = albumId,
                     groupByMonth = groupByMonth.value,
@@ -309,11 +335,100 @@ open class MediaViewModel @Inject constructor(
         return withContext(Dispatchers.IO) {
             if (query.isEmpty())
                 return@withContext emptyList()
-            val matches = FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 60)
-            return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+            // TODO remove fuzzy searc
+//            val matches =
+//                FuzzySearch.extractSorted(query, this@parseQuery, { it.toString() }, 80)
+//            return@withContext matches.map { it.referent }.ifEmpty { emptyList() }
+
+            return@withContext this@parseQuery.filter {
+                it.toString().contains(query, ignoreCase = true)
+            }
         }
+    }
+
+    private suspend fun <T: Media>parseTags(t: T, tags: List<String>): Boolean {
+        return withContext(Dispatchers.IO) {
+            ((t.isImage && context.getString(R.string.tag_image).toString() in tags) ||
+                    (t.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
+                    (t.isFavorite && context.getString(R.string.tag_favorite).toString() in tags))
+        }
+
+    }
+
+    private suspend fun <T : Media> List<T>.filterMedia(
+        tags: List<String>
+    ): List<T> {
+        println("MediaViewModel tags: $tags")
+
+        return withContext(Dispatchers.IO) {
+
+            return@withContext this@filterMedia.filter { it ->
+                val dt = Instant.ofEpochSecond(it.definedTimestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime()
+                val d = Instant.ofEpochSecond(it.definedTimestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                val today = Instant.now().atZone(ZoneId.systemDefault()).toLocalDate()
+
+
+                //println("MediaViewModel filterMedia year: ${dt.year}")
+//                if (it.id in mediaWithLocation.value.map { it.id }) {
+//                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
+//                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
+//                }
+                (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
+                (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
+                (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
+
+                (it.orientation == 90 && context.getString(R.string.tag_rotated90).toString() in tags) ||
+                (it.orientation == 180 && context.getString(R.string.tag_rotated180).toString() in tags) ||
+                (it.orientation == 270 && context.getString(R.string.tag_rotated270).toString() in tags) ||
+
+                ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
+                ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
+
+                (it.id in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
+                (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
+                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
+                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags) ||
+
+                ("${context.getString(R.string.tag_album).lowercase()}:${it.albumLabel.lowercase()}".toString() in tags) ||
+
+                (dt.monthValue == 1 && context.getString(R.string.tag_january).toString() in tags) ||
+                (dt.monthValue == 2 && context.getString(R.string.tag_february).toString() in tags) ||
+                (dt.monthValue == 3 && context.getString(R.string.tag_march).toString() in tags) ||
+                (dt.monthValue == 4 && context.getString(R.string.tag_april).toString() in tags) ||
+                (dt.monthValue == 5 && context.getString(R.string.tag_may).toString() in tags) ||
+                (dt.monthValue == 6 && context.getString(R.string.tag_june).toString() in tags) ||
+                (dt.monthValue == 7 && context.getString(R.string.tag_july).toString() in tags) ||
+                (dt.monthValue == 8 && context.getString(R.string.tag_august).toString() in tags) ||
+                (dt.monthValue == 9 && context.getString(R.string.tag_september).toString() in tags) ||
+                (dt.monthValue == 10 && context.getString(R.string.tag_october).toString() in tags) ||
+                (dt.monthValue == 11 && context.getString(R.string.tag_november).toString() in tags) ||
+                (dt.monthValue == 12 && context.getString(R.string.tag_december).toString() in tags) ||
+
+                (dt.dayOfWeek == DayOfWeek.MONDAY && context.getString(R.string.tag_monday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.TUESDAY && context.getString(R.string.tag_tuesday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.WEDNESDAY && context.getString(R.string.tag_wednesday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.THURSDAY && context.getString(R.string.tag_thursday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.FRIDAY && context.getString(R.string.tag_friday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.SATURDAY && context.getString(R.string.tag_saturday).toString() in tags) ||
+                (dt.dayOfWeek == DayOfWeek.SUNDAY && context.getString(R.string.tag_sunday).toString() in tags)  ||
+                (d == today && context.getString(R.string.tag_today).toString() in tags) ||
+                (d == today.minusDays(1) && context.getString(R.string.tag_yesterday).toString() in tags) ||
+
+                ("${context.getString(R.string.tag_year).lowercase()}:${dt.year}".toString() in tags)
+
+
+            }
+        }
+
     }
 
     private fun IgnoredAlbum.shouldIgnore(media: Media) =
         matchesMedia(media) && (hiddenInTimeline && albumId == -1L || hiddenInAlbums && albumId != -1L)
+
+
 }
+

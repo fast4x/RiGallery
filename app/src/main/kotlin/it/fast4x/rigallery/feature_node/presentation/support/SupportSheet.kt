@@ -1,5 +1,7 @@
 package it.fast4x.rigallery.feature_node.presentation.support
 
+import android.content.ClipData
+import android.content.Context.CLIPBOARD_SERVICE
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,7 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -48,7 +50,8 @@ fun SupportSheet(
     var showCryptoOptions by rememberSaveable {
         mutableStateOf(false)
     }
-    val clipboard = LocalClipboardManager.current
+    val context = LocalContext.current
+    val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
     val mainOptions = remember {
         listOf(
             OptionItem(
@@ -72,7 +75,7 @@ fun SupportSheet(
         )
     }
     val cryptoOnClick: (String) -> Unit = {
-        clipboard.setText(AnnotatedString(it))
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("", AnnotatedString(it)))
     }
     val cryptoOptions = remember {
         mapOf(

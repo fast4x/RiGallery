@@ -9,6 +9,7 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -16,7 +17,9 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
@@ -24,6 +27,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.FullLine
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.SingleLane
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -299,7 +303,7 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
         mediaState.value.headers.toMutableStateList()
     }
 
-    val displayMode by remember { mutableStateOf(1) }
+    val displayMode by remember { mutableIntStateOf(1) }
     var zoom by remember(displayMode) { mutableFloatStateOf(1f) }
     val zoomTransition: Float by animateFloatAsState(
         zoom,
@@ -343,8 +347,8 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
             columns = StaggeredGridCells.Fixed(columns),
             contentPadding = paddingValues,
             userScrollEnabled = canScroll,
-            horizontalArrangement = Arrangement.spacedBy(5.dp),
-            verticalItemSpacing = 5.dp
+            horizontalArrangement = Arrangement.spacedBy(1.dp),
+            verticalItemSpacing = 1.dp
         ) {
             topContent()
 
@@ -352,6 +356,12 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                 items = mappedData,
                 key = { item -> item.key },
                 contentType = { item -> item.key.startsWith("media_") },
+                span = { item ->
+                    when {
+                        item.key.isHeaderKey -> FullLine
+                        else -> SingleLane
+                    }
+                }
             ) { it ->
                 if (it is MediaItem.Header) {
                     val isChecked = rememberSaveable { mutableStateOf(false) }
@@ -370,7 +380,9 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                     MediaItemHeader(
                         modifier = Modifier
                             .animateItem(
-                                fadeInSpec = null
+                                fadeInSpec = tween(durationMillis = 250),
+                                fadeOutSpec = tween(durationMillis = 100),
+                                placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                             ),
                         date = remember {
                             it.text
@@ -409,9 +421,6 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                                 .mediaSharedElement(
                                     media = it.media,
                                     animatedVisibilityScope = animatedContentScope
-                                )
-                                .animateItem(
-                                    fadeInSpec = null
                                 ),
                             media = it.media,
                             staggered = true,
@@ -482,9 +491,6 @@ private fun <T: Media> MediaStaggeredGridContent(
                         .mediaSharedElement(
                             media = media,
                             animatedVisibilityScope = animatedContentScope
-                        )
-                        .animateItem(
-                            fadeInSpec = null
                         ),
                     media = media,
                     staggered = true,

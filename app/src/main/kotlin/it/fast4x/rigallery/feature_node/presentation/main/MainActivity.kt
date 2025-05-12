@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.main
@@ -12,17 +14,21 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.core.Settings.Misc.getSecureMode
@@ -34,6 +40,8 @@ import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
+import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,6 +59,24 @@ class MainActivity : AppCompatActivity() {
         enforceSecureFlag()
         enableEdgeToEdge()
         setContent {
+
+            val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
+            analyzerViewModel.startAnalysis()
+
+            val mediaViewModel = hiltViewModel<MediaViewModel>()
+            val langCode = mediaViewModel.languageApp.collectAsState()
+
+            val systemLangCode =
+                AppCompatDelegate.getApplicationLocales().get(0).toString()
+
+            val sysLocale: LocaleListCompat =
+                LocaleListCompat.forLanguageTags(systemLangCode)
+            val appLocale: LocaleListCompat =
+                LocaleListCompat.forLanguageTags(langCode.value)
+            AppCompatDelegate.setApplicationLocales(if (langCode.value == "") sysLocale else appLocale)
+
+            println("MainActivity Languages: ${langCode.value} sysLocale $sysLocale appLocale $appLocale")
+
             GalleryTheme {
                 val navController = rememberNavController()
                 val isScrolling = remember { mutableStateOf(false) }
@@ -108,6 +134,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        const val OPEN_FROM_ANALYZER = 2
     }
 
 }
