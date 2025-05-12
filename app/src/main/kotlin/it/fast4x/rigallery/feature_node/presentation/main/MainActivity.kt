@@ -13,6 +13,7 @@ import android.view.WindowManager
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -30,6 +31,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.common.util.Log
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.core.Settings.Misc.getSecureMode
 import it.fast4x.rigallery.core.Settings.Misc.rememberForceTheme
@@ -40,10 +43,17 @@ import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import it.fast4x.rigallery.core.util.ext.OkHttpRequest
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import java.io.File
+import java.io.IOException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -75,7 +85,31 @@ class MainActivity : AppCompatActivity() {
                 LocaleListCompat.forLanguageTags(langCode.value)
             AppCompatDelegate.setApplicationLocales(if (langCode.value == "") sysLocale else appLocale)
 
-            println("MainActivity Languages: ${langCode.value} sysLocale $sysLocale appLocale $appLocale")
+
+            var request = OkHttpRequest(OkHttpClient())
+            val urlVersionCode =
+                "https://raw.githubusercontent.com/fast4x/RiGallery/main/updatedVersion/updatedVersionCode.ver"
+            request.GET(urlVersionCode, object : Callback {
+                override fun onResponse(call: Call, response: Response) {
+                    val responseData = response.body?.string()
+                    runOnUiThread {
+                        try {
+                            if (responseData != null) {
+                                val file = File(filesDir, "RiGalleryUpdatedVersionCode.ver")
+                                file.writeText(responseData.toString())
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                }
+
+                @OptIn(UnstableApi::class)
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("UpdatedVersionCode", "Check failure")
+                }
+            })
 
             GalleryTheme {
                 val navController = rememberNavController()
