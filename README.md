@@ -1,5 +1,9 @@
+<div align="center">
+<img src ="/docs/logo.webp" />
+
 # RiGallery
 **A FOSS Android Media Gallery**
+</div>
 <br><br>
 <!--
 <a href="https://github.com/fast4x/RiGallery/releases"><img src="https://img.shields.io/github/downloads/fast4x/RiGallery/total?label=Total%20Downloads"></a>
