@@ -85,5 +85,9 @@ If you want:
 Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8b330e379e2097692431908), help with the translations.
 <br><br>
 
+## ❓ Support
+- [Group on Telegram ](https://t.me/rigallery_app)
+<br><br>
+
 ## 🫂 Acknowledgments
 [Gallery](https://github.com/IacobIonut01/Gallery)
