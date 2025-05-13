@@ -299,18 +299,6 @@
     <string name="auto_play_video_summary">Відтворювати відео автоматично під час перегляду медіа</string>
     <string name="shared_elements">Анімовані медіа елементи</string>
     <string name="shared_elements_summary">Анімуйте натискання / повернення медіа елементів за допомогою спільних елементів переходу</string>
-    <string name="select_a_vault">Select a vault</string>
-    <string name="mosaic_grid">Mosaic Grid</string>
-    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
-    <string name="ignore">Ignore</string>
-    <string name="empty_ignored_title">You have no ignored</string>
-    <string name="ignored_media">Ignored Media</string>
-    <plurals name="item_count">
-        <item quantity="one">%s елемент</item>
-        <item quantity="few">%s елементи</item>
-        <item quantity="many">%s елементів</item>
-        <item quantity="other">%s елементів</item>
-    </plurals>
     <string name="type_stylus">Stylus</string>
     <string name="type_highlighter">Highlighter</string>
     <string name="type_marker">Marker</string>
@@ -319,6 +307,22 @@
     <string name="adjust">Adjust</string>
     <string name="filters">Filters</string>
     <string name="markup">Markup</string>
+    <string name="type_size">Size</string>
+    <string name="encrypting_media">Encrypting media...</string>
+    <string name="decrypt_vault">Decrypt Vault</string>
+    <string name="restore_vault_summary">The current vault and its content will be decrypted and restored.</string>
+    <string name="restore_vault_title">Confirm Decryption?</string>
+    <string name="yes">Yes</string>
+    <string name="vault_deletion_title">Confirm Deletion?</string>
+    <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.</string>
+    <string name="create_new_vault_title">Create new vault?</string>
+    <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)</string>
+    <string name="select_a_vault">Select a vault</string>
+    <string name="mosaic_grid">Mosaic Grid</string>
+    <string name="mosaic_grid_info">Show media in a mosaic grid</string>
+    <string name="ignore">Ignore</string>
+    <string name="empty_ignored_title">You have no ignored</string>
+    <string name="ignored_media">Ignored Media</string>
     <string name="tag_favorite">favorite</string>
     <string name="tag_image">image</string>
     <string name="tag_video">video</string>
@@ -335,16 +339,6 @@
     <string name="notification_summary">Permit the app to show notification about analysis of local media, when new media are detected</string>
     <string name="analyzing_media">Analyzing media</string>
     <string name="action_stop">Stop</string>
-    <string name="type_size">Size</string>
-    <string name="encrypting_media">Encrypting media...</string>
-    <string name="decrypt_vault">Decrypt Vault</string>
-    <string name="restore_vault_summary">The current vault and its content will be decrypted and restored.</string>
-    <string name="restore_vault_title">Confirm Decryption?</string>
-    <string name="yes">Yes</string>
-    <string name="vault_deletion_title">Confirm Deletion?</string>
-    <string name="vault_deletion_summary">The current vault and its content will be deleted permanently.</string>
-    <string name="create_new_vault_title">Create new vault?</string>
-    <string name="create_new_vault_summary">The vault will be accessed using your phone security measures (password or biometrics)</string>
     <string name="tag_album">album</string>
     <string name="tag_january">january</string>
     <string name="tag_february">february</string>
@@ -388,4 +382,10 @@
     <string name="menu_search">Search %1$s</string>
     <string name="nav_albums">Albums</string>
     <string name="app_name">RiGallery</string>
+    <plurals name="item_count">
+        <item quantity="one">%s елемент</item>
+        <item quantity="few">%s елементи</item>
+        <item quantity="many">%s елементів</item>
+        <item quantity="other">%s елементів</item>
+    </plurals>
 </resources>
