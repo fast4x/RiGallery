@@ -382,6 +382,12 @@
     <string name="menu_search">Search %1$s</string>
     <string name="nav_albums">Albums</string>
     <string name="app_name">RiGallery</string>
+    <string name="settings_check_update_title">Check Update</string>
+    <string name="update_available">Update available</string>
+    <string name="app_update_dialog_new">The new version %s can be downloaded!</string>
+    <string name="actions_you_can_do">Actions you can do:</string>
+    <string name="open_the_github_releases_web_page_and_download_latest_version">Open the Github releases web page and download latest version</string>
+    <string name="download_latest_version_from_github_you_will_find_the_file_in_the_notification_area_and_you_can_install_by_clicking_on_it">Download latest version from Github, you will find the file in the notification area and you can install by clicking on it</string>
     <plurals name="item_count">
         <item quantity="other">%s개 항목</item>
     </plurals>

@@ -251,7 +251,7 @@ fun rememberSettingsList(
             title = "Language", //context.getString(R.string.show_media_type),
             summary = Languages.languageFromcode(launguageApp).toString(),
             onClick = { showLaunguageAppMenu = true },
-            screenPosition = Position.Top
+            screenPosition = Position.Alone
         )
     }
     OptionSheetMenu(
@@ -268,6 +268,17 @@ fun rememberSettingsList(
         onSelected = { launguageApp = Languages.entries[it].code },
         onDismiss = { showLaunguageAppMenu = false }
     )
+
+
+    var checkUpdate by Settings.Misc.rememberCheckUpdate()
+    val checkUpdateValuePref = remember(checkUpdate) {
+        SettingsEntity.SwitchPreference(
+            title = context.getString(R.string.settings_check_update_title),
+            isChecked = checkUpdate,
+            onCheck = { checkUpdate = it },
+            screenPosition = Position.Bottom
+        )
+    }
 
 
     var forceTheme by Settings.Misc.rememberForceTheme()
@@ -353,7 +364,7 @@ fun rememberSettingsList(
             summary = context.getString(R.string.allow_vibrations_summary),
             isChecked = allowVibrations,
             onCheck = { allowVibrations = it },
-            screenPosition = Position.Bottom
+            screenPosition = Position.Middle
         )
     }
 
@@ -532,7 +543,7 @@ fun rememberSettingsList(
             title = context.getString(R.string.date_header),
             summary = context.getString(R.string.date_header_summary),
             onClick = { navigate(Screen.DateFormatScreen()) },
-            screenPosition = Position.Top
+            screenPosition = Position.Middle
         )
     }
 
@@ -577,6 +588,7 @@ fun rememberSettingsList(
             add(trashCanEnabledPref)
             add(secureModePref)
             add(allowVibrationsPref)
+            add(checkUpdateValuePref)
             /** ********************* **/
             /** ********************* **/
             add(SettingsEntity.Header(title = context.getString(R.string.customization)))

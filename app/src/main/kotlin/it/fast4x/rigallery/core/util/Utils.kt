@@ -1,7 +1,10 @@
 package it.fast4x.rigallery.core.util
 
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 
 inline val isAtLeastAndroid12
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -22,4 +25,17 @@ fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier
     } else {
         this
     }
+}
+
+
+@Composable
+fun getVersionCode(): Int {
+    val context = LocalContext.current
+    try {
+        val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        return pInfo.versionCode
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+    }
+    return 0
 }

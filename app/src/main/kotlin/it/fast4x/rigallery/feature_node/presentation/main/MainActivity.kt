@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -43,6 +44,7 @@ import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
+import it.fast4x.rigallery.core.extensions.checkupdate.CheckAvailableNewVersion
 import it.fast4x.rigallery.core.util.ext.OkHttpRequest
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
@@ -86,30 +88,43 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setApplicationLocales(if (langCode.value == "") sysLocale else appLocale)
 
 
-            var request = OkHttpRequest(OkHttpClient())
-            val urlVersionCode =
-                "https://raw.githubusercontent.com/fast4x/RiGallery/main/updatedVersion/updatedVersionCode.ver"
-            request.GET(urlVersionCode, object : Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    val responseData = response.body?.string()
-                    runOnUiThread {
-                        try {
-                            if (responseData != null) {
-                                val file = File(filesDir, "RiGalleryUpdatedVersionCode.ver")
-                                file.writeText(responseData.toString())
+            var showNewversionDialog by rememberSaveable {
+                mutableStateOf(true)
+            }
+            val checkUpdate = mediaViewModel.checkUpdate.collectAsState()
+            if (checkUpdate.value) {
+                var request = OkHttpRequest(OkHttpClient())
+                val urlVersionCode =
+                    "https://raw.githubusercontent.com/fast4x/RiGallery/main/updatedVersion/updatedVersionCode.ver"
+                request.GET(urlVersionCode, object : Callback {
+                    override fun onResponse(call: Call, response: Response) {
+                        val responseData = response.body?.string()
+                        runOnUiThread {
+                            try {
+                                if (responseData != null) {
+                                    val file = File(filesDir, "UpdatedVersionCode.ver")
+                                    file.writeText(responseData.toString())
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
                             }
-                        } catch (e: Exception) {
-                            e.printStackTrace()
                         }
+
                     }
 
-                }
+                    @OptIn(UnstableApi::class)
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("UpdatedVersionCode", "Check failure")
+                    }
+                })
 
-                @OptIn(UnstableApi::class)
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.d("UpdatedVersionCode", "Check failure")
-                }
-            })
+
+                if (showNewversionDialog)
+                    CheckAvailableNewVersion(
+                        onDismiss = { showNewversionDialog = false },
+                        updateAvailable = {}
+                    )
+            }
 
             GalleryTheme {
                 val navController = rememberNavController()

@@ -136,6 +136,10 @@ open class MediaViewModel @Inject constructor(
         repository.getSetting(Settings.Misc.LANGUAGE_APP, Languages.System.code)
             .stateIn(viewModelScope, SharingStarted.Eagerly, Languages.System.code)
 
+    val checkUpdate =
+        repository.getSetting(Settings.Misc.CHECK_UPDATE, false)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
     private val permissionState = MutableStateFlow(false)
 
     val mediaFlow by lazy {

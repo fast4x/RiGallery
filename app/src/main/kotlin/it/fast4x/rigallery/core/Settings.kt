@@ -401,6 +401,12 @@ object Settings {
         fun rememberIgnoreVideos() =
             rememberPreference(key = IGNORE_VIDEOS, defaultValue = false)
 
+        val CHECK_UPDATE = booleanPreferencesKey("no_classification")
+
+        @Composable
+        fun rememberCheckUpdate() =
+            rememberPreference(key = CHECK_UPDATE, defaultValue = false)
+
         fun getSetting(context: Context, key: Preferences.Key<String>) = context.dataStore.data.map { it[key] }
     }
 }
