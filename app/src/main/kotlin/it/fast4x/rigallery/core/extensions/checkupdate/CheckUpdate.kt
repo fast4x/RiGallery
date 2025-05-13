@@ -1,5 +1,6 @@
 package it.fast4x.rigallery.core.extensions.checkupdate
 
+import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.extensions.components.DefaultDialog
 import it.fast4x.rigallery.core.util.getVersionCode
+import it.fast4x.rigallery.core.util.whatBetterAbiVersion
 import java.io.File
 
 @Composable
@@ -116,34 +118,36 @@ fun NewVersionDialog (
                         }
                 )
             }
-//            Spacer(modifier = Modifier.height(10.dp))
-//            Row(
-//                horizontalArrangement = Arrangement.SpaceBetween,
-//                verticalAlignment = Alignment.CenterVertically,
-//                modifier = Modifier
-//                    .padding(bottom = 20.dp)
-//                    .fillMaxWidth()
-//            ) {
-//                BasicText(
-//                    text = stringResource(R.string.download_latest_version_from_github_you_will_find_the_file_in_the_notification_area_and_you_can_install_by_clicking_on_it),
-//                    style = MaterialTheme.typography.titleSmall,
-//                    maxLines = 4,
-//                    overflow = TextOverflow.Ellipsis,
-//                    modifier = Modifier.fillMaxWidth(0.8f)
-//                )
-//                Image(
-//                    painter = painterResource(R.drawable.downloaded),
-//                    contentDescription = null,
-//                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
-//                    modifier = Modifier
-//                        .size(30.dp)
-//                        .clickable {
-//                            onDismiss()
-//                            //TODO Download from github specific cpu version
-//                            //uriHandler.openUri("https://github.com/fast4x/RiGallery/releases/download/$updatedVersionName/rimusic-full-release.apk")
-//                        }
-//                )
-//            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .fillMaxWidth()
+            ) {
+                BasicText(
+                    text = stringResource(R.string.download_latest_version_from_github_you_will_find_the_file_in_the_notification_area_and_you_can_install_by_clicking_on_it),
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                )
+                Image(
+                    painter = painterResource(R.drawable.downloaded),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable {
+                            onDismiss()
+                            val downloadUrl = "https://github.com/fast4x/RiGallery/releases/download/$updatedVersionName/RiGallery-${updatedVersionName.substringAfter("v")}-${whatBetterAbiVersion}-release.apk"
+                            println("NewVersionDialog: downloadUrl: $downloadUrl")
+                            uriHandler.openUri(downloadUrl)
+                        }
+                )
+            }
 //            Row(
 //                horizontalArrangement = Arrangement.SpaceBetween,
 //                verticalAlignment = Alignment.CenterVertically,
