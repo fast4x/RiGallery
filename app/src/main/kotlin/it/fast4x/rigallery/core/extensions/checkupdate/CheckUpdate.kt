@@ -143,7 +143,6 @@ fun NewVersionDialog (
                         .clickable {
                             onDismiss()
                             val downloadUrl = "https://github.com/fast4x/RiGallery/releases/download/$updatedVersionName/RiGallery-${updatedVersionName.substringAfter("v")}-${whatBetterAbiVersion}-release.apk"
-                            println("NewVersionDialog: downloadUrl: $downloadUrl")
                             uriHandler.openUri(downloadUrl)
                         }
                 )
