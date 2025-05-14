@@ -18,7 +18,7 @@ inline val isAtLeastAndroid14
 inline val isAtLeastAndroid15
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM
 
-inline val whatBetterAbiVersion
+inline val whatBetterAbiVersion: String?
     get() = Build.SUPPORTED_ABIS[0]
 
 fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier) : Modifier {
