@@ -3,13 +3,14 @@
 
 # RiGallery
 **An Advanced Android Media Gallery**
-</div>
+
 <br><br>
-<!--
+
 <a href="https://github.com/fast4x/RiGallery/releases"><img src="https://img.shields.io/github/downloads/fast4x/RiGallery/total?label=Total%20Downloads"></a>
 <a href="https://github.com/fast4x/RiGallery/releases/latest"><img src="https://img.shields.io/github/downloads/fast4x/RiGallery/latest/total?label=Downloads%20of%20latest%20Release"></a>
 <a href="https://github.com/fast4x/RiGallery/releases/latest"><img src="https://img.shields.io/github/v/release/fast4x/RiGallery?label=Release"></a>
--->
+
+</div>
 
 ## ✨ Features
 - Multilanguages, support system language but can change it in other language from settings
