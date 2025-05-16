@@ -83,7 +83,8 @@ If you want:
 ### Donations are welcome
 If you like RiGallery, you can **make a small donation** to support the development and maintenance of the app:
 * Click on the **Sponsor button** at the top of this page
-* Or in the settings page directly from the app you installed.
+* Or in the link you find in the **Sponsor this Project** section
+* Or from the **settings page** directly in the app you installed.
 
 <br>
 
