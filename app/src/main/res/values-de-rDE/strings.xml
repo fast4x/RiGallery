@@ -336,7 +336,7 @@
     <string name="tag_country">Land</string>
     <string name="tag_locality">Ort</string>
     <string name="notification">Benachrichtigung</string>
-    <string name="notification_summary">Permit the app to show notification about analysis of local media, when new media are detected</string>
+    <string name="notification_summary">Erlaube der App, Benachrichtigungen zur Analyse lokaler Medien anzuzeigen, sobald neue Inhalte erkannt werden</string>
     <string name="analyzing_media">Analysiere Medien</string>
     <string name="action_stop">Stopp</string>
     <string name="tag_album">Album</string>
