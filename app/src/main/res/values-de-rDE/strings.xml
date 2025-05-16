@@ -169,7 +169,7 @@
     <string name="set_default_screen">Standard-Bildschirm auswählen</string>
     <string name="done">Fertig</string>
     <string name="toggle_audio_cd">Audio umschalten</string>
-    <string name="auto">Auto</string>
+    <string name="auto">Automatisch</string>
     <string name="change_playback_speed_cd">Ändere Wiedergabegeschwindigkeit</string>
     <string name="location_new_album">Standort: interner Speicher/%1$s</string>
     <string name="permission_manage_files_title">Verwalte alle Dateien</string>
@@ -284,10 +284,10 @@
     <string name="date_header_summary">Erstelle deine eigenen Datumsformate</string>
     <string name="launch_on_library">In der Bibliothek starten</string>
     <string name="categories">Kategorien</string>
-    <string name="classified_media">%1$s classified media</string>
-    <string name="scan_for_new_categories">Scan for new categories</string>
-    <string name="scanning_media">Scanning media...</string>
-    <string name="date_header_title">Date Header</string>
+    <string name="classified_media">%1$s Verschlüsselte Medien</string>
+    <string name="scan_for_new_categories">Nach neuen Kategorien suchen</string>
+    <string name="scanning_media">Durchsuche Medien...</string>
+    <string name="date_header_title">Datumsüberschrift</string>
     <string name="media_view">Media View</string>
     <string name="exif_date">Exif Date</string>
     <string name="media_info">Media Info</string>
