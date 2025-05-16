@@ -33,6 +33,7 @@ import com.smarttoolfactory.cropper.crop
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.util.titlecaseFirstCharIfItIsLowercase
 import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -95,6 +96,7 @@ fun MediaItemHeader(
             .replace("October", stringOctober)
             .replace("November", stringNovember)
             .replace("December", stringDecember)
+            .titlecaseFirstCharIfItIsLowercase()
     }
 
     Row(

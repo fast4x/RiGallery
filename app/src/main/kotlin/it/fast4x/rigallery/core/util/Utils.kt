@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import java.util.Locale
 
 inline val isAtLeastAndroid12
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -40,4 +41,8 @@ fun getVersionCode(): Int {
         e.printStackTrace()
     }
     return 0
+}
+
+fun String.titlecaseFirstCharIfItIsLowercase() = replaceFirstChar {
+    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
 }
