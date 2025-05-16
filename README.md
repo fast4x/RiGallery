@@ -63,7 +63,7 @@
 - Romanian
 - Russian
 - Serbian (Cyrillic)
-- Spanich
+- Spanish
 - Swedish
 - Turkish
 - Ukrainian
