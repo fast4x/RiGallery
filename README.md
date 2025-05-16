@@ -76,11 +76,16 @@
 
 ## 🤝 Contributing
 ### Pull requests are welcome
-
 If you want:
 * to develop new functions or fix a bug, fork the repository, send a pull request.
 * to translate or improve a translation go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8b330e379e2097692431908),
-<br><br>
+
+### Donations are welcome
+If you like RiGallery, you can **make a small donation** to support the development and maintenance of the app:
+* Click on the **Sponsor button** at the top of this page
+* Or in the settings page directly from the app you installed.
+
+<br>
 
 ## 🔤 Translate into your language
 Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8b330e379e2097692431908), help with the translations.
