@@ -298,6 +298,21 @@ private fun <T: Media> MediaGridContentWithHeaders(
     val scope = rememberCoroutineScope()
     val stringToday = stringResource(id = R.string.header_today)
     val stringYesterday = stringResource(id = R.string.header_yesterday)
+    val stringJanuary = stringResource(id = R.string.tag_january)
+    val stringFebruary = stringResource(id = R.string.tag_february)
+    val stringMarch = stringResource(id = R.string.tag_march)
+    val stringApril = stringResource(id = R.string.tag_april)
+    val stringMay = stringResource(id = R.string.tag_may)
+    val stringJune = stringResource(id = R.string.tag_june)
+    val stringJuly = stringResource(id = R.string.tag_july)
+    val stringAugust = stringResource(id = R.string.tag_august)
+    val stringSeptember = stringResource(id = R.string.tag_september)
+    val stringOctober = stringResource(id = R.string.tag_october)
+    val stringNovember = stringResource(id = R.string.tag_november)
+    val stringDecember = stringResource(id = R.string.tag_december)
+
+
+
     val feedbackManager = rememberFeedbackManager()
     val headers by rememberedDerivedState(mediaState.value) {
         mediaState.value.headers.toMutableStateList()
@@ -321,7 +336,9 @@ private fun <T: Media> MediaGridContentWithHeaders(
     ) {
         LazyVerticalGrid(
             state = gridState,
-            modifier = Modifier.fillMaxSize().testTag("media_grid")
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag("media_grid")
                 .pointerInput(Unit) {
                     detectPinchGestures(
                         pass = PointerEventPass.Initial,
@@ -379,11 +396,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 fadeOutSpec = tween(durationMillis = 100),
                                 placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                             ),
-                        date = remember {
-                            it.text
-                                .replace("Today", stringToday)
-                                .replace("Yesterday", stringYesterday)
-                        },
+                        date = remember { it.text },
                         showAsBig = remember { it.key.isBigHeaderKey },
                         isCheckVisible = selectionState,
                         isChecked = isChecked

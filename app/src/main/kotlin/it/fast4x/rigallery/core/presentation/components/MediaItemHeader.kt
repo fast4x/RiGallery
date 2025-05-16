@@ -25,11 +25,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.cropper.crop
+import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
 import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -59,6 +63,40 @@ fun MediaItemHeader(
 //    val smallTextStyle = MaterialTheme.typography.titleLarge.copy(
 //        fontWeight = FontWeight.Bold
 //    )
+
+    val stringToday = stringResource(id = R.string.header_today)
+    val stringYesterday = stringResource(id = R.string.header_yesterday)
+    val stringJanuary = stringResource(id = R.string.tag_january)
+    val stringFebruary = stringResource(id = R.string.tag_february)
+    val stringMarch = stringResource(id = R.string.tag_march)
+    val stringApril = stringResource(id = R.string.tag_april)
+    val stringMay = stringResource(id = R.string.tag_may)
+    val stringJune = stringResource(id = R.string.tag_june)
+    val stringJuly = stringResource(id = R.string.tag_july)
+    val stringAugust = stringResource(id = R.string.tag_august)
+    val stringSeptember = stringResource(id = R.string.tag_september)
+    val stringOctober = stringResource(id = R.string.tag_october)
+    val stringNovember = stringResource(id = R.string.tag_november)
+    val stringDecember = stringResource(id = R.string.tag_december)
+
+    val translatedDate = remember {
+        date.replace("Today", stringToday)
+            .replace("Today", stringToday)
+            .replace("Yesterday", stringYesterday)
+            .replace("January", stringJanuary)
+            .replace("February", stringFebruary)
+            .replace("March", stringMarch)
+            .replace("April", stringApril)
+            .replace("May", stringMay)
+            .replace("June", stringJune)
+            .replace("July", stringJuly)
+            .replace("August", stringAugust)
+            .replace("September", stringSeptember)
+            .replace("October", stringOctober)
+            .replace("November", stringNovember)
+            .replace("December", stringDecember)
+    }
+
     Row(
         modifier = (if (showAsBig) bigModifier else smallModifier)
             .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
@@ -69,7 +107,7 @@ fun MediaItemHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = remember { date },
+            text = remember { translatedDate },
             style = if (showAsBig) bigTextStyle else smallTextStyle,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.then(

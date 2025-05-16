@@ -384,11 +384,7 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                                 fadeOutSpec = tween(durationMillis = 100),
                                 placementSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy)
                             ),
-                        date = remember {
-                            it.text
-                                .replace("Today", stringToday)
-                                .replace("Yesterday", stringYesterday)
-                        },
+                        date = remember { it.text },
                         showAsBig = remember { it.key.isBigHeaderKey },
                         isCheckVisible = selectionState,
                         isChecked = isChecked
