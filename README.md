@@ -71,7 +71,7 @@
 <br><br>
 
 ## 📲 Installation
-The first version will be released soon
+[<img src="./docs/getItGithub.png" alt="GitHub" height="80">](https://github.com/fast4x/RiMusic/releases/latest)
 <br><br>
 
 ## 🤝 Contributing
