@@ -85,12 +85,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideNavBar
-import it.fast4x.rigallery.core.Settings.Misc.rememberOldNavbar
+
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionItem
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionSheet
 import it.fast4x.rigallery.feature_node.presentation.util.NavigationItem
@@ -154,7 +151,7 @@ fun AppBarContainer(
     val useNavRail by remember(windowSizeClass) {
         mutableStateOf(windowSizeClass.widthSizeClass > WindowWidthSizeClass.Compact)
     }
-    val useOldNavbar by rememberOldNavbar()
+    //val useOldNavbar by rememberOldNavbar()
 
 //
     val scope = rememberCoroutineScope()
@@ -259,68 +256,69 @@ fun AppBarContainer(
 
 //
 
-    AnimatedVisibility(
-        visible = useOldNavbar,
-        enter = enterAnimation,
-        exit = exitAnimation
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            val anySelectedRoute = remember(backStackEntry) {
-                bottomNavItems.any { it.route == navController.currentDestination?.route }
-            }
-            val showNavRail by remember(useNavRail, bottomBarState, anySelectedRoute) {
-                derivedStateOf {
-                    useNavRail && bottomBarState && anySelectedRoute
-                }
-            }
-            AnimatedVisibility(
-                visible = showNavRail,
-                enter = slideInHorizontally { it * -2 },
-                exit = slideOutHorizontally { it * -2 }
-            ) {
-                ClassicNavigationRail(
-                    backStackEntry = backStackEntry,
-                    navigationItems = bottomNavItems,
-                    onClick = { navigate(navController, it) }
-                )
-            }
-            val animatedPadding by animateDpAsState(
-                targetValue = remember(showNavRail) {
-                    if (showNavRail) 80.dp else 0.dp
-                },
-                label = "animatedPadding"
-            )
-            Box(
-                modifier = Modifier.padding(start = animatedPadding)
-            ) {
-                content()
-            }
-            val hideNavBarSetting by rememberAutoHideNavBar()
-            val showClassicNavbar by remember(useNavRail, bottomBarState, isScrolling, hideNavBarSetting, anySelectedRoute) {
-                derivedStateOf {
-                    !useNavRail && bottomBarState && (!isScrolling || !hideNavBarSetting) && anySelectedRoute
-                }
-            }
-            AnimatedVisibility(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                visible = showClassicNavbar,
-                enter = slideInVertically { it * 2 },
-                exit = slideOutVertically { it * 2 },
-                content = {
-                    ClassicNavBar(
-                        backStackEntry = backStackEntry,
-                        navigationItems = bottomNavItems,
-                        onClick = { navigate(navController, it) },
-                    )
-                }
-            )
-        }
-    }
-    AnimatedVisibility(
-        visible = !useOldNavbar,
-        enter = enterAnimation,
-        exit = exitAnimation
-    ) {
+    // NOT REQUIRED
+//    AnimatedVisibility(
+//        visible = useOldNavbar,
+//        enter = enterAnimation,
+//        exit = exitAnimation
+//    ) {
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            val anySelectedRoute = remember(backStackEntry) {
+//                bottomNavItems.any { it.route == navController.currentDestination?.route }
+//            }
+//            val showNavRail by remember(useNavRail, bottomBarState, anySelectedRoute) {
+//                derivedStateOf {
+//                    useNavRail && bottomBarState && anySelectedRoute
+//                }
+//            }
+//            AnimatedVisibility(
+//                visible = showNavRail,
+//                enter = slideInHorizontally { it * -2 },
+//                exit = slideOutHorizontally { it * -2 }
+//            ) {
+//                ClassicNavigationRail(
+//                    backStackEntry = backStackEntry,
+//                    navigationItems = bottomNavItems,
+//                    onClick = { navigate(navController, it) }
+//                )
+//            }
+//            val animatedPadding by animateDpAsState(
+//                targetValue = remember(showNavRail) {
+//                    if (showNavRail) 80.dp else 0.dp
+//                },
+//                label = "animatedPadding"
+//            )
+//            Box(
+//                modifier = Modifier.padding(start = animatedPadding)
+//            ) {
+//                content()
+//            }
+//            val hideNavBarSetting by rememberAutoHideNavBar()
+//            val showClassicNavbar by remember(useNavRail, bottomBarState, isScrolling, hideNavBarSetting, anySelectedRoute) {
+//                derivedStateOf {
+//                    !useNavRail && bottomBarState && (!isScrolling || !hideNavBarSetting) && anySelectedRoute
+//                }
+//            }
+//            AnimatedVisibility(
+//                modifier = Modifier.align(Alignment.BottomCenter),
+//                visible = showClassicNavbar,
+//                enter = slideInVertically { it * 2 },
+//                exit = slideOutVertically { it * 2 },
+//                content = {
+//                    ClassicNavBar(
+//                        backStackEntry = backStackEntry,
+//                        navigationItems = bottomNavItems,
+//                        onClick = { navigate(navController, it) },
+//                    )
+//                }
+//            )
+//        }
+//    }
+//    AnimatedVisibility(
+//        visible = !useOldNavbar,
+//        enter = enterAnimation,
+//        exit = exitAnimation
+//    ) {
 
         Box(modifier = Modifier.fillMaxSize()) {
             content()
@@ -357,7 +355,7 @@ fun AppBarContainer(
                 }
             )
         }
-    }
+    //}
 }
 
 private fun navigate(navController: NavController, route: String) {

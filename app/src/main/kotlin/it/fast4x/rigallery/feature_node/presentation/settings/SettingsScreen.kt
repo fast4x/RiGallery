@@ -1,6 +1,8 @@
 /*
  * SPDX-FileCopyrightText: 2023 IacobIacob01
  * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: 2025 Fast4x
+ * SPDX-License-Identifier: GPL-3.0
  */
 
 package it.fast4x.rigallery.feature_node.presentation.settings
@@ -409,16 +411,17 @@ fun rememberSettingsList(
         )
     }
 
-    var showOldNavbar by Settings.Misc.rememberOldNavbar()
-    val showOldNavbarPref = remember(showOldNavbar) {
-        SettingsEntity.SwitchPreference(
-            title = context.getString(R.string.old_navbar),
-            summary = context.getString(R.string.old_navbar_summary),
-            isChecked = showOldNavbar,
-            onCheck = { showOldNavbar = it },
-            screenPosition = Position.Top
-        )
-    }
+    // NOT REQUIRED
+//    var showOldNavbar by Settings.Misc.rememberOldNavbar()
+//    val showOldNavbarPref = remember(showOldNavbar) {
+//        SettingsEntity.SwitchPreference(
+//            title = context.getString(R.string.old_navbar),
+//            summary = context.getString(R.string.old_navbar_summary),
+//            isChecked = showOldNavbar,
+//            onCheck = { showOldNavbar = it },
+//            screenPosition = Position.Top
+//        )
+//    }
 
     var hideTimelineOnAlbum by Settings.Album.rememberHideTimelineOnAlbum()
     val hideTimelineOnAlbumPref = remember(hideTimelineOnAlbum) {
@@ -572,28 +575,16 @@ fun rememberSettingsList(
         mutableStateListOf<SettingsEntity>().apply {
             add(SettingsEntity.Header(title = "Language"))
             add(languageAppPref)
-            /** ********************* **/
-            /** ********************* **/
             add(SettingsEntity.Header(title = context.getString(R.string.settings_theme_header)))
-            /** Theme Section Start **/
-            /** Theme Section Start **/
             add(forceThemeValuePref)
             add(darkThemePref)
             add(amoledModePref)
-            /** ********************* **/
-            /** ********************* **/
             add(SettingsEntity.Header(title = context.getString(R.string.settings_general)))
-            /** General Section Start **/
-            /** General Section Start **/
             add(trashCanEnabledPref)
             add(secureModePref)
             add(allowVibrationsPref)
             add(checkUpdateValuePref)
-            /** ********************* **/
-            /** ********************* **/
             add(SettingsEntity.Header(title = context.getString(R.string.customization)))
-            /** Customization Section Start **/
-            /** Customization Section Start **/
             add(showMediaTypePref)
             add(dateHeaderPref)
             add(groupByMonthPref)
@@ -606,18 +597,12 @@ fun rememberSettingsList(
             add(autoHideOnVideoPlayPref)
             add(autoPlayVideoPref)
             add(sharedElementsPref)
-            /** ********************* **/
-            /** ********************* **/
-            /** Navigation Section Start **/
-            /** Navigation Section Start **/
             add(SettingsEntity.Header(title = context.getString(R.string.navigation)))
-            add(showOldNavbarPref)
+            //add(showOldNavbarPref) // NOT REQUIRED
             add(autoHideSearch)
             add(autoHideNavigation)
             add(SettingsEntity.Header(title = context.getString(R.string.ai_category)))
             add(noClassificationPref)
-            /** ********************* **/
-            /** ********************* **/
 
         }
     }

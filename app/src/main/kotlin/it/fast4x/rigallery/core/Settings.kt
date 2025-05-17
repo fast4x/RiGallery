@@ -288,8 +288,8 @@ object Settings {
 
         private val OLD_NAVBAR = booleanPreferencesKey("old_navbar")
 
-        @Composable
-        fun rememberOldNavbar() = rememberPreference(key = OLD_NAVBAR, defaultValue = false)
+//        @Composable
+//        fun rememberOldNavbar() = rememberPreference(key = OLD_NAVBAR, defaultValue = false)
 
         private val ALLOW_VIBRATIONS = booleanPreferencesKey("allow_vibrations")
 
