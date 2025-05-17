@@ -286,8 +286,7 @@ object Settings {
         @Composable
         fun rememberStaggeredGrid() = rememberPreference(key = USE_STAGGERED_GRID, defaultValue = false)
 
-        private val OLD_NAVBAR = booleanPreferencesKey("old_navbar")
-
+//        private val OLD_NAVBAR = booleanPreferencesKey("old_navbar")
 //        @Composable
 //        fun rememberOldNavbar() = rememberPreference(key = OLD_NAVBAR, defaultValue = false)
 

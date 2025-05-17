@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.VectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -82,6 +84,7 @@ fun OptionLayout(
             OptionButton(
                 modifier = Modifier.fillMaxWidth(),
                 icon = item.icon,
+                drawableIcon = item.drawableIcon,
                 textContainer = {
                     Text(
                         text = item.text,
@@ -108,6 +111,7 @@ fun OptionLayout(
 fun OptionButton(
     modifier: Modifier = Modifier,
     icon: ImageVector? = Icons.Default.ChevronRight,
+    drawableIcon: Int? = null,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     textContainer: @Composable () -> Unit,
@@ -136,12 +140,22 @@ fun OptionButton(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (icon != null)
+            if (drawableIcon != null)
                 Icon(
-                    imageVector = icon,
+                    painter = painterResource(drawableIcon),
                     contentDescription = null,
-                    tint = contentColor
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(24.dp).padding(2.dp)
                 )
+            else {
+                if (icon != null)
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = contentColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+            }
             Column(
                 modifier = mod,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -171,12 +185,22 @@ fun OptionButton(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (icon != null)
+            if (drawableIcon != null)
                 Icon(
-                    imageVector = icon,
+                    painter = painterResource(drawableIcon),
                     contentDescription = null,
-                    tint = contentColor
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(24.dp).padding(2.dp)
                 )
+            else {
+                if (icon != null)
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = contentColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+            }
 
             ProvideTextStyle(
                 value = MaterialTheme.typography.bodyMedium.copy(color = contentColor)
@@ -191,6 +215,7 @@ data class OptionItem(
     val text: String,
     val summary: String? = null,
     val icon: ImageVector? = null,
+    val drawableIcon: Int? = null,
     val onClick: (summary: String) -> Unit,
     val enabled: Boolean = true,
     val containerColor: Color? = null,

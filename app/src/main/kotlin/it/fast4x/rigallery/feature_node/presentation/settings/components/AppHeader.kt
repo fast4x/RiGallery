@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -44,13 +45,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsAppHeader() {
 
-    val appName = "RiGallery"
     val appVersion = remember { "v${_root_ide_package_.it.fast4x.rigallery.BuildConfig.VERSION_NAME} (${_root_ide_package_.it.fast4x.rigallery.BuildConfig.VERSION_CODE})" }
-    val appDeveloper = "by fast4x" //stringResource(R.string.app_dev, stringResource(R.string.app_dev_name))
 
-//    val donateImage = painterResource(id = R.drawable.ic_donate)
-//    val donateTitle = stringResource(R.string.donate)
-//    val donateContentDesc = stringResource(R.string.donate_button_cd)
+    val donateImage = painterResource(id = R.drawable.donation)
+    val donateTitle = stringResource(R.string.donate)
+    val donateContentDesc = stringResource(R.string.donate_button_cd)
 
     val githubImage = painterResource(id = R.drawable.ic_github)
     val githubTitle = stringResource(R.string.github)
@@ -77,7 +76,7 @@ fun SettingsAppHeader() {
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
-                text = appName,
+                text = "RiGallery",
                 fontSize = 22.sp,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -93,7 +92,7 @@ fun SettingsAppHeader() {
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = appDeveloper,
+            text = "by Fast4x",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -102,38 +101,38 @@ fun SettingsAppHeader() {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-//            Button(
-//                onClick = {
-//                    scope.launch {
-//                        supportState.show()
-//                    }
-//                },
-//                colors = ButtonDefaults.buttonColors(
-//                    contentColor = MaterialTheme.colorScheme.onPrimary,
-//                    disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = .12f),
-//                    containerColor = MaterialTheme.colorScheme.primary,
-//                    disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = .12f),
-//                ),
-//                shape = RoundedCornerShape(8.dp),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(52.dp)
-//                    .weight(1f)
-//                    .semantics {
-//                        contentDescription = donateContentDesc
-//                    }
-//            ) {
-//                Icon(painter = donateImage, contentDescription = null)
-//                Spacer(modifier = Modifier.width(8.dp))
-//                Text(text = donateTitle)
-//            }
             Button(
-                onClick = { uriHandler.openUri(githubUrl) },
+                onClick = {
+                    scope.launch {
+                        supportState.show()
+                    }
+                },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = MaterialTheme.colorScheme.onTertiary,
                     disabledContentColor = MaterialTheme.colorScheme.onTertiary.copy(alpha = .12f),
                     containerColor = MaterialTheme.colorScheme.tertiary,
                     disabledContainerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = .12f)
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .weight(1f)
+                    .semantics {
+                        contentDescription = donateContentDesc
+                    }
+            ) {
+                Icon(painter = donateImage, contentDescription = null, modifier = Modifier.size(24.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = donateTitle)
+            }
+            Button(
+                onClick = { uriHandler.openUri(githubUrl) },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.inverseSurface,
+                    disabledContentColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = .12f),
+                    containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = .2f),
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = .12f)
                 ),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
@@ -149,6 +148,41 @@ fun SettingsAppHeader() {
                 Text(text = githubTitle)
             }
         }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(
+            onClick = { uriHandler.openUri("https://github.com/fast4x/RiGallery/issues/new?assignees=&labels=bug&template=bug_report.yaml") },
+            colors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.inverseSurface,
+                disabledContentColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = .12f),
+                containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = .3f),
+                disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = .12f)
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp)
+        ) {
+            Text(text = stringResource(R.string.report_an_issue))
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(
+            onClick = { uriHandler.openUri("https://github.com/fast4x/RiGallery/issues/new?assignees=&labels=feature_request&template=feature_request.yaml") },
+            colors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.inverseSurface,
+                disabledContentColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = .12f),
+                containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = .3f),
+                disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = .12f)
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                //.weight(1f)
+                .height(52.dp)
+        ) {
+            Text(text = stringResource(R.string.request_a_feature_or_suggest_an_idea))
+        }
+
     }
 }
 

@@ -24,9 +24,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -35,6 +39,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.presentation.components.DragHandle
+import it.fast4x.rigallery.core.util.ext.IconResource
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionItem
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionLayout
 import it.fast4x.rigallery.feature_node.presentation.util.AppBottomSheetState
@@ -45,62 +50,75 @@ import kotlinx.coroutines.launch
 fun SupportSheet(
     state: AppBottomSheetState
 ) {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val uriHandler = LocalUriHandler.current
     var showCryptoOptions by rememberSaveable {
         mutableStateOf(false)
     }
-    val context = LocalContext.current
-    val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+    //val context = LocalContext.current
+    //val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+    val tertiaryContainer = MaterialTheme.colorScheme.tertiaryContainer
+    val onTertiaryContainer = MaterialTheme.colorScheme.onTertiaryContainer
+    val surfaceColor = MaterialTheme.colorScheme.surfaceContainer
+//    val paypalLogo = ImageVector.vectorResource(R.drawable.logo_paypal)
+//    val revolutLogo = ImageVector.vectorResource(R.drawable.logo_revolut)
     val mainOptions = remember {
         listOf(
             OptionItem(
                 text = "PayPal",
                 onClick = {
-                    uriHandler.openUri("https://www.paypal.com/paypalme/iacobionut01")
-                }
+                    uriHandler.openUri("https://www.paypal.com/paypalme/fast4x820")
+                },
+                containerColor = tertiaryContainer,
+                contentColor = onTertiaryContainer,
+                drawableIcon = R.drawable.logo_paypal
             ),
             OptionItem(
                 text = "Revolut",
                 onClick = {
-                    uriHandler.openUri("https://revolut.me/somaldoaca")
-                }
+                    uriHandler.openUri("https://revolut.me/cirinowene")
+                },
+                containerColor = tertiaryContainer,
+                contentColor = onTertiaryContainer,
+                drawableIcon = R.drawable.logo_revolut
+
             ),
-            OptionItem(
-                text = "Crypto",
-                onClick = {
-                    showCryptoOptions = true
-                }
-            )
+//            OptionItem(
+//                text = "Crypto",
+//                onClick = {
+//                    showCryptoOptions = true
+//                }
+//            )
         )
     }
-    val cryptoOnClick: (String) -> Unit = {
-        clipboardManager.setPrimaryClip(ClipData.newPlainText("", AnnotatedString(it)))
-    }
-    val cryptoOptions = remember {
-        mapOf(
-            "ETH" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
-            "POLYGON" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
-            "AVALANCHE" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
-            "BNB" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
-            "XDC" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
-            "XMR" to "48JMiDR8mZiEis8V5pWtxv3r121K6fqqZfhajiewCbff27GnucdyLfkQ12Fr6ZM1eR9Botdu3Rx1bidmHyLTZBWnJ4AJKot",
-            "EPIC" to "esWaroB8AQXZuaEJWtraPomNH3Lg1JRP3EVxr6batoFuqvf3hrHP@epicbox.epic.tech",
-            "XRP" to "rPjYh6XMMra3zHFqDn6ZnYFCmPWPnbTHkc",
-            "ADA" to "addr1q978p8x80z2d4je5gutav0ypplgtpw0mhmwky8k5mscds9ru9nma366mryl0ln8ump7ysj5wa9sg20c4x7ywjyzvacxseapv0y",
-            "XLM" to "GAHXB7JI4QEZW2ZM4CA6PQ37Y3636UXWWXDHAZLHCJV5HGXYWQJBIE5Q",
-            "INJ" to "inj1wpl0p627s98qtmadl57n0q6qrna735g72dner7",
-            "SUI" to "0xe135452c381f3298e0ddb17c3e1ede8e1d6aaefb3bc3734219dd6d14ce2177ce",
-            "SEI" to "sei1t5c9dmjdempk7hklw0mm4wkxwzauncvqsgs3l4",
-            "HBAR" to "0.0.4688681-szsjz"
-        ).map { (coin, address) ->
-            OptionItem(
-                text = coin,
-                summary = address,
-                onClick = cryptoOnClick
-            )
-        }
-    }
+//    val cryptoOnClick: (String) -> Unit = {
+//        clipboardManager.setPrimaryClip(ClipData.newPlainText("", AnnotatedString(it)))
+//    }
+//    val cryptoOptions = remember {
+//        mapOf(
+//            "ETH" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
+//            "POLYGON" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
+//            "AVALANCHE" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
+//            "BNB" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
+//            "XDC" to "0x707eF0E95e814E05efadFD3d3783401cfbE8D11E",
+//            "XMR" to "48JMiDR8mZiEis8V5pWtxv3r121K6fqqZfhajiewCbff27GnucdyLfkQ12Fr6ZM1eR9Botdu3Rx1bidmHyLTZBWnJ4AJKot",
+//            "EPIC" to "esWaroB8AQXZuaEJWtraPomNH3Lg1JRP3EVxr6batoFuqvf3hrHP@epicbox.epic.tech",
+//            "XRP" to "rPjYh6XMMra3zHFqDn6ZnYFCmPWPnbTHkc",
+//            "ADA" to "addr1q978p8x80z2d4je5gutav0ypplgtpw0mhmwky8k5mscds9ru9nma366mryl0ln8ump7ysj5wa9sg20c4x7ywjyzvacxseapv0y",
+//            "XLM" to "GAHXB7JI4QEZW2ZM4CA6PQ37Y3636UXWWXDHAZLHCJV5HGXYWQJBIE5Q",
+//            "INJ" to "inj1wpl0p627s98qtmadl57n0q6qrna735g72dner7",
+//            "SUI" to "0xe135452c381f3298e0ddb17c3e1ede8e1d6aaefb3bc3734219dd6d14ce2177ce",
+//            "SEI" to "sei1t5c9dmjdempk7hklw0mm4wkxwzauncvqsgs3l4",
+//            "HBAR" to "0.0.4688681-szsjz"
+//        ).map { (coin, address) ->
+//            OptionItem(
+//                text = coin,
+//                summary = address,
+//                onClick = cryptoOnClick
+//            )
+//        }
+//    }
     if (state.isVisible) {
         BackHandler(showCryptoOptions) {
             showCryptoOptions = false
@@ -139,19 +157,19 @@ fun SupportSheet(
                         ) {
                             append(stringResource(R.string.support_the_project))
                         }
-                        if (showCryptoOptions) {
-                            append("\n")
-                            withStyle(
-                                style = SpanStyle(
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
-                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                                    letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing
-                                )
-                            ) {
-                                append(stringResource(R.string.click_to_copy))
-                            }
-                        }
+//                        if (showCryptoOptions) {
+//                            append("\n")
+//                            withStyle(
+//                                style = SpanStyle(
+//                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+//                                    fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+//                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+//                                    letterSpacing = MaterialTheme.typography.bodyMedium.letterSpacing
+//                                )
+//                            ) {
+//                                append(stringResource(R.string.click_to_copy))
+//                            }
+//                        }
                     },
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge,
@@ -163,7 +181,8 @@ fun SupportSheet(
                 OptionLayout(
                     modifier = Modifier.fillMaxWidth(),
                     optionList = remember(showCryptoOptions) {
-                        if (showCryptoOptions) cryptoOptions else mainOptions
+                        //if (showCryptoOptions) cryptoOptions else mainOptions
+                        mainOptions
                     }
                 )
             }

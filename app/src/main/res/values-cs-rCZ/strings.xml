@@ -388,6 +388,8 @@
     <string name="actions_you_can_do">Actions you can do:</string>
     <string name="open_the_github_releases_web_page_and_download_latest_version">Open the Github releases web page and download latest version</string>
     <string name="download_latest_version_from_github_you_will_find_the_file_in_the_notification_area_and_you_can_install_by_clicking_on_it">Download latest version from Github, you will find the file in the notification area and you can install by clicking on it</string>
+    <string name="request_a_feature_or_suggest_an_idea">Request a feature or suggest an idea</string>
+    <string name="report_an_issue">Report an issue</string>
     <plurals name="item_count">
         <item quantity="one">%s položka</item>
         <item quantity="few">%s položky</item>
