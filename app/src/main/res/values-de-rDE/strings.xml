@@ -326,9 +326,9 @@
     <string name="tag_favorite">Favoriten</string>
     <string name="tag_image">Bild</string>
     <string name="tag_video">Video</string>
-    <string name="tag_rotated90">gedrehtum90</string>
-    <string name="tag_rotated180">gedrehtum180</string>
-    <string name="tag_rotated270">gedrehtum270</string>
+    <string name="tag_rotated90">90°gedreht</string>
+    <string name="tag_rotated180">180°gedreht</string>
+    <string name="tag_rotated270">270°gedreht</string>
     <string name="tag_vertical">Vertikal</string>
     <string name="tag_horizontal">Horizontal</string>
     <string name="tag_withlocation">mitstandort</string>
