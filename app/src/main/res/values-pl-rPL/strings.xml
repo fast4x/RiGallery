@@ -50,8 +50,6 @@
     <string name="nav_timeline">Oś czasu</string>
     <string name="location_cd">Lokalizacja nośników</string>
     <string name="location_map_cd">Mapa lokalizacji</string>
-    <string name="app_dev">przez %s</string>
-    <string name="app_dev_name">Fast4x</string>
     <string name="donate">Wesprzyj</string>
     <string name="github">Github</string>
     <string name="donate_button_cd">Przycisk wsparcia</string>

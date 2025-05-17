@@ -50,8 +50,6 @@
     <string name="nav_timeline">时间轴</string>
     <string name="location_cd">媒体位置</string>
     <string name="location_map_cd">位置地图</string>
-    <string name="app_dev">由 %s 开发</string>
-    <string name="app_dev_name">Fast4x</string>
     <string name="donate">捐赠</string>
     <string name="github">GitHub</string>
     <string name="donate_button_cd">捐赠按钮</string>

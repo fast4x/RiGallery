@@ -50,8 +50,6 @@
     <string name="nav_timeline">타임라인</string>
     <string name="location_cd">미디어 위치</string>
     <string name="location_map_cd">위치 지도</string>
-    <string name="app_dev">by %s</string>
-    <string name="app_dev_name">Fast4x</string>
     <string name="donate">기부하기</string>
     <string name="github">Github</string>
     <string name="donate_button_cd">기부 버튼</string>

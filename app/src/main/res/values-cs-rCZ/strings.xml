@@ -50,8 +50,6 @@
     <string name="nav_timeline">Časová osa</string>
     <string name="location_cd">Umístění médií</string>
     <string name="location_map_cd">Mapa polohy</string>
-    <string name="app_dev">od %s</string>
-    <string name="app_dev_name">Fast4x</string>
     <string name="donate">Přispět</string>
     <string name="github">GitHub</string>
     <string name="donate_button_cd">Tlačítko přispění</string>

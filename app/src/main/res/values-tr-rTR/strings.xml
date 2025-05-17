@@ -50,8 +50,6 @@
     <string name="nav_timeline">Zaman Çizelgesi</string>
     <string name="location_cd">Medya Konumu</string>
     <string name="location_map_cd">Konum Haritası</string>
-    <string name="app_dev">%s tarafından</string>
-    <string name="app_dev_name">Fast4x</string>
     <string name="donate">Bağış Yap</string>
     <string name="github">GitHub</string>
     <string name="donate_button_cd">Bağış Düğmesi</string>

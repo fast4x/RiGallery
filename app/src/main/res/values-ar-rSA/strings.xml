@@ -50,8 +50,6 @@
     <string name="nav_timeline">الخط الزمني</string>
     <string name="location_cd">موقع الوسائط</string>
     <string name="location_map_cd">خريطة الموقع</string>
-    <string name="app_dev">بواسطة %s</string>
-    <string name="app_dev_name">Fast4x</string>
     <string name="donate">تبرع</string>
     <string name="github">غيت هاب</string>
     <string name="donate_button_cd">زر التبرع</string>
