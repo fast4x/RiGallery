@@ -113,7 +113,7 @@
     <string name="trash_incompatible_title">Manche Dateien können nicht in den Papierkorb verschoben werden!</string>
     <string name="trash_incompatible_summary">Diese Dateien werden stattdessen endgültig gelöscht.</string>
     <string name="error_toast">Es ist ein Fehler aufgetreten!</string>
-    <string name="beta">Beta</string>
+    <string name="beta"></string>
     <string name="remove_metadata">Metadaten entfernen</string>
     <string name="remove_location">Standort entfernen</string>
     <string name="description">Beschreibung</string>
@@ -324,9 +324,9 @@
     <string name="tag_favorite">Favoriten</string>
     <string name="tag_image">Bild</string>
     <string name="tag_video">Video</string>
-    <string name="tag_rotated90">gedrehtum90</string>
-    <string name="tag_rotated180">gedrehtum180</string>
-    <string name="tag_rotated270">gedrehtum270</string>
+    <string name="tag_rotated90">90°gedreht</string>
+    <string name="tag_rotated180">180°gedreht</string>
+    <string name="tag_rotated270">270°gedreht</string>
     <string name="tag_vertical">Vertikal</string>
     <string name="tag_horizontal">Horizontal</string>
     <string name="tag_withlocation">mitstandort</string>
@@ -361,7 +361,7 @@
     <string name="tag_year">Jahr</string>
     <string name="tag_today">Heute</string>
     <string name="tag_yesterday">Gestern</string>
-    <string name="recent_tag">Kürzlich hinzugefügt</string>
+    <string name="recent_tag">Zuletzt verwendet</string>
     <string name="tag">Tag</string>
     <string name="album">Album</string>
     <string name="month">Monat</string>
