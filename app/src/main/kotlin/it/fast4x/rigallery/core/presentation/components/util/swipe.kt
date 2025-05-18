@@ -25,7 +25,7 @@ fun Modifier.swipe(
 ): Modifier {
     var delta by remember { mutableFloatStateOf(0f) }
     var isDragging by remember { mutableStateOf(false) }
-    val feedbackManager = rememberFeedbackManager()
+    //val feedbackManager = rememberFeedbackManager()
     var isVibrating by remember { mutableStateOf(false) }
     val animatedDelta by animateFloatAsState(
         label = "animatedDelta",
@@ -45,13 +45,13 @@ fun Modifier.swipe(
                             delta += dragAmount
                             delta = delta.coerceIn(0f, 400f)
                             if (!isVibrating && delta == 400f) {
-                                feedbackManager.vibrate()
+                                //feedbackManager.vibrate()
                                 isVibrating = true
                             }
                             change.consume()
                         }
                         if (delta == 0f) {
-                            feedbackManager.vibrate()
+                            //feedbackManager.vibrate()
                             isVibrating = true
                             change.consume()
                         }
