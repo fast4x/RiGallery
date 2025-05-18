@@ -1,5 +1,5 @@
 <div align="center">
-<img src ="/docs/logo.webp" width="150" height="150" />
+<img src ="/docs/rigallery_logo_without_background.webp" width="170" height="170" />
 
 # RiGallery
 **An Advanced Android Media Gallery**
