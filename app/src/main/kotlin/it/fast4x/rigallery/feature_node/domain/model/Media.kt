@@ -48,6 +48,7 @@ sealed class Media : Parcelable, java.io.Serializable {
     abstract val orientation: Int?
     abstract val analyzed: Int?
     abstract val location: String?
+    abstract val dominantColor: Int?
 
     val definedTimestamp: Long
         get() = takenTimestamp?.div(1000) ?: timestamp
@@ -89,6 +90,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val orientation: Int? = null,
         override val analyzed: Int? = 0,
         override val location: String? = null,
+        override val dominantColor: Int? = null,
 
     ) : Media()
 
@@ -121,6 +123,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val orientation: Int? = null,
         override val analyzed: Int? = 0,
         override val location: String? = null,
+        override val dominantColor: Int? = null,
 
     ): Media()
 
@@ -149,6 +152,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val orientation: Int? = null,
         override val analyzed: Int? = 0,
         override val location: String? = null,
+        override val dominantColor: Int? = null,
 
     ): Media() {
 
@@ -228,6 +232,7 @@ sealed class Media : Parcelable, java.io.Serializable {
         override val orientation: Int? = null,
         override val analyzed: Int? = 0,
         override val location: String? = null,
+        override val dominantColor: Int? = null,
 
     ): Media() {
 

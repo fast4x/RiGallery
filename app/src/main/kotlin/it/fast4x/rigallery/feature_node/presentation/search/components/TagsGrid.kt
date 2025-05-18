@@ -1,5 +1,6 @@
 package it.fast4x.rigallery.feature_node.presentation.search.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.enums.BaseColors
 import it.fast4x.rigallery.core.enums.DayTagsType
 import it.fast4x.rigallery.core.enums.MetadataTagsType
 import it.fast4x.rigallery.core.enums.MonthTagsType
@@ -663,6 +665,77 @@ fun SelectedTagsGrid(
                         MaterialTheme.shapes.small
                     )
                     .background(Color.Transparent, MaterialTheme.shapes.large)
+                    .animateItem()
+            )
+        }
+    }
+}
+
+@Composable
+fun ColorTagsGrid(
+    searchTag: (String) -> Unit,
+    expanded: Boolean = false,
+    addSearchTag: (String, Boolean) -> Unit,
+    selectedTags: MutableList<String>
+){
+    val rows = if (expanded) 3 else 1
+    val baseHeight = 60.dp
+    val height =  if (expanded) baseHeight*rows else baseHeight
+
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(rows),
+        state = rememberLazyGridState(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.height(height)
+    ) {
+        items(BaseColors.entries.size) { index ->
+            val tag = BaseColors.entries[index].tag
+
+//            var tagInAction = remember { mutableStateOf("") }
+//            var showTagAction = remember { mutableStateOf(false) }
+//
+//            if (showTagAction.value) {
+//                TagAction(
+//                    onSearch = { searchTag(tagInAction.value) },
+//                    onSearchCombined = { addSearchTag(tagInAction.value, true) },
+//                    onCombine = { addSearchTag(tagInAction.value, false) },
+//                    onDismiss = { showTagAction.value = false },
+//                    tag = tag,
+//                    tags = selectedTags,
+//                    show = showTagAction
+//                )
+//            }
+
+            var selected by remember { mutableStateOf(false) }
+
+            FilterChip(
+                selected = selected,
+                onClick = {
+//                    tagInAction.value = tag
+//                    showTagAction.value = !showTagAction.value
+                    selected = !selected
+                    addSearchTag(tag, false)
+                },
+                label = { Text(text = tag) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = BaseColors.entries[index].icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors().copy(
+                    disabledSelectedContainerColor = Color.Transparent,
+                    selectedContainerColor =  MaterialTheme.colorScheme.surfaceColorAtElevation(50.dp),
+                    selectedLabelColor = MaterialTheme.colorScheme.onBackground,
+                    selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground,
+                    containerColor = BaseColors.entries[index].color
+                ),
+                shape = MaterialTheme.shapes.small,
+                border = BorderStroke(2.dp, BaseColors.entries[index].color),
+                modifier = Modifier
+                    //.background(BaseColors.entries[index].color, MaterialTheme.shapes.large)
                     .animateItem()
             )
         }

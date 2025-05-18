@@ -47,6 +47,7 @@ zoomimageViewSketch = "1.1.1"
 #rules = "1.6.1"
 lifecycleProcess = "2.8.7"
 metadataExtractor = "2.19.0"
+palette = "1.0.0"
 
 [libraries]
 # AndroidX
@@ -160,6 +161,8 @@ metadata-extractor = { module = "com.drewnoakes:metadata-extractor", version.ref
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteTaskVision" }
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
+
+palette = {group = "androidx.palette", name = "palette", version.ref = "palette"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

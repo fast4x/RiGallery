@@ -39,10 +39,12 @@ import com.github.panpf.sketch.request.ImageRequest
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.util.ext.dominantColorInImage
 import it.fast4x.rigallery.core.util.isAtLeastAndroid14
 import it.fast4x.rigallery.core.util.isAtLeastAndroid15
 import it.fast4x.rigallery.feature_node.domain.model.LocationData
 import it.fast4x.rigallery.feature_node.domain.model.getLocationData
+import it.fast4x.rigallery.feature_node.domain.util.getUri
 import it.fast4x.rigallery.feature_node.presentation.classifier.ImageClassifierHelper
 import it.fast4x.rigallery.feature_node.presentation.main.MainActivity
 import it.fast4x.rigallery.feature_node.presentation.util.ExifMetadata
@@ -50,6 +52,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.formattedAddress
 import it.fast4x.rigallery.feature_node.presentation.util.getExifInterface
 import it.fast4x.rigallery.feature_node.presentation.util.getGeocoder
 import it.fast4x.rigallery.feature_node.presentation.util.getLocation
+import it.fast4x.rigallery.feature_node.presentation.util.isMediaUpToDate
 import it.fast4x.rigallery.feature_node.presentation.util.mediaFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -80,7 +83,7 @@ class AnalyzerWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         withContext(Dispatchers.IO) {
-            printWarning("MediaAnalyzer retrieving media")
+            //printWarning("MediaAnalyzer retrieving media")
 
             var media = database.getMediaDao().getMedia()
 
@@ -96,43 +99,49 @@ class AnalyzerWorker @AssistedInject constructor(
                 }
             }
 
-            media = database.getMediaDao().getMedia().filter { it.analyzed == 0 }
+            media = database.getMediaDao().getMedia()
+            val mediaForLocation = media.filter { it.analyzed == 0 && (it.location == null || it.location == "") }
+            val mediaForDominantColor = media.filter { it.analyzed == 0 && (it.dominantColor == null || it.dominantColor == 0) }
 
-            printWarning("MediaAnalyzer mediaToAnalyze size: ${media.size}")
+            printWarning("MediaAnalyzer not analyzed media for location size: ${mediaForLocation.size}")
+            printWarning("MediaAnalyzer not analyzed media for dominant color size: ${mediaForDominantColor.size}")
 
-            if (media.isEmpty() == true) {
+            if (mediaForLocation.isEmpty() == true && mediaForDominantColor.isEmpty() == true) {
                 printWarning("MediaAnalyzer media is empty, nothing to analyze")
                 setProgress(workDataOf("progress" to 100))
                 return@withContext Result.success()
             }
-            printWarning("MediaAnalyzer not analyzed media size: ${media.size}")
+
             setProgress(workDataOf("progress" to 0))
 
-            printWarning("MediaAnalyzer Starting analysis for ${media.size} items")
-            media.fastForEachIndexed { index, item ->
-                setProgress(workDataOf("progress" to (index / (media.size - 1).toFloat()) * 100f))
-                title = (if (isAtLeastAndroid15) applicationContext.getText(R.string.analyzing_media) else "${applicationContext.getText(R.string.analyzing_media)} ${index + 1}/${media.size}").toString()
+            printWarning("MediaAnalyzer Starting analysis for ${mediaForLocation.size} items with location")
+            mediaForLocation.fastForEachIndexed { index, item ->
+                setProgress(workDataOf("progress" to (index / (mediaForLocation.size - 1).toFloat()) * 100f))
+                title = (if (isAtLeastAndroid15) applicationContext.getText(R.string.analyzing_media) else "${applicationContext.getText(R.string.analyzing_media)} ${index + 1}/${mediaForLocation.size}").toString()
                 message = if (isAtLeastAndroid15) "" else "File: ${item.label}"
                 //println("MediaAnalyzer index $index media.size ${media.size}")
-                setForeground(createForegroundInfo(title, message, index, media.size))
+                setForeground(createForegroundInfo(title, message, index, mediaForLocation.size))
+
+                /* Process location */
                 try {
-                    var media = item
-                    getLocationData(appContext, media,
+                    //var localMedia = item
+                    getLocationData(appContext, item,
                         onLocationFound = {
-                            //printWarning("MediaAnalyzer Updating media $index with location: ${it?.location}")
                             launch(Dispatchers.IO) {
-                                //printWarning("MediaAnalyzer Updating item $media")
-                                database.getMediaDao().updateMedia(
-                                    if (it?.location == null || it.location.isEmpty())
-                                        item.copy(
-                                        analyzed = 1
-                                        )
-                                    else
-                                        item.copy(
-                                            analyzed = 1,
-                                            location = it.location
-                                        )
-                                )
+                                printWarning("MediaAnalyzer Updating with location: ${it?.location} at item $index")
+                                database.getMediaDao().setLocation(item.id, it?.location ?: "")
+
+//                                database.getMediaDao().updateMedia(
+//                                    if (it?.location == null || it.location.isEmpty())
+//                                        item.copy(
+//                                            analyzed = 1
+//                                        )
+//                                    else
+//                                        item.copy(
+//                                            analyzed = 1,
+//                                            location = it.location
+//                                        )
+//                                )
                             }
                         }
                     )
@@ -141,8 +150,30 @@ class AnalyzerWorker @AssistedInject constructor(
                     println("MediaAnalyzer Error ${e.stackTraceToString()} at item $index")
                     return@fastForEachIndexed
                 }
+
             }
             setProgress(workDataOf("progress" to 100f))
+
+            setProgress(workDataOf("progress" to 0))
+            printWarning("MediaAnalyzer Starting analysis for ${mediaForDominantColor.size} items with dominant color")
+            mediaForDominantColor.fastForEachIndexed { index, item ->
+                setProgress(workDataOf("progress" to (index / (mediaForDominantColor.size - 1).toFloat()) * 100f))
+                title = (if (isAtLeastAndroid15) applicationContext.getText(R.string.analyzing_media) else "${applicationContext.getText(R.string.analyzing_media)} ${index + 1}/${mediaForDominantColor.size}").toString()
+                message = if (isAtLeastAndroid15) "" else "File: ${item.label}"
+                //println("MediaAnalyzer index $index media.size ${mediaForDominantColor.size}")
+                setForeground(createForegroundInfo(title, message, index, mediaForDominantColor.size))
+                /* Process dominant color */
+                dominantColorInImage(appContext, item.uri.toString()).let {
+                    launch(Dispatchers.IO) {
+                        printWarning("MediaAnalyzer Updating with dominantColor: $it at item $index")
+                        database.getMediaDao().setDominantColor(item.id, it)
+                    }
+                }
+
+
+            }
+            setProgress(workDataOf("progress" to 100f))
+
         }
 
         return Result.success()

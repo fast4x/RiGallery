@@ -189,4 +189,18 @@ interface MediaRepository {
     fun getNotAnalyzedMediaCount(): Flow<Int>
 
     fun getMediaWithLocation(): Flow<List<UriMedia>>
+
+    fun getMediaWithDominantColorRed(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorGreen(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorBlue(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorYellow(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorCyan(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorWhite(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorGray(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorDarkGray(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorLightGray(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorBlack(): Flow<List<UriMedia>>
+    fun getMediaWithDominantColorMagenta(): Flow<List<UriMedia>>
+
+
 }

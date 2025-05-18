@@ -14,6 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.util.fastFilter
+import androidx.compose.ui.util.fastMap
+import androidx.core.graphics.toColor
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.fast4x.rigallery.core.Constants
@@ -37,6 +42,8 @@ import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.core.util.ext.dominantColorInImage
+import it.fast4x.rigallery.feature_node.domain.util.getUri
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isImage
@@ -106,6 +113,29 @@ open class MediaViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     internal val mediaWithLocation = repository.getMediaWithLocation()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    internal val mediaWithDominantColorRed = repository.getMediaWithDominantColorRed()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorGreen = repository.getMediaWithDominantColorGreen()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorBlue = repository.getMediaWithDominantColorBlue()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorYellow = repository.getMediaWithDominantColorYellow()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorCyan = repository.getMediaWithDominantColorCyan()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorWhite = repository.getMediaWithDominantColorWhite()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorGray = repository.getMediaWithDominantColorGray()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorDarkGray = repository.getMediaWithDominantColorDarkGray()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorLightGray = repository.getMediaWithDominantColorLightGray()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorBlack = repository.getMediaWithDominantColorBlack()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    internal val mediaWithDominantColorMagenta = repository.getMediaWithDominantColorMagenta()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val defaultDateFormat =
@@ -362,7 +392,18 @@ open class MediaViewModel @Inject constructor(
     private suspend fun <T : Media> List<T>.filterMedia(
         tags: List<String>
     ): List<T> {
-        println("MediaViewModel tags: $tags")
+        println("MediaViewModel filterMedia tags: $tags")
+        println("MediaViewModel filterMedia color Red ${Color.Red.toArgb()}")
+        println("MediaViewModel filterMedia color Black ${Color.Black.toArgb()}")
+        println("MediaViewModel filterMedia color Magenta ${Color.Magenta.toArgb()}")
+        println("MediaViewModel filterMedia color Blue ${Color.Blue.toArgb()}")
+        println("MediaViewModel filterMedia color Green ${Color.Green.toArgb()}")
+        println("MediaViewModel filterMedia color Yellow ${Color.Yellow.toArgb()}")
+        println("MediaViewModel filterMedia color Cyan ${Color.Cyan.toArgb()}")
+        println("MediaViewModel filterMedia color White ${Color.White.toArgb()}")
+        println("MediaViewModel filterMedia color Gray ${Color.Gray.toArgb()}")
+        println("MediaViewModel filterMedia color DarkGray ${Color.DarkGray.toArgb()}")
+        println("MediaViewModel filterMedia color LightGray ${Color.LightGray.toArgb()}")
 
         return withContext(Dispatchers.IO) {
 
@@ -375,12 +416,34 @@ open class MediaViewModel @Inject constructor(
                     .toLocalDate()
                 val today = Instant.now().atZone(ZoneId.systemDefault()).toLocalDate()
 
+                val mediaWithDominantColor = when {
+                    context.getString(R.string.tag_magenta).toString() in tags -> mediaWithDominantColorMagenta.value
+                    context.getString(R.string.tag_red).toString() in tags -> mediaWithDominantColorRed.value
+                    context.getString(R.string.tag_green).toString() in tags -> mediaWithDominantColorGreen.value
+                    context.getString(R.string.tag_blue).toString() in tags -> mediaWithDominantColorBlue.value
+                    context.getString(R.string.tag_yellow).toString() in tags -> mediaWithDominantColorYellow.value
+                    context.getString(R.string.tag_cyan).toString() in tags -> mediaWithDominantColorCyan.value
+                    context.getString(R.string.tag_white).toString() in tags -> mediaWithDominantColorWhite.value
+                    context.getString(R.string.tag_gray).toString() in tags -> mediaWithDominantColorGray.value
+                    context.getString(R.string.tag_darkgray).toString() in tags -> mediaWithDominantColorDarkGray.value
+                    context.getString(R.string.tag_lightgray).toString() in tags -> mediaWithDominantColorLightGray.value
+                    context.getString(R.string.tag_black).toString() in tags -> mediaWithDominantColorBlack.value
 
-                //println("MediaViewModel filterMedia year: ${dt.year}")
-//                if (it.id in mediaWithLocation.value.map { it.id }) {
-//                    println("MediaViewModel filterMedia tags: $tags ${it.location}")
-//                    println("MediaViewModel filterMedia tag:${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase()}")
-//                }
+                    else -> emptyList()
+                }
+                val isColorTag = context.getString(R.string.tag_magenta).toString() in tags ||
+                        context.getString(R.string.tag_red).toString() in tags ||
+                        context.getString(R.string.tag_green).toString() in tags ||
+                        context.getString(R.string.tag_blue).toString() in tags ||
+                        context.getString(R.string.tag_yellow).toString() in tags ||
+                        context.getString(R.string.tag_cyan).toString() in tags ||
+                        context.getString(R.string.tag_white).toString() in tags ||
+                        context.getString(R.string.tag_gray).toString() in tags ||
+                        context.getString(R.string.tag_darkgray).toString() in tags ||
+                        context.getString(R.string.tag_lightgray).toString() in tags ||
+                        context.getString(R.string.tag_black).toString() in tags
+
+
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
                 (it.isVideo && context.getString(R.string.tag_video).toString() in tags) ||
                 (it.isFavorite && context.getString(R.string.tag_favorite).toString() in tags) ||
@@ -392,10 +455,10 @@ open class MediaViewModel @Inject constructor(
                 ((it.width ?: 0) > (it.height ?: 0) && context.getString(R.string.tag_horizontal).toString() in tags) ||
                 ((it.width ?: 0) < (it.height ?: 0) && context.getString(R.string.tag_vertical).toString() in tags) ||
 
-                (it.id in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
-                (it.id !in mediaWithLocation.value.map { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
-                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
-                (it.id in mediaWithLocation.value.map { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags) ||
+                (it.id in mediaWithLocation.value.fastMap { it.id } && context.getString(R.string.tag_withlocation).toString() in tags) ||
+                (it.id !in mediaWithLocation.value.fastMap { it.id } && context.getString(R.string.tag_withoutlocation).toString() in tags) ||
+                (it.id in mediaWithLocation.value.fastMap { it.id } && "${context.getString(R.string.tag_country).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringAfter(",")?.trim()?.lowercase() }".toString() in tags) ||
+                (it.id in mediaWithLocation.value.fastMap { it.id } && "${context.getString(R.string.tag_locality).lowercase()}:${mediaWithLocation.value.find { m -> m.id == it.id }?.location?.substringBefore(",")?.trim()?.lowercase() }".toString() in tags) ||
 
                 ("${context.getString(R.string.tag_album).lowercase()}:${it.albumLabel.lowercase()}".toString() in tags) ||
 
@@ -422,8 +485,9 @@ open class MediaViewModel @Inject constructor(
                 (d == today && context.getString(R.string.tag_today).toString() in tags) ||
                 (d == today.minusDays(1) && context.getString(R.string.tag_yesterday).toString() in tags) ||
 
-                ("${context.getString(R.string.tag_year).lowercase()}:${dt.year}".toString() in tags)
+                ("${context.getString(R.string.tag_year).lowercase()}:${dt.year}".toString() in tags) ||
 
+                (it.id in mediaWithDominantColor.fastMap { it.id } && isColorTag == true)
 
             }
         }

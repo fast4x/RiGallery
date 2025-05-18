@@ -388,6 +388,17 @@
     <string name="download_latest_version_from_github_you_will_find_the_file_in_the_notification_area_and_you_can_install_by_clicking_on_it">Download latest version from Github, you will find the file in the notification area and you can install by clicking on it</string>
     <string name="request_a_feature_or_suggest_an_idea">Request a feature or suggest an idea</string>
     <string name="report_an_issue">Report an issue</string>
+    <string name="tag_black">black</string>
+    <string name="tag_blue">blue</string>
+    <string name="tag_cyan">cyan</string>
+    <string name="tag_darkgray">darkgray</string>
+    <string name="tag_gray">gray</string>
+    <string name="tag_green">green</string>
+    <string name="tag_lightgray">lightgray</string>
+    <string name="tag_magenta">magenta</string>
+    <string name="tag_red">red</string>
+    <string name="tag_white">white</string>
+    <string name="tag_yellow">yellow</string>
     <plurals name="item_count">
         <item quantity="other">%s アイテム</item>
     </plurals>

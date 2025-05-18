@@ -181,6 +181,40 @@ class MediaRepositoryImpl(
         return database.getMediaDao().getMediaWithLocation()
     }
 
+    override fun getMediaWithDominantColorRed(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorRed()
+    }
+    override fun getMediaWithDominantColorGreen(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorGreen()
+    }
+    override fun getMediaWithDominantColorBlue(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorBlue()
+    }
+    override fun getMediaWithDominantColorYellow(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorYellow()
+    }
+    override fun getMediaWithDominantColorCyan(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorCyan()
+    }
+    override fun getMediaWithDominantColorWhite(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorWhite()
+    }
+    override fun getMediaWithDominantColorGray(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorGray()
+    }
+    override fun getMediaWithDominantColorDarkGray(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorDarkGray()
+    }
+    override fun getMediaWithDominantColorLightGray(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorLightGray()
+    }
+    override fun getMediaWithDominantColorBlack(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorBlack()
+    }
+    override fun getMediaWithDominantColorMagenta(): Flow<List<UriMedia>> {
+        return database.getMediaDao().getMediaWithDominantColorMagenta()
+    }
+
 
     override fun getMediaByAlbumId(albumId: Long): Flow<Resource<List<UriMedia>>> =
         MediaFlow(

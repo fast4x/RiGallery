@@ -62,6 +62,7 @@ fun SearchHistoryGrid(
     var expandedMetadatas by remember { mutableStateOf(false) }
     var expandedCountries by remember { mutableStateOf(false) }
     var expandedLocalities by remember { mutableStateOf(false) }
+    var expandedColors by remember { mutableStateOf(false) }
 
 
     var searchTags = remember { mutableStateListOf<String>() }
@@ -463,6 +464,30 @@ fun SearchHistoryGrid(
                     expanded = expandedLocalities
                 )
             }
+        }
+
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            Title(
+                title = "Color",//stringResource(R.string.color),
+                icon = if (expandedColors) Icons.Outlined.ArrowUpward else Icons.Outlined.ArrowDownward,
+                onClick = {
+                    expandedColors = !expandedColors
+                },
+                modifier = Modifier.fillMaxWidth(0.6f)
+            )
+        }
+        item(span = { GridItemSpan(maxLineSpan) }) {
+            ColorTagsGrid(
+                searchTag = {  search(it, true) },
+                addSearchTag = { it, maybeCanQuery ->
+                    if (searchTags.contains(it))
+                        searchTags.remove(it)
+                    else searchTags.add(it)
+                    search(searchTags.distinct().joinToString(" "), maybeCanQuery)
+                },
+                selectedTags = searchTags,
+                expanded = expandedColors
+            )
         }
 
         if (historyItems.isNotEmpty()) {

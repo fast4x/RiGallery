@@ -29,6 +29,41 @@ interface MediaDao {
     @Query("SELECT * FROM media WHERE location != '' ORDER BY timestamp DESC")
     fun getMediaWithLocation(): Flow<List<UriMedia>>
 
+    @Query("SELECT * FROM media WHERE dominantColor != 0 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColor(): Flow<List<UriMedia>>
+
+    @Query("SELECT * FROM media WHERE dominantColor = -65536 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorRed(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -16711936 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorGreen(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -16776961 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorBlue(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -256 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorYellow(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -16711681 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorCyan(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -1 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorWhite(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -7829368 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorGray(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -12303292 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorDarkGray(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -3355444 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorLightGray(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -16777216 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorBlack(): Flow<List<UriMedia>>
+    @Query("SELECT * FROM media WHERE dominantColor = -65281 ORDER BY timestamp DESC")
+    fun getMediaWithDominantColorMagenta(): Flow<List<UriMedia>>
+
+
+
+
+
+
+
+
+
+
     @Query("SELECT * FROM media WHERE id = :id LIMIT 1")
     suspend fun getMediaById(id: Long): UriMedia
 
@@ -76,7 +111,13 @@ interface MediaDao {
     @Upsert
     suspend fun updateMedia(media: UriMedia)
 
-    @Query("UPDATE media SET analyzed = 0, location = '' WHERE analyzed = 1")
+    @Query("UPDATE media SET analyzed = 1, dominantColor = :dominantColor WHERE id = :id")
+    suspend fun setDominantColor(id: Long, dominantColor: Int)
+
+    @Query("UPDATE media SET analyzed = 1, location = :location WHERE id = :id")
+    suspend fun setLocation(id: Long, location: String)
+
+    @Query("UPDATE media SET analyzed = 0, location = '', dominantColor = 0 WHERE analyzed = 1")
     suspend fun resetAnalizedMedia()
 
     @Query("SELECT COUNT(*) FROM media WHERE analyzed = 1")

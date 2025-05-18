@@ -55,7 +55,7 @@ fun ScannerButton(
                 modifier = Modifier
                     .then(if (isRunning) Modifier.padding(top = 8.dp) else Modifier),
                 text = text,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2
             )
@@ -96,6 +96,7 @@ fun ScannerButton(
                 Column(
                     modifier = Modifier.padding(vertical = 16.dp)
                 ) {
+                    println("indicatorCounter: $indicatorCounter")
                     AnimatedVisibility(
                         visible = indicatorCounter < 100f
                     ) {
