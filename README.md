@@ -15,6 +15,7 @@
 ## ✨ Features
 - Multilanguages, support system language but can change it in other language from settings
 - Supports many video and image formats
+- Check for update
 - Grid or mosaic display
 - Slideshow
 - Modify images
@@ -23,7 +24,7 @@
 - Favorites
 - Smart categories
 - Albums
-- Search all media with terms and/or tags, support also multiple tags
+- Search all media with terms and/or tags  also support multiple tags
 - Ignored media and/or albums
 - Trash
 <br><br>
