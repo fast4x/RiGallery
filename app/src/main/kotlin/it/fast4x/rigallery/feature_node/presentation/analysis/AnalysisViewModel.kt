@@ -28,7 +28,7 @@ class AnalysisViewModel @Inject constructor(
     private val repository: MediaRepository,
     private val workManager: WorkManager,
     val handler: MediaHandleUseCase,
-    //private val database: InternalDatabase,
+    private val database: InternalDatabase,
 ) : ViewModel() {
 
 
@@ -36,18 +36,8 @@ class AnalysisViewModel @Inject constructor(
     val WORKERNAME_DOMINANT_COLOR = "dominantColorWorker"
 
 
-//    val mediaInDb = database.getMediaDao().getMediaCount()
-//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
-
-//    val isRunning = workManager.getWorkInfosByTagFlow(WORKERS)
-//        .map { it.lastOrNull()?.state == WorkInfo.State.RUNNING }
-//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
-//
-//    val progress = workManager.getWorkInfosByTagFlow(WORKERS)
-//        .map {
-//            it.lastOrNull()?.progress?.getFloat("progress", 0f) ?: 0f
-//        }
-//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0f)
+    val mediaInDb = database.getMediaDao().getMediaCount()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
 
     val isRunningLoc = workManager.getWorkInfosByTagFlow(WORKERNAME_LOCATION)
         .map { it.lastOrNull()?.state == WorkInfo.State.RUNNING }

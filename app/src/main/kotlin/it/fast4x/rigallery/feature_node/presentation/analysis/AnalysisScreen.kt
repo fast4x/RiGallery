@@ -56,7 +56,7 @@ fun AnalysisScreen(
     val mediaWithDominantColor by viewModelMedia.mediaWithDominantColor.collectAsStateWithLifecycle()
 
     val viewModel = hiltViewModel<AnalysisViewModel>()
-    //val mediaInDb by viewModel.mediaInDb.collectAsStateWithLifecycle()
+    val mediaInDb by viewModel.mediaInDb.collectAsStateWithLifecycle()
     val isRunningLoc by viewModel.isRunningLoc.collectAsStateWithLifecycle()
     val progressLoc by viewModel.progressLoc.collectAsStateWithLifecycle()
     val isRunningDomCol by viewModel.isRunningDomCol.collectAsStateWithLifecycle()
@@ -79,8 +79,8 @@ fun AnalysisScreen(
                 TopAppBar(
                     title = {
                         TwoLinedDateToolbarTitle(
-                            albumName = "Analysis of Media", //stringResource(R.string.analisys),
-                            //dateHeader = "Media in database: $mediaInDb"
+                            albumName = stringResource(R.string.analysis_of_media),
+                            dateHeader = stringResource(R.string.media_in_database, mediaInDb)
                         )
                     },
                     navigationIcon = {
@@ -128,7 +128,7 @@ fun AnalysisScreen(
                 if (!isRunning)
                     ScannerButton(
                         image = Icons.Outlined.Close,
-                        scanForNewText = "Reset analyzed media (${mediaWithLocation?.size?.plus(
+                        scanForNewText = "Reset analyzed media (${mediaWithLocation.size?.plus(
                             mediaWithDominantColor?.size ?: 0
                         )})",
                         isRunning = isRunning,

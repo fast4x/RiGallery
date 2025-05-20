@@ -403,6 +403,8 @@
     <string name="analysis_for_dominant_color">Analysis for dominant color</string>
     <string name="scanning_in_progress_please_wait">Scanning in progress, please wait</string>
     <string name="analysis_for_location">Analysis for location</string>
+    <string name="analysis_of_media">Analysis of Media</string>
+    <string name="media_in_database">Media in database: %1$s</string>
     <plurals name="item_count">
         <item quantity="one">%s položka</item>
         <item quantity="few">%s položky</item>
