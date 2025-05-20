@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         enforceSecureFlag()
         enableEdgeToEdge()
         setContent {
-            
+
             val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
             analyzerViewModel.startAnalysis()
 
