@@ -399,6 +399,7 @@
     <string name="tag_red">red</string>
     <string name="tag_white">white</string>
     <string name="tag_yellow">yellow</string>
+    <string name="tag_color">color</string>
     <plurals name="item_count">
         <item quantity="one">%s položka</item>
         <item quantity="few">%s položky</item>

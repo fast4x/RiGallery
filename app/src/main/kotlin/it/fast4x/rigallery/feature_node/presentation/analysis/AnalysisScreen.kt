@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.feature_node.data.data_source.InternalDatabase
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.components.ScannerButton
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
@@ -46,11 +47,23 @@ fun AnalysisScreen(
     navigateUp: () -> Unit,
     navigate: (String) -> Unit,
 ) {
-    val viewModel = hiltViewModel<AnalysisViewModel>()
-    val analyzedMediaCount by viewModel.analyzedMediaCount.collectAsStateWithLifecycle()
-    val notAnalyzedMediaCount by viewModel.notAnalyzedMediaCount.collectAsStateWithLifecycle()
 
-    //val viewModelMedia = hiltViewModel<MediaViewModel>()
+
+
+
+    val viewModelMedia = hiltViewModel<MediaViewModel>()
+    val mediaWithLocation by viewModelMedia.mediaWithLocation.collectAsStateWithLifecycle()
+    val mediaWithDominantColor by viewModelMedia.mediaWithDominantColor.collectAsStateWithLifecycle()
+
+    val viewModel = hiltViewModel<AnalysisViewModel>()
+    //val mediaInDb by viewModel.mediaInDb.collectAsStateWithLifecycle()
+    val isRunningLoc by viewModel.isRunningLoc.collectAsStateWithLifecycle()
+    val progressLoc by viewModel.progressLoc.collectAsStateWithLifecycle()
+    val isRunningDomCol by viewModel.isRunningDomCol.collectAsStateWithLifecycle()
+    val progressDomCol by viewModel.progressDomCol.collectAsStateWithLifecycle()
+    val isRunning = isRunningLoc || isRunningDomCol
+    val progress = if (isRunningLoc) progressLoc else progressDomCol
+
 
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -58,8 +71,6 @@ fun AnalysisScreen(
         canScroll = { canScroll }
     )
 
-    val isRunning by viewModel.isRunning.collectAsStateWithLifecycle()
-    val progress by viewModel.progress.collectAsStateWithLifecycle()
 
     Box {
         Scaffold(
@@ -68,8 +79,8 @@ fun AnalysisScreen(
                 TopAppBar(
                     title = {
                         TwoLinedDateToolbarTitle(
-                            albumName = "Analysis", //stringResource(R.string.analisys),
-                            //dateHeader = ""
+                            albumName = "Analysis of Media", //stringResource(R.string.analisys),
+                            //dateHeader = "Media in database: $mediaInDb"
                         )
                     },
                     navigationIcon = {
@@ -96,7 +107,7 @@ fun AnalysisScreen(
             ) {
 
                 ScannerButton(
-                    scanForNewText = "Analyze media ($notAnalyzedMediaCount)",
+                    scanForNewText = "Analyze media",
                     isRunning = isRunning,
                     indicatorCounter = progress,
                     contentColor = MaterialTheme.colorScheme.tertiary,
@@ -114,10 +125,12 @@ fun AnalysisScreen(
                 )
 
 
-                if (analyzedMediaCount > 0 && !isRunning) {
+                if (!isRunning)
                     ScannerButton(
                         image = Icons.Outlined.Close,
-                        scanForNewText = "Reset Analyzed media ($analyzedMediaCount)",
+                        scanForNewText = "Reset analyzed media (${mediaWithLocation?.size?.plus(
+                            mediaWithDominantColor?.size ?: 0
+                        )})",
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -129,7 +142,39 @@ fun AnalysisScreen(
                                 }
                             )
                     )
-                }
+
+
+                if (!isRunning)
+                    ScannerButton(
+                        image = Icons.Outlined.Close,
+                        scanForNewText = "Reset Location Analysis (${mediaWithLocation?.size})",
+                        isRunning = isRunning,
+                        indicatorCounter = progress,
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = {
+                                    viewModel.resetAnalysisForLocation()
+                                }
+                            )
+                    )
+
+                if (!isRunning)
+                    ScannerButton(
+                        image = Icons.Outlined.Close,
+                        scanForNewText = "Reset Dominant Color Analysis (${mediaWithDominantColor?.size})",
+                        isRunning = isRunning,
+                        indicatorCounter = progress,
+                        contentColor = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(
+                                onClick = {
+                                    viewModel.resetAnalysisForDominantColor()
+                                }
+                            )
+                    )
 
             }
 

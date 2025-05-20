@@ -46,6 +46,7 @@ import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
 import it.fast4x.rigallery.core.extensions.checkupdate.CheckAvailableNewVersion
 import it.fast4x.rigallery.core.util.ext.OkHttpRequest
+import it.fast4x.rigallery.feature_node.data.data_source.InternalDatabase
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -61,8 +62,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var repository: MediaRepository
+//    @Inject
+//    lateinit var repository: MediaRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
 
+            // TODO IMPROVE START ANALYSIS ON APP START
             val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
             analyzerViewModel.startAnalysis()
 

@@ -13,6 +13,7 @@ import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.presentation.albums.AlbumsViewModel
+import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import kotlinx.coroutines.Dispatchers
 import java.time.Instant
 import java.time.ZoneId
@@ -83,7 +84,10 @@ fun SearchHistory(
         }.distinct().sortedByDescending { it }
     }
 
-    println("SearchHistory: countries: $countriesTagsItems and localities: $localitiesTagsItems")
+   val mediaViewModel = hiltViewModel<MediaViewModel>()
+    val colorsTagsItems = remember {
+        mediaViewModel.dominantColors.value  //.shuffled()
+    }
 
     val albumsViewModel = hiltViewModel<AlbumsViewModel>()
     val albumsState =
@@ -113,6 +117,7 @@ fun SearchHistory(
         localitiesTagsItems = localitiesTagsItems,
         albumsTagsItems = albumsState.value.albums,
         mediaYearsItems = mediaYearsItems,
+        colorsTagsItems = colorsTagsItems,
         suggestionSet = suggestionSet,
         search = search
     )

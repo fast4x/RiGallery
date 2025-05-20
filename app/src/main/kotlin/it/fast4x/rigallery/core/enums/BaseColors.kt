@@ -11,9 +11,9 @@ import it.fast4x.rigallery.R
 enum class BaseColors {
     MAGENTA,
     RED,
-    WHITE,
+    //WHITE,
     YELLOW,
-    BLACK,
+    //BLACK,
     BLUE,
     CYAN,
     DARK_GRAY,
@@ -24,7 +24,7 @@ enum class BaseColors {
     val tag: String
         @Composable
         get() = when (this) {
-            BLACK -> "#${stringResource(R.string.tag_black)}"
+            //BLACK -> "#${stringResource(R.string.tag_black)}"
             BLUE -> "#${stringResource(R.string.tag_blue)}"
             CYAN -> "#${stringResource(R.string.tag_cyan)}"
             DARK_GRAY -> "#${stringResource(R.string.tag_darkgray)}"
@@ -33,13 +33,13 @@ enum class BaseColors {
             LIGHT_GRAY -> "#${stringResource(R.string.tag_lightgray)}"
             MAGENTA -> "#${stringResource(R.string.tag_magenta)}"
             RED -> "#${stringResource(R.string.tag_red)}"
-            WHITE -> "#${stringResource(R.string.tag_white)}"
+            //WHITE -> "#${stringResource(R.string.tag_white)}"
             YELLOW -> "#${stringResource(R.string.tag_yellow)}"
         }
 
     val color: Color
         get() = when (this) {
-            BLACK -> Color.Black
+            //BLACK -> Color.Black
             BLUE -> Color.Blue
             CYAN -> Color.Cyan
             DARK_GRAY -> Color.DarkGray
@@ -48,7 +48,7 @@ enum class BaseColors {
             LIGHT_GRAY -> Color.LightGray
             MAGENTA -> Color.Magenta
             RED -> Color.Red
-            WHITE -> Color.White
+            //WHITE -> Color.White
             YELLOW -> Color.Yellow
         }
 

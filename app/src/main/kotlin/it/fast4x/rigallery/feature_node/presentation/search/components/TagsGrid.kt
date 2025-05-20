@@ -15,6 +15,7 @@ import androidx.compose.material.icons.outlined.Album
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.LocationCity
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -29,9 +30,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastDistinctBy
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.enums.BaseColors
 import it.fast4x.rigallery.core.enums.DayTagsType
 import it.fast4x.rigallery.core.enums.MetadataTagsType
@@ -676,11 +680,13 @@ fun ColorTagsGrid(
     searchTag: (String) -> Unit,
     expanded: Boolean = false,
     addSearchTag: (String, Boolean) -> Unit,
-    selectedTags: MutableList<String>
+    selectedTags: MutableList<String>,
+    tagsItems: List<Int>
 ){
     val rows = if (expanded) 3 else 1
     val baseHeight = 60.dp
     val height =  if (expanded) baseHeight*rows else baseHeight
+    val context = LocalContext.current
 
     LazyHorizontalGrid(
         rows = GridCells.Fixed(rows),
@@ -689,8 +695,11 @@ fun ColorTagsGrid(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.height(height)
     ) {
-        items(BaseColors.entries.size) { index ->
-            val tag = BaseColors.entries[index].tag
+        items(tagsItems.size) { index ->
+            if (tagsItems[index] == 0) return@items
+
+            val tag = "#${context.getString(R.string.tag_color)}:${tagsItems[index]}"
+            val color = Color(tagsItems[index])
 
 //            var tagInAction = remember { mutableStateOf("") }
 //            var showTagAction = remember { mutableStateOf(false) }
@@ -717,10 +726,10 @@ fun ColorTagsGrid(
                     selected = !selected
                     addSearchTag(tag, false)
                 },
-                label = { Text(text = tag) },
+                label = {}, // { Text(text = tag) },
                 leadingIcon = {
                     Icon(
-                        imageVector = BaseColors.entries[index].icon,
+                        imageVector = Icons.Outlined.Palette,
                         contentDescription = null,
                         modifier = Modifier.size(FilterChipDefaults.IconSize)
                     )
@@ -730,12 +739,12 @@ fun ColorTagsGrid(
                     selectedContainerColor =  MaterialTheme.colorScheme.surfaceColorAtElevation(50.dp),
                     selectedLabelColor = MaterialTheme.colorScheme.onBackground,
                     selectedLeadingIconColor = MaterialTheme.colorScheme.onBackground,
-                    containerColor = BaseColors.entries[index].color
+                    containerColor = color
                 ),
                 shape = MaterialTheme.shapes.small,
-                border = BorderStroke(2.dp, BaseColors.entries[index].color),
+                border = BorderStroke(2.dp, color),
                 modifier = Modifier
-                    //.background(BaseColors.entries[index].color, MaterialTheme.shapes.large)
+                    //.background(color, MaterialTheme.shapes.large)
                     .animateItem()
             )
         }

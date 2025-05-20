@@ -125,4 +125,7 @@ object Constants {
         GridCells.Fixed(2),
         GridCells.Fixed(1)
     )
+
+    // Used in filtering similar colors
+    val colorAccurance = 6
 }

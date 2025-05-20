@@ -14,11 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.util.fastFilter
 import androidx.compose.ui.util.fastMap
-import androidx.core.graphics.toColor
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.fast4x.rigallery.core.Constants
@@ -42,17 +39,15 @@ import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.TIMELINE_GROUP_BY_MONTH
 import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
-import it.fast4x.rigallery.core.util.ext.dominantColorInImage
-import it.fast4x.rigallery.feature_node.domain.util.getUri
 import it.fast4x.rigallery.feature_node.domain.util.isAudio
 import it.fast4x.rigallery.feature_node.domain.util.isFavorite
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.domain.util.isVideo
+import it.fast4x.rigallery.feature_node.presentation.util.printWarning
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -115,27 +110,10 @@ open class MediaViewModel @Inject constructor(
     internal val mediaWithLocation = repository.getMediaWithLocation()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    internal val mediaWithDominantColorRed = repository.getMediaWithDominantColorRed()
+    internal val dominantColors = repository.getDominantColors()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorGreen = repository.getMediaWithDominantColorGreen()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorBlue = repository.getMediaWithDominantColorBlue()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorYellow = repository.getMediaWithDominantColorYellow()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorCyan = repository.getMediaWithDominantColorCyan()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorWhite = repository.getMediaWithDominantColorWhite()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorGray = repository.getMediaWithDominantColorGray()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorDarkGray = repository.getMediaWithDominantColorDarkGray()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorLightGray = repository.getMediaWithDominantColorLightGray()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorBlack = repository.getMediaWithDominantColorBlack()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
-    internal val mediaWithDominantColorMagenta = repository.getMediaWithDominantColorMagenta()
+
+    internal val mediaWithDominantColor = repository.getMediaWithDominantColor()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val defaultDateFormat =
@@ -393,17 +371,17 @@ open class MediaViewModel @Inject constructor(
         tags: List<String>
     ): List<T> {
         println("MediaViewModel filterMedia tags: $tags")
-        println("MediaViewModel filterMedia color Red ${Color.Red.toArgb()}")
-        println("MediaViewModel filterMedia color Black ${Color.Black.toArgb()}")
-        println("MediaViewModel filterMedia color Magenta ${Color.Magenta.toArgb()}")
-        println("MediaViewModel filterMedia color Blue ${Color.Blue.toArgb()}")
-        println("MediaViewModel filterMedia color Green ${Color.Green.toArgb()}")
-        println("MediaViewModel filterMedia color Yellow ${Color.Yellow.toArgb()}")
-        println("MediaViewModel filterMedia color Cyan ${Color.Cyan.toArgb()}")
-        println("MediaViewModel filterMedia color White ${Color.White.toArgb()}")
-        println("MediaViewModel filterMedia color Gray ${Color.Gray.toArgb()}")
-        println("MediaViewModel filterMedia color DarkGray ${Color.DarkGray.toArgb()}")
-        println("MediaViewModel filterMedia color LightGray ${Color.LightGray.toArgb()}")
+//        println("MediaViewModel filterMedia color Red ${Color.Red.toArgb()}")
+//        println("MediaViewModel filterMedia color Black ${Color.Black.toArgb()}")
+//        println("MediaViewModel filterMedia color Magenta ${Color.Magenta.toArgb()}")
+//        println("MediaViewModel filterMedia color Blue ${Color.Blue.toArgb()}")
+//        println("MediaViewModel filterMedia color Green ${Color.Green.toArgb()}")
+//        println("MediaViewModel filterMedia color Yellow ${Color.Yellow.toArgb()}")
+//        println("MediaViewModel filterMedia color Cyan ${Color.Cyan.toArgb()}")
+//        println("MediaViewModel filterMedia color White ${Color.White.toArgb()}")
+//        println("MediaViewModel filterMedia color Gray ${Color.Gray.toArgb()}")
+//        println("MediaViewModel filterMedia color DarkGray ${Color.DarkGray.toArgb()}")
+//        println("MediaViewModel filterMedia color LightGray ${Color.LightGray.toArgb()}")
 
         return withContext(Dispatchers.IO) {
 
@@ -416,32 +394,21 @@ open class MediaViewModel @Inject constructor(
                     .toLocalDate()
                 val today = Instant.now().atZone(ZoneId.systemDefault()).toLocalDate()
 
-                val mediaWithDominantColor = when {
-                    context.getString(R.string.tag_magenta).toString() in tags -> mediaWithDominantColorMagenta.value
-                    context.getString(R.string.tag_red).toString() in tags -> mediaWithDominantColorRed.value
-                    context.getString(R.string.tag_green).toString() in tags -> mediaWithDominantColorGreen.value
-                    context.getString(R.string.tag_blue).toString() in tags -> mediaWithDominantColorBlue.value
-                    context.getString(R.string.tag_yellow).toString() in tags -> mediaWithDominantColorYellow.value
-                    context.getString(R.string.tag_cyan).toString() in tags -> mediaWithDominantColorCyan.value
-                    context.getString(R.string.tag_white).toString() in tags -> mediaWithDominantColorWhite.value
-                    context.getString(R.string.tag_gray).toString() in tags -> mediaWithDominantColorGray.value
-                    context.getString(R.string.tag_darkgray).toString() in tags -> mediaWithDominantColorDarkGray.value
-                    context.getString(R.string.tag_lightgray).toString() in tags -> mediaWithDominantColorLightGray.value
-                    context.getString(R.string.tag_black).toString() in tags -> mediaWithDominantColorBlack.value
+                val isColorTag = tags.fastMap {
+                    it.lowercase().startsWith(context.getString(R.string.tag_color))
+                }.firstOrNull()
 
-                    else -> emptyList()
+                var colorTagValue = tags.firstOrNull() {
+                        it.lowercase().startsWith(context.getString(R.string.tag_color))
+                    }.toString().substringAfter(":").trim().take(Constants.colorAccurance)
+
+                val dominantColor = if (isColorTag == true) {
+                    mediaWithDominantColor.value.find {media -> media.id == it.id }?.dominantColor.toString()
+                } else {
+                    null
                 }
-                val isColorTag = context.getString(R.string.tag_magenta).toString() in tags ||
-                        context.getString(R.string.tag_red).toString() in tags ||
-                        context.getString(R.string.tag_green).toString() in tags ||
-                        context.getString(R.string.tag_blue).toString() in tags ||
-                        context.getString(R.string.tag_yellow).toString() in tags ||
-                        context.getString(R.string.tag_cyan).toString() in tags ||
-                        context.getString(R.string.tag_white).toString() in tags ||
-                        context.getString(R.string.tag_gray).toString() in tags ||
-                        context.getString(R.string.tag_darkgray).toString() in tags ||
-                        context.getString(R.string.tag_lightgray).toString() in tags ||
-                        context.getString(R.string.tag_black).toString() in tags
+
+                printWarning("MediaViewModel: isColorTag $isColorTag colorTagValue $colorTagValue dominantColor ${dominantColor.toString()} match ${dominantColor.toString().startsWith(colorTagValue)}")
 
 
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
@@ -487,7 +454,8 @@ open class MediaViewModel @Inject constructor(
 
                 ("${context.getString(R.string.tag_year).lowercase()}:${dt.year}".toString() in tags) ||
 
-                (it.id in mediaWithDominantColor.fastMap { it.id } && isColorTag == true)
+                (it.id in mediaWithDominantColor.value.fastMap { it.id }  && isColorTag == true && dominantColor.toString().startsWith(colorTagValue))
+
 
             }
         }

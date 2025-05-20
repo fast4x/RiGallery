@@ -162,7 +162,7 @@ tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "te
 tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vision", version.ref = "tensorflowLiteTaskVision" }
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 
-palette = {group = "androidx.palette", name = "palette", version.ref = "palette"}
+palette = {group = "androidx.palette", name = "palette-ktx", version.ref = "palette"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

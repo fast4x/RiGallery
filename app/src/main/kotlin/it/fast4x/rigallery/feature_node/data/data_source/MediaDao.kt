@@ -26,43 +26,11 @@ interface MediaDao {
     @Query("SELECT * FROM media WHERE ignored = 1 ORDER BY timestamp DESC")
     fun getMediaIgnored(): Flow<List<UriMedia>>
 
-    @Query("SELECT * FROM media WHERE location != '' ORDER BY timestamp DESC")
+    @Query("SELECT * FROM media WHERE location IS NOT NULL AND location <> '-' ORDER BY timestamp DESC")
     fun getMediaWithLocation(): Flow<List<UriMedia>>
 
-    @Query("SELECT * FROM media WHERE dominantColor != 0 ORDER BY timestamp DESC")
+    @Query("SELECT * FROM media WHERE dominantColor IS NOT NULL ORDER BY dominantColor")
     fun getMediaWithDominantColor(): Flow<List<UriMedia>>
-
-    @Query("SELECT * FROM media WHERE dominantColor = -65536 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorRed(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -16711936 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorGreen(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -16776961 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorBlue(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -256 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorYellow(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -16711681 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorCyan(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -1 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorWhite(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -7829368 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorGray(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -12303292 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorDarkGray(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -3355444 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorLightGray(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -16777216 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorBlack(): Flow<List<UriMedia>>
-    @Query("SELECT * FROM media WHERE dominantColor = -65281 ORDER BY timestamp DESC")
-    fun getMediaWithDominantColorMagenta(): Flow<List<UriMedia>>
-
-
-
-
-
-
-
-
-
 
     @Query("SELECT * FROM media WHERE id = :id LIMIT 1")
     suspend fun getMediaById(id: Long): UriMedia
@@ -111,19 +79,37 @@ interface MediaDao {
     @Upsert
     suspend fun updateMedia(media: UriMedia)
 
-    @Query("UPDATE media SET analyzed = 1, dominantColor = :dominantColor WHERE id = :id")
+    @Query("UPDATE media SET dominantColor = :dominantColor WHERE id = :id")
     suspend fun setDominantColor(id: Long, dominantColor: Int)
 
-    @Query("UPDATE media SET analyzed = 1, location = :location WHERE id = :id")
+    @Query("UPDATE media SET location = :location WHERE id = :id")
     suspend fun setLocation(id: Long, location: String)
 
-    @Query("UPDATE media SET analyzed = 0, location = '', dominantColor = 0 WHERE analyzed = 1")
+    @Query("UPDATE media SET location = NULL, dominantColor = NULL")
     suspend fun resetAnalizedMedia()
+
+    @Query("UPDATE media SET location = NULL")
+    suspend fun resetAnalizedMediaForLocation()
+
+    @Query("UPDATE media SET dominantColor = NULL")
+    suspend fun resetAnalizedMediaForDominantColor()
 
     @Query("SELECT COUNT(*) FROM media WHERE analyzed = 1")
     fun getAnalyzedMediaCount(): Flow<Int>
 
     @Query("SELECT COUNT(*) FROM media WHERE analyzed = 0")
     fun getNotAnalyzedMediaCount(): Flow<Int>
+
+    @Query("SELECT * FROM media WHERE location IS NULL ORDER BY timestamp DESC")
+    suspend fun getMediaToAnalyzeLocation(): List<UriMedia>
+
+    @Query("SELECT * FROM media WHERE dominantColor IS NULL ORDER BY timestamp DESC")
+    suspend fun getMediaToAnalyzeDominantColor(): List<UriMedia>
+
+    @Query("SELECT DISTINCT dominantColor FROM media WHERE dominantColor IS NOT NULL ORDER BY dominantColor DESC")
+    fun getDominantColors(): Flow<List<Int>>
+
+    @Query("SELECT COUNT(id) FROM media")
+    fun getMediaCount(): Flow<Int>
 
 }

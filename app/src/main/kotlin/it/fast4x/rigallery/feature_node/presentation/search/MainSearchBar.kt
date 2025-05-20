@@ -92,6 +92,7 @@ fun MainSearchBar(
     }
 
     val mediaWithLocation = mediaViewModel.mediaWithLocation.collectAsStateWithLifecycle()
+    println("MainSearchBar: mediaWithLocation: ${mediaWithLocation.value.size}")
 
     val state = mediaViewModel.searchMediaState.collectAsStateWithLifecycle()
 

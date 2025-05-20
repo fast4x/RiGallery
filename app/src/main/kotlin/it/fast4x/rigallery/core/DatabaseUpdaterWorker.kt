@@ -17,6 +17,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.mediaStoreVersion
 import it.fast4x.rigallery.feature_node.presentation.util.printDebug
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import it.fast4x.rigallery.feature_node.presentation.util.printWarning
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
@@ -44,19 +45,21 @@ class DatabaseUpdaterWorker @AssistedInject constructor(
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
+        printWarning("DatabaseUpdaterWorker is running")
         if (database.isMediaUpToDate(appContext)) {
-            printDebug("Database is up to date")
+            printDebug("DatabaseUpdaterWorker Database is up to date")
             return Result.success()
         }
         withContext(Dispatchers.IO) {
             val mediaVersion = appContext.mediaStoreVersion
-            printDebug("Database is not up to date. Updating to version $mediaVersion")
+            printDebug("DatabaseUpdaterWorker Database is not up to date. Updating to version $mediaVersion")
             database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
-            val media = repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
-            media?.let {
-                database.getMediaDao().updateMedia(it)
-                database.getClassifierDao().deleteDeclassifiedImages(it.fastMap { m -> m.id })
-            }
+            // TODO CHECK IF THIS IS NEEDED
+//            val media = repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
+//            media?.let {
+//                database.getMediaDao().updateMedia(it)
+//                database.getClassifierDao().deleteDeclassifiedImages(it.fastMap { m -> m.id })
+//            }
             delay(5000)
         }
 
