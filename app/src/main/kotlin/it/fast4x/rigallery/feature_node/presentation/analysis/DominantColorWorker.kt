@@ -83,13 +83,11 @@ class DominantColorWorker @AssistedInject constructor(
                     setProgress(workDataOf("progress" to (index / (mediaForDominantColor.size - 1).toFloat()) * 100f))
                     title =
                         (if (isAtLeastAndroid15)
-                            //applicationContext.getText(R.string.analyzing_media)
-                            "Analyzing dominant color"
+                            applicationContext.getString(R.string.analysis_for_dominant_color)
                         else "${
-                            //applicationContext.getText(R.string.analyzing_media)
-                            "Analyzing dominant color"
+                            applicationContext.getString(R.string.analysis_for_dominant_color)
                         } ${index + 1}/${mediaForDominantColor.size}").toString()
-                    message = if (isAtLeastAndroid15) "Analyzing dominant color..." else "File: ${item.label}"
+                    message = if (isAtLeastAndroid15) applicationContext.getString(R.string.scanning_in_progress_please_wait) else "File: ${item.label}"
                     //println("DominantColorWorker index $index media.size ${mediaForDominantColor.size}")
                     setForeground(
                         createForegroundInfo(
@@ -125,8 +123,7 @@ class DominantColorWorker @AssistedInject constructor(
 
     private fun createNotificationChannel() {
         val channel = NotificationChannelCompat.Builder(NOTIFICATION_CHANNEL, NotificationManagerCompat.IMPORTANCE_HIGH)
-            //.setName(applicationContext.getText(R.string.analysis_channel_name))
-            .setName("Analyzer Dominant Color channel name")
+            .setName(applicationContext.getText(R.string.analysis_for_dominant_color))
             .setShowBadge(false)
             .build()
 

@@ -72,8 +72,7 @@ class MainActivity : AppCompatActivity() {
         enforceSecureFlag()
         enableEdgeToEdge()
         setContent {
-
-            // TODO IMPROVE START ANALYSIS ON APP START
+            
             val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
             analyzerViewModel.startAnalysis()
 

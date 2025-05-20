@@ -83,12 +83,11 @@ class LocationWorker @AssistedInject constructor(
                     setProgress(workDataOf("progress" to (index / (mediaForLocation.size - 1).toFloat()) * 100f))
                     title =
                         (if (isAtLeastAndroid15)
-                            //applicationContext.getText(R.string.analyzing_media)
-                            "Analyzing location"
+                            applicationContext.getString(R.string.analysis_for_location)
                         else "${
-                            "Analyzing location"
+                            applicationContext.getString(R.string.analysis_for_location)
                         } ${index + 1}/${mediaForLocation.size}").toString()
-                    message = if (isAtLeastAndroid15) "Analyzing location" else "File: ${item.label}"
+                    message = if (isAtLeastAndroid15) applicationContext.getString(R.string.scanning_in_progress_please_wait) else "File: ${item.label}"
                     //println("LocationWorker index $index media.size ${media.size}")
                     setForeground(
                         createForegroundInfo(
@@ -143,8 +142,7 @@ class LocationWorker @AssistedInject constructor(
 
     private fun createNotificationChannel() {
         val channel = NotificationChannelCompat.Builder(NOTIFICATION_CHANNEL, NotificationManagerCompat.IMPORTANCE_HIGH)
-            //.setName(applicationContext.getText(R.string.analysis_channel_name))
-            .setName("Analyzer Location channel name")
+            .setName(applicationContext.getText(R.string.analysis_for_location))
             .setShowBadge(false)
             .build()
 

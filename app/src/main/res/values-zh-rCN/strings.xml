@@ -400,6 +400,9 @@
     <string name="tag_white">white</string>
     <string name="tag_yellow">yellow</string>
     <string name="tag_color">color</string>
+    <string name="analysis_for_dominant_color">Analysis for dominant color</string>
+    <string name="scanning_in_progress_please_wait">Scanning in progress, please wait</string>
+    <string name="analysis_for_location">Analysis for location</string>
     <plurals name="item_count">
         <item quantity="other">%s 个项目</item>
     </plurals>
