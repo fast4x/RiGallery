@@ -69,13 +69,10 @@ class DominantColorWorker @AssistedInject constructor(
 
 
 
-//            //TODO MOVE TO ANOTHER WORKER
             val mediaForDominantColor = database.getMediaDao().getMediaToAnalyzeDominantColor()
             printWarning("DominantColorWorker not analyzed media for dominant color size: ${mediaForDominantColor.size}")
             if (mediaForDominantColor.isEmpty() == true) {
                 printWarning("DominantColorWorker media is empty, nothing to analyze for dominant color")
-                //setProgress(workDataOf("progress" to 100))
-                //return@withContext Result.success()
             } else {
                 setProgress(workDataOf("progress" to 0))
                 printWarning("DominantColorWorker Starting analysis for ${mediaForDominantColor.size} items with dominant color")
@@ -171,31 +168,3 @@ class DominantColorWorker @AssistedInject constructor(
     }
 
 }
-
-//fun WorkManager.startAnalysis(indexStart: Int = 0, size: Int = 50) {
-//    val inputData = Data.Builder()
-//        .putInt("chunkIndexStart", indexStart)
-//        .putInt("chunkSize", size)
-//        .build()
-//
-//    val uniqueWork = OneTimeWorkRequestBuilder<AnalyzerWorker>()
-//        .addTag(WORKERNAME)
-//        .setConstraints(
-//            Constraints.Builder()
-//                .setRequiresStorageNotLow(true)
-//                .build()
-//        )
-//        .setInputData(inputData)
-//        .build()
-//
-//    enqueueUniqueWork(
-//        WORKERNAME,
-//        ExistingWorkPolicy.REPLACE,
-//        uniqueWork
-//    )
-//}
-//
-//fun WorkManager.stopAnalysis() {
-//    cancelAllWorkByTag(WORKERNAME)
-//    //cancelAllWork()
-//}

@@ -67,15 +67,8 @@ class LocationWorker @AssistedInject constructor(
             val mediaForLocation = database.getMediaDao().getMediaToAnalyzeLocation()
             printWarning("LocationWorker not analyzed media for location size: ${mediaForLocation.size}")
 
-
-//            media = database.getMediaDao().getMedia()
-//            val mediaForLocation = media.filter { it.analyzed == 0 && (it.location == null || it.location == "") }
-//            val mediaForDominantColor = media.filter { it.analyzed == 0 && (it.dominantColor == null || it.dominantColor == 0) }
-
             if (mediaForLocation.isEmpty() == true) {
                 printWarning("LocationWorker media is empty, nothing to analyze fro location")
-                //setProgress(workDataOf("progress" to 100))
-                //return@withContext Result.success()
             } else {
                 setProgress(workDataOf("progress" to 0))
                 printWarning("LocationWorker Starting analysis for ${mediaForLocation.size} items with location")
@@ -191,32 +184,3 @@ class LocationWorker @AssistedInject constructor(
 
 }
 
-
-
-//fun WorkManager.startAnalysis(indexStart: Int = 0, size: Int = 50) {
-//    val inputData = Data.Builder()
-//        .putInt("chunkIndexStart", indexStart)
-//        .putInt("chunkSize", size)
-//        .build()
-//
-//    val uniqueWork = OneTimeWorkRequestBuilder<AnalyzerWorker>()
-//        .addTag(WORKERNAME)
-//        .setConstraints(
-//            Constraints.Builder()
-//                .setRequiresStorageNotLow(true)
-//                .build()
-//        )
-//        .setInputData(inputData)
-//        .build()
-//
-//    enqueueUniqueWork(
-//        WORKERNAME,
-//        ExistingWorkPolicy.REPLACE,
-//        uniqueWork
-//    )
-//}
-//
-//fun WorkManager.stopAnalysis() {
-//    cancelAllWorkByTag(WORKERNAME)
-//    //cancelAllWork()
-//}
