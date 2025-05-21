@@ -99,4 +99,5 @@ Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8
 
 ## 🫂 Acknowledgments
 - [**Gallery**](https://github.com/IacobIonut01/Gallery)
+- [**Website** by Rohith Pay](https://github.com/chayotic)
 - [**FlatIcon.com**](https://www.flaticon.com/): Download Free Icons, Stickers for your projects. Resources made by, for designers.
