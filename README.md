@@ -72,7 +72,7 @@
 <br><br>
 
 ## 📲 Installation
-[<img src="./docs/getItGithub.png" alt="GitHub" height="80">](https://github.com/fast4x/RiGallery/releases/latest)
+[<img src="./docs/assets/images/getItGithub.png" alt="GitHub" height="80">](https://github.com/fast4x/RiGallery/releases/latest)
 <br><br>
 
 ## 🤝 Contributing
