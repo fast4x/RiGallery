@@ -94,7 +94,7 @@ Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8
 <br><br>
 
 ## ❓ Support
-- [Group on Telegram ](https://t.me/riprojects_apps)
+- [Group on Telegram ](https://t.me/rigallery_app)
 <br><br>
 
 ## 🫂 Acknowledgments
