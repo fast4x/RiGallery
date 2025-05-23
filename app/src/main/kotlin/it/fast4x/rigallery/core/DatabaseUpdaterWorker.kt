@@ -54,19 +54,11 @@ class DatabaseUpdaterWorker @AssistedInject constructor(
             val mediaVersion = appContext.mediaStoreVersion
             printDebug("DatabaseUpdaterWorker Database is not up to date. Updating to version $mediaVersion")
             database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
-            // TODO CHECK IF THIS IS NEEDED
-//            val media = repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
-//            media?.let {
-//                database.getMediaDao().updateMedia(it)
-//                database.getClassifierDao().deleteDeclassifiedImages(it.fastMap { m -> m.id })
-//            }
 
             var media = database.getMediaDao().getMedia()
 
             if (media.isEmpty()) {
                 printWarning("DatabaseUpdaterWorker media is empty, let's try and update the database")
-//                val mediaVersion = appContext.mediaStoreVersion
-//                database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
                 val fetchedMedia =
                     repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
                 fetchedMedia?.let {
