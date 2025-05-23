@@ -60,6 +60,20 @@ class DatabaseUpdaterWorker @AssistedInject constructor(
 //                database.getMediaDao().updateMedia(it)
 //                database.getClassifierDao().deleteDeclassifiedImages(it.fastMap { m -> m.id })
 //            }
+
+            var media = database.getMediaDao().getMedia()
+
+            if (media.isEmpty()) {
+                printWarning("DatabaseUpdaterWorker media is empty, let's try and update the database")
+//                val mediaVersion = appContext.mediaStoreVersion
+//                database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
+                val fetchedMedia =
+                    repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
+                fetchedMedia?.let {
+                    database.getMediaDao().updateMedia(it)
+                }
+            }
+
             delay(5000)
         }
 

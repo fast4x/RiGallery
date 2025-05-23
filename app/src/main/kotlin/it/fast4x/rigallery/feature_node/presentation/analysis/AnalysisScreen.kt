@@ -128,9 +128,10 @@ fun AnalysisScreen(
                 if (!isRunning)
                     ScannerButton(
                         image = Icons.Outlined.Close,
-                        scanForNewText = "Reset analyzed media (${mediaWithLocation.size?.plus(
-                            mediaWithDominantColor?.size ?: 0
-                        )})",
+                        scanForNewText = "Reset analyzed media",
+//                        scanForNewText = "Reset analyzed media (${mediaWithLocation.size?.plus(
+//                            mediaWithDominantColor?.size ?: 0
+//                        )})",
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -147,7 +148,8 @@ fun AnalysisScreen(
                 if (!isRunning)
                     ScannerButton(
                         image = Icons.Outlined.Close,
-                        scanForNewText = "Reset Location Analysis (${mediaWithLocation?.size})",
+                        scanForNewText = "Reset Location Analysis",
+                        //scanForNewText = "Reset Location Analysis (${mediaWithLocation?.size})",
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -163,7 +165,8 @@ fun AnalysisScreen(
                 if (!isRunning)
                     ScannerButton(
                         image = Icons.Outlined.Close,
-                        scanForNewText = "Reset Dominant Color Analysis (${mediaWithDominantColor?.size})",
+                        scanForNewText = "Reset Dominant Color Analysis",
+                        //scanForNewText = "Reset Dominant Color Analysis (${mediaWithDominantColor?.size})",
                         isRunning = isRunning,
                         indicatorCounter = progress,
                         contentColor = MaterialTheme.colorScheme.tertiary,
