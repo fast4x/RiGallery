@@ -25,16 +25,21 @@ import dagger.assisted.AssistedInject
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.util.isAtLeastAndroid14
 import it.fast4x.rigallery.core.util.isAtLeastAndroid15
+import it.fast4x.rigallery.feature_node.domain.model.MediaVersion
 import it.fast4x.rigallery.feature_node.domain.model.getLocationData
+import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.main.MainActivity
+import it.fast4x.rigallery.feature_node.presentation.util.mediaStoreVersion
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @HiltWorker
 class LocationWorker @AssistedInject constructor(
     private val database: InternalDatabase,
-    //private val repository: MediaRepository,
+    private val repository: MediaRepository,
     @Assisted private val appContext: Context,
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(appContext, workerParams) {
@@ -50,19 +55,19 @@ class LocationWorker @AssistedInject constructor(
         withContext(Dispatchers.IO) {
             //printWarning("LocationWorker retrieving media")
 
-//            var media = database.getMediaDao().getMedia()
-//
-//            if (media.isEmpty()) {
-//                printWarning("LocationWorker media is empty, let's try and update the database")
-//                val mediaVersion = appContext.mediaStoreVersion
-//                //printWarning("LocationWorker Force-updating database to version $mediaVersion")
-//                database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
-//                val fetchedMedia =
-//                    repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
-//                fetchedMedia?.let {
-//                    database.getMediaDao().updateMedia(it)
-//                }
-//            }
+            var media = database.getMediaDao().getMedia()
+
+            if (media.isEmpty()) {
+                printWarning("LocationWorker media is empty, let's try and update the database")
+                val mediaVersion = appContext.mediaStoreVersion
+                //printWarning("LocationWorker Force-updating database to version $mediaVersion")
+                database.getMediaDao().setMediaVersion(MediaVersion(mediaVersion))
+                val fetchedMedia =
+                    repository.getMedia().map { it.data ?: emptyList() }.firstOrNull()
+                fetchedMedia?.let {
+                    database.getMediaDao().updateMedia(it)
+                }
+            }
 
             val mediaForLocation = database.getMediaDao().getMediaToAnalyzeLocation()
             printWarning("LocationWorker not analyzed media for location size: ${mediaForLocation.size}")
