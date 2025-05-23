@@ -1,11 +1,14 @@
 package it.fast4x.rigallery.core.util
 
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import java.util.Locale
+import androidx.compose.ui.platform.LocalConfiguration
 
 inline val isAtLeastAndroid12
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -21,6 +24,12 @@ inline val isAtLeastAndroid15
 
 inline val whatBetterAbiVersion: String?
     get() = Build.SUPPORTED_ABIS[0]
+
+val isLandscape
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
 
 fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier) : Modifier {
     return if (condition) {

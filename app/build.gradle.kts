@@ -317,6 +317,7 @@ dependencies {
     implementation(libs.tensorflow.lite.gpu)
 
     implementation(libs.palette)
+    implementation(libs.compose.charts)
 
     // Tests
     testImplementation(libs.junit)

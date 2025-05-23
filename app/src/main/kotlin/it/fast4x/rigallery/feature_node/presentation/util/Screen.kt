@@ -57,5 +57,7 @@ sealed class Screen(val route: String) {
 
     data object AnalysisScreen : Screen("analysis_screen")
 
+    data object StatisticsScreen : Screen("statistics_screen")
+
     operator fun invoke() = route
 }

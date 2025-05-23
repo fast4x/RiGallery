@@ -48,6 +48,7 @@ zoomimageViewSketch = "1.1.1"
 lifecycleProcess = "2.8.7"
 metadataExtractor = "2.19.0"
 palette = "1.0.0"
+composeCharts = "0.1.7"
 
 [libraries]
 # AndroidX
@@ -163,6 +164,8 @@ tensorflow-lite-task-vision = { module = "org.tensorflow:tensorflow-lite-task-vi
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 
 palette = {group = "androidx.palette", name = "palette-ktx", version.ref = "palette"}
+compose-charts = {group = "io.github.ehsannarmani", name = "compose-charts", version.ref = "composeCharts"}
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

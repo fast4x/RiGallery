@@ -63,6 +63,7 @@ import it.fast4x.rigallery.feature_node.presentation.timeline.TimelineScreen
 import it.fast4x.rigallery.feature_node.presentation.trashed.TrashedGridScreen
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.ignoredmedia.IgnoredMediaScreen
+import it.fast4x.rigallery.feature_node.presentation.statistics.StatisticsScreen
 import it.fast4x.rigallery.feature_node.presentation.util.restartApplication
 import it.fast4x.rigallery.feature_node.presentation.vault.VaultScreen
 import kotlinx.coroutines.Dispatchers
@@ -619,7 +620,15 @@ fun NavigationComp(
                     navigateUp = navPipe::navigateUp,
                     navigate = navPipe::navigate
                 )
+            }
 
+            composable(
+                route = Screen.StatisticsScreen()
+            ) {
+                StatisticsScreen(
+                    navigateUp = navPipe::navigateUp,
+                    navigate = navPipe::navigate
+                )
             }
         }
     }

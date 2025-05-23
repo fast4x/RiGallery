@@ -8,6 +8,9 @@ import it.fast4x.rigallery.feature_node.domain.model.Media.UriMedia
 import it.fast4x.rigallery.feature_node.domain.model.MediaVersion
 import it.fast4x.rigallery.feature_node.domain.model.TimelineSettings
 import it.fast4x.rigallery.feature_node.presentation.picker.AllowedMedia
+import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaInYear
+import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaType
+import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaTypeInYear
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -109,7 +112,61 @@ interface MediaDao {
     @Query("SELECT DISTINCT dominantColor FROM media WHERE dominantColor IS NOT NULL ORDER BY dominantColor DESC")
     fun getDominantColors(): Flow<List<Int>>
 
+
     @Query("SELECT COUNT(id) FROM media")
     fun getMediaCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM media WHERE favorite = 1")
+    fun getFavoriteCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM media WHERE trashed = 1")
+    fun getTrashedCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM media WHERE ignored = 1")
+    fun getIgnoredCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) FROM media WHERE location IS NOT NULL AND location <> '-'")
+    fun getWithLocationCount(): Flow<Int>
+
+    @Query("SELECT DISTINCT CAST(strftime('%Y',takenTimestamp / 1000,'unixepoch') as INTEGER) FROM media WHERE timestamp IS NOT NULL")
+    fun getYears(): Flow<List<Int>>
+
+    @Query("SELECT COUNT(id) FROM media WHERE CAST(strftime('%Y',takenTimestamp / 1000,'unixepoch') as INTEGER) = :year")
+    fun getMediaCountByYear(year: Int): Flow<Int>
+
+    @Query("SELECT CAST(strftime('%Y',takenTimestamp / 1000,'unixepoch') as INTEGER) AS year, COUNT(id) as value  FROM media " +
+            "WHERE takenTimestamp IS NOT NULL " +
+            "GROUP BY year ORDER BY year DESC")
+    fun getMediaCountByYears(): Flow<List<MediaInYear>>
+
+    @Query("SELECT CAST(strftime('%Y',takenTimestamp / 1000,'unixepoch') as INTEGER) AS year, " +
+            "COUNT(CASE WHEN mimeType LIKE 'video/' || '%' THEN 1 END) AS videos, " +
+            "COUNT(CASE WHEN mimeType LIKE 'image/' || '%' THEN 1 END) AS images " +
+            "FROM media " +
+            "WHERE takenTimestamp IS NOT NULL " +
+            "GROUP BY year " +
+            "ORDER BY year DESC")
+    fun getMediaTypeCountByYears(): Flow<List<MediaTypeInYear>>
+
+    @Query("SELECT COUNT(CASE WHEN mimeType LIKE 'video/' || '%' THEN 1 END) AS videos, " +
+            "COUNT(CASE WHEN mimeType LIKE 'image/' || '%' THEN 1 END) AS images " +
+            "FROM media " +
+            "WHERE takenTimestamp IS NOT NULL ")
+    fun getMediaTypeCount(): Flow<MediaType>
+
+    @Query("SELECT COUNT(id) from media WHERE mimeType LIKE 'video/' || '%'")
+    fun getVideosCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) from media WHERE mimeType LIKE 'image/' || '%'")
+    fun getImagesCount(): Flow<Int>
+
+    @Query("SELECT COUNT(id) from media WHERE mimeType LIKE 'audio/' || '%'")
+    fun getAudiosCount(): Flow<Int>
+
+    @Query("SELECT DISTINCT SUBSTR(mimeType, INSTR(mimeType, '/')+1, LENGTH(mimeType)-INSTR(mimeType, '/')+1) FROM media WHERE mimeType IS NOT NULL")
+    fun getMediaTypes(): Flow<List<String>>
+
+    @Query("SELECT COUNT(id) from media WHERE mimeType LIKE '%' || :type || '%'")
+    fun getMediaCountByType(type: String): Flow<Int>
 
 }

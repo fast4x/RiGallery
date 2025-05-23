@@ -213,7 +213,16 @@ fun AppBarContainer(
                     navController.navigate(Screen.TrashedScreen.route)
                     expandedDropDown.value = false
                 }
+            ),
+            OptionItem(
+                text = "Statistics",
+                icon = Icons.Filled.QueryStats,
+                onClick = {
+                    navController.navigate(Screen.StatisticsScreen.route)
+                    expandedDropDown.value = false
+                }
             )
+
         )
     }
     val tertiaryContainer = MaterialTheme.colorScheme.tertiaryContainer

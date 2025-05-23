@@ -408,7 +408,8 @@ open class MediaViewModel @Inject constructor(
                     null
                 }
 
-                printWarning("MediaViewModel: isColorTag $isColorTag colorTagValue $colorTagValue dominantColor ${dominantColor.toString()} match ${dominantColor.toString().startsWith(colorTagValue)}")
+                //printWarning("MediaViewModel: isColorTag $isColorTag colorTagValue $colorTagValue dominantColor ${dominantColor.toString()} match ${dominantColor.toString().startsWith(colorTagValue)}")
+                printWarning("MediaViewModel: mimeType ${it.mimeType}")
 
 
                 (it.isImage && context.getString(R.string.tag_image).toString() in tags) ||
