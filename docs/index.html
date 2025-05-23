@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RiGallery - Private Photo Gallery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="mobile-hamburger">
+      <button class="hamburger-menu">
+        <span class="material-icons">menu</span>
+      </button>
+    </div>
+
+    <div class="logo-container">
+      <img src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/logo/rigallery_logo_without_background.png" alt="RiGallery Logo" class="logo-img" />
+      <span class="logo-text">RiGallery</span>
+    </div>
+
+    <nav class="nav-center desktop-nav">
+      <div class="nav-links-container">
+        <a href="#" class="nav-link" data-target="top">Home</a>
+        <a href="#" class="nav-link" data-target="gradients">Features</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="https://github.com/fast4x/RiGallery/releases" class="download-link nav-link" target="_blank">Download</a>
+      </div>
+    </nav>
+
+    <div class="right-controls desktop-nav">
+      <div class="social-links">
+        <a href="https://t.me/rigallery_app" class="social-link">Telegram</a>
+        <a href="https://github.com/fast4x/RiGallery" class="social-link">GitHub</a>
+      </div>
+      <button class="theme-toggle">
+        <span class="material-icons">dark_mode</span>
+      </button>
+    </div>
+
+    <div class="mobile-theme-toggle">
+      <button class="theme-toggle">
+        <span class="material-icons">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+    <nav class="mobile-nav">
+      <a href="#" class="nav-link" data-target="top">Home</a>
+      <a href="#" class="nav-link" data-target="gradients">Features</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="https://github.com/fast4x/RiGallery/releases" class="download-link" target="_blank">Download</a>
+      <a href="https://t.me/rigallery_app">Telegram</a>
+      <a href="https://github.com/fast4x/RiGallery">GitHub</a>
+    </nav>
+  </div>
+
+  <main class="content">
+    <section class="hero" id="top">
+      <h1>Why Choose RiGallery?</h1>
+      <p class="subtext">
+        Not just private — open-source, offline, and built around you.<br />
+        All wrapped in a beautiful, private gallery experience
+      </p>
+    </section>
+
+    <section class="features-container">
+      <div class="feature-item">
+        <div class="feature-image">
+          <img src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/svg/Open%20source.svg" alt="Open Source" />
+        </div>
+        <h3><span class="feature-number">01</span> Open Source</h3>
+        <p>Transparent code, zero secrets</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-image">
+          <img src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/svg/Private%20data.svg" alt="Private Data" />
+        </div>
+        <h3><span class="feature-number">02</span> Private</h3>
+        <p>Nothing leaves your device. Ever.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-image">
+          <img src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/svg/Images.svg" alt="Easy to Use" />
+        </div>
+        <h3><span class="feature-number">03</span> Easy To Use</h3>
+        <p>Intuitive design that just makes sense</p>
+      </div>
+    </section>
+
+    <section class="gradient-sections" id="gradients">
+      <div class="gradient-section">
+        <div class="gradient-container left">
+          <div class="image-container">
+            <img class="app-image" data-mode="light" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/images/light/1_light-portrait.png" alt="App Light 1" />
+            <img class="app-image" data-mode="dark" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/images/dark/1_dark-portrait.png" alt="App Dark 1" />
+          </div>
+          <img class="gradient-image" data-mode="light" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/decor/light/Grad_14.png" alt="Gradient Light 1" />
+          <img class="gradient-image" data-mode="dark" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/decor/dark/grad_14.png" alt="Gradient Dark 1" />
+        </div>
+        <div class="text-content right">
+          <h2>Simple Design</h2>
+          <p>Clean, distraction-free interface that puts your photos first—no unnecessary menus or clutter.</p>
+        </div>
+      </div>
+
+      <div class="gradient-section">
+        <div class="text-content left">
+          <h2>Smart Organization</h2>
+          <p>Automatically sorts your photos by date, Name, or pin albums for effortless browsing.</p>
+        </div>
+        <div class="gradient-container right">
+          <div class="image-container">
+            <img class="app-image" data-mode="light" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/images/light/2_light-portrait.png" alt="App Light 2" />
+            <img class="app-image" data-mode="dark" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/images/dark/2_dark-portrait.png" alt="App Dark 2" />
+          </div>
+          <img class="gradient-image" data-mode="light" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/decor/light/Grad_01.png" alt="Gradient Light 2" />
+          <img class="gradient-image" data-mode="dark" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/decor/dark/grad_01.png" alt="Gradient Dark 2" />
+        </div>
+      </div>
+
+      <div class="gradient-section">
+        <div class="gradient-container left">
+          <div class="image-container">
+            <img class="app-image" data-mode="light" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/images/light/3_light-portrait.png" alt="App Light 3" />
+            <img class="app-image" data-mode="dark" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/images/dark/3_dark-portrait.png" alt="App Dark 3" />
+          </div>
+          <img class="gradient-image" data-mode="light" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/decor/light/Grad_04.png" alt="Gradient Light 3" />
+          <img class="gradient-image" data-mode="dark" src="https://raw.githubusercontent.com/fast4x/Rigallery/main/docs/assets/decor/dark/grad_04.png" alt="Gradient Dark 3" />
+        </div>
+        <div class="text-content right">
+          <h2>Secure Vault</h2>
+          <p>Encrypted using AES256 encryption algorithm.<br />
+            You hold the only key to your memories.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p class="copyright">© 2025 RiGallery — All Memories Preserved.</p>
+        <p class="credits">Illustrations by <a href="https://storyset.com" target="_blank">Storyset</a></p>
+        <p class="made-with">Made with ♥ by <a href="https://github.com/chayotic" target="_blank">chayotic</a></p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

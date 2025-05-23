@@ -1,5 +1,5 @@
 <div align="center">
-<img src ="/docs/rigallery_logo_without_background.webp" width="170" height="170" />
+<img src ="/docs/assets/logo/rigallery_logo_without_background.webp" width="170" height="170" />
 
 # RiGallery
 **An Advanced Android Media Gallery**
@@ -15,6 +15,7 @@
 ## ✨ Features
 - Multilanguages, support system language but can change it in other language from settings
 - Supports many video and image formats
+- Check for update
 - Grid or mosaic display
 - Slideshow
 - Modify images
@@ -23,7 +24,7 @@
 - Favorites
 - Smart categories
 - Albums
-- Search all media with terms and/or tags, support also multiple tags
+- Search all media with terms and/or tags  also support multiple tags
 - Ignored media and/or albums
 - Trash
 <br><br>
@@ -71,7 +72,7 @@
 <br><br>
 
 ## 📲 Installation
-[<img src="./docs/getItGithub.png" alt="GitHub" height="80">](https://github.com/fast4x/RiGallery/releases/latest)
+[<img src="./docs/assets/images/getItGithub.png" alt="GitHub" height="80">](https://github.com/fast4x/RiGallery/releases/latest)
 <br><br>
 
 ## 🤝 Contributing
@@ -93,9 +94,10 @@ Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8
 <br><br>
 
 ## ❓ Support
-- [Group on Telegram ](https://t.me/riprojects_apps/73459)
+- [Group on Telegram ](https://t.me/rigallery_app)
 <br><br>
 
 ## 🫂 Acknowledgments
 - [**Gallery**](https://github.com/IacobIonut01/Gallery)
+- [**Website** by Rohith Pai](https://github.com/chayotic)
 - [**FlatIcon.com**](https://www.flaticon.com/): Download Free Icons, Stickers for your projects. Resources made by, for designers.
