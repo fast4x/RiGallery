@@ -2,6 +2,7 @@ package it.fast4x.rigallery.core.util
 
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
@@ -9,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import java.util.Locale
 import androidx.compose.ui.platform.LocalConfiguration
+import java.util.Random
 
 inline val isAtLeastAndroid12
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -54,4 +56,9 @@ fun getVersionCode(): Int {
 
 fun String.titlecaseFirstCharIfItIsLowercase() = replaceFirstChar {
     if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+}
+
+fun randomColor(): Int {
+    val rnd = Random()
+    return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
 }

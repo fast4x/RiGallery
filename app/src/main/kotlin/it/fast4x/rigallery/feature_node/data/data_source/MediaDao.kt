@@ -11,6 +11,7 @@ import it.fast4x.rigallery.feature_node.presentation.picker.AllowedMedia
 import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaInYear
 import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaType
 import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaTypeInYear
+import it.fast4x.rigallery.feature_node.presentation.statistics.data.MediaTypes
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -168,5 +169,8 @@ interface MediaDao {
 
     @Query("SELECT COUNT(id) from media WHERE mimeType LIKE '%' || :type || '%'")
     fun getMediaCountByType(type: String): Flow<Int>
+
+    @Query("SELECT mimeType, COUNT(id) as value FROM media GROUP BY mimeType ORDER BY value DESC")
+    fun getMediaTypesCount(): Flow<List<MediaTypes>>
 
 }

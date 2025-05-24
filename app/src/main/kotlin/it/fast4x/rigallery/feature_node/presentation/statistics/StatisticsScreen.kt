@@ -58,6 +58,7 @@ import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.Pie
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.util.isLandscape
+import it.fast4x.rigallery.core.util.randomColor
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
 import kotlinx.coroutines.flow.collectLatest
 
@@ -70,26 +71,14 @@ fun StatisticsScreen(
 ) {
 
     val viewModelMedia = hiltViewModel<StatisticsViewModel>()
-    val mediaInDb by viewModelMedia.mediaCount.collectAsStateWithLifecycle()
     val favoriteCount by viewModelMedia.favoriteCount.collectAsStateWithLifecycle()
     val trashedCount by viewModelMedia.trashedCount.collectAsStateWithLifecycle()
     val ignoredCount by viewModelMedia.ignoredCount.collectAsStateWithLifecycle()
     val withLocationCount by viewModelMedia.withLocationCount.collectAsStateWithLifecycle()
-    val videoCount by viewModelMedia.videoCount.collectAsStateWithLifecycle()
-    val imageCount by viewModelMedia.imageCount.collectAsStateWithLifecycle()
-    val audioCount by viewModelMedia.audioCount.collectAsStateWithLifecycle()
-    val mediaTypes by viewModelMedia.mediaTypes.collectAsStateWithLifecycle()
-    val years by viewModelMedia.years.collectAsStateWithLifecycle()
-    val mediaCountByYears by viewModelMedia.mediaCountByYears.collectAsStateWithLifecycle()
     val mediaTypeCountByYears by viewModelMedia.mediaTypeCountByYears.collectAsStateWithLifecycle()
     val mediaTypeCount by viewModelMedia.mediaTypeCount.collectAsStateWithLifecycle()
-    val mediaCountByYear by viewModelMedia.mediaCountByYear.collectAsStateWithLifecycle()
-    val mediaCountByType by viewModelMedia.mediaCountByType.collectAsStateWithLifecycle()
+    val mediaTypesCount by viewModelMedia.mediaTypesCount.collectAsStateWithLifecycle()
 
-
-
-    //println("StatisticsScreen: $mediaInDb, $favoriteCount, $trashedCount, $ignoredCount, $withLocationCount, $videoCount, $imageCount, $audioCount, $mediaTypes, $years, $mediaCountByYear, $mediaCountByYears, $mediaCountByType")
-    //println("StatisticsScreen: mediaTypeCount $mediaTypeCount")
 
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -158,7 +147,6 @@ fun StatisticsScreen(
 
                     LaunchedEffect(key1 = mediaTypeCount) {
                         media.collectLatest {
-                            println("StatisticsScreen: data1 $it")
                             dataList.value = listOf(
                                 Pie(
                                     label = textImage,
@@ -176,7 +164,68 @@ fun StatisticsScreen(
                         }
                     }
 
-                    println("StatisticsScreen: dataList $dataList")
+
+                    Column {
+                        Text(text = "${stringResource(R.string.tag_image)}: ${mediaTypeCount.images}", color = if (clicked && pieIndex == 0) selectedColor else imagesColor)
+                        Text(text = "${stringResource(R.string.tag_video)}: ${mediaTypeCount.videos}", color = if (clicked && pieIndex == 1) selectedColor else videosColor)
+                    }
+
+                    Column {
+                        PieChart(
+                            modifier = Modifier.size(150.dp),
+                            data = dataList.value,
+                            onPieClick = {
+                                println("${it.label} Clicked")
+                                pieIndex = dataList.value.indexOf(it)
+                                dataList.value =
+                                    dataList.value.mapIndexed { mapIndex, pie -> pie.copy(selected = pieIndex == mapIndex) }
+                                clicked = true
+                            },
+                            //selectedScale = 1.2f,
+                            scaleAnimEnterSpec = spring<Float>(
+                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                stiffness = Spring.StiffnessLow
+                            ),
+                            colorAnimEnterSpec = tween(300),
+                            colorAnimExitSpec = tween(300),
+                            scaleAnimExitSpec = tween(300),
+                            spaceDegreeAnimExitSpec = tween(300),
+                            style = Pie.Style.Fill
+                        )
+                    }
+
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 30.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    var media = snapshotFlow { mediaTypesCount }
+                    val dataList = remember { mutableStateOf(emptyList<Pie>()) }
+                    val dataListColor = remember { mutableStateOf(emptyList<Color>()) }
+                    val selectedColor = MaterialTheme.colorScheme.primary
+                    var pieIndex by remember { mutableIntStateOf(0) }
+                    var clicked by remember { mutableStateOf(false) }
+
+
+                    LaunchedEffect(key1 = mediaTypesCount) {
+                        media.collectLatest {
+                            mediaTypesCount.forEach {
+                                val color = Color(randomColor())
+                                dataList.value += Pie(
+                                    label = it.mimeType,
+                                    data = it.value.toDouble(),
+                                    color = color,
+                                    selectedColor = selectedColor
+                                )
+                                dataListColor.value += color
+                            }
+                        }
+                    }
+
 
                     Column {
                         PieChart(
@@ -202,8 +251,88 @@ fun StatisticsScreen(
                         )
                     }
                     Column {
-                        Text(text = "${stringResource(R.string.tag_image)}: ${mediaTypeCount.images}", color = if (clicked && pieIndex == 0) selectedColor else imagesColor)
-                        Text(text = "${stringResource(R.string.tag_video)}: ${mediaTypeCount.videos}", color = if (clicked && pieIndex == 1) selectedColor else videosColor)
+                        mediaTypesCount.forEachIndexed { index, it ->
+                            Text(text = "${it.mimeType}: ${it.value}", color = if (clicked && pieIndex == 0) selectedColor else
+                                dataListColor.value[index]
+                            )
+                        }
+                    }
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 30.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    var media = snapshotFlow { mediaTypeCount }
+                    val dataList = remember { mutableStateOf(emptyList<Pie>()) }
+                    val selectedColor = MaterialTheme.colorScheme.primary //Color.Green.copy(alpha = 0.5f)
+                    var pieIndex by remember { mutableIntStateOf(0) }
+                    var clicked by remember { mutableStateOf(false) }
+
+
+                    LaunchedEffect(key1 = mediaTypeCount, withLocationCount) {
+                        media.collectLatest {
+                            dataList.value = listOf(
+                                Pie(
+                                    label = textFavorited,
+                                    data = favoriteCount.toDouble(),
+                                    color = favoritedColor,
+                                    selectedColor = selectedColor
+                                ),
+                                Pie(
+                                    label = textTrashed,
+                                    data = trashedCount.toDouble(),
+                                    color = trashedColor,
+                                    selectedColor = selectedColor
+                                ),
+                                Pie(
+                                    label = textTrashed,
+                                    data = ignoredCount.toDouble(),
+                                    color = ignoredColor,
+                                    selectedColor = selectedColor
+                                ),
+                                Pie(
+                                    label = textWithLocation,
+                                    data = withLocationCount.toDouble(),
+                                    color = withLocationColor,
+                                    selectedColor = selectedColor
+                                )
+                            )
+                        }
+                    }
+
+                    Column {
+                        Text(text = "${textFavorited}: ${favoriteCount}", color = if (clicked && pieIndex == 0) selectedColor else favoritedColor)
+                        Text(text = "${textTrashed}: ${trashedCount}", color = if (clicked && pieIndex == 1) selectedColor else trashedColor)
+                        Text(text = "${textIgnored}: ${ignoredCount}", color = if (clicked && pieIndex == 2) selectedColor else ignoredColor)
+                        Text(text = "${textWithLocation}: ${withLocationCount}", color = if (clicked && pieIndex == 3) selectedColor else withLocationColor)
+                    }
+
+                    Column {
+                        PieChart(
+                            modifier = Modifier.size(150.dp),
+                            data = dataList.value,
+                            onPieClick = {
+                                println("${it.label} Clicked")
+                                pieIndex = dataList.value.indexOf(it)
+                                dataList.value =
+                                    dataList.value.mapIndexed { mapIndex, pie -> pie.copy(selected = pieIndex == mapIndex) }
+                                clicked = true
+                            },
+                            //selectedScale = 1.2f,
+                            scaleAnimEnterSpec = spring<Float>(
+                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                stiffness = Spring.StiffnessLow
+                            ),
+                            colorAnimEnterSpec = tween(300),
+                            colorAnimExitSpec = tween(300),
+                            scaleAnimExitSpec = tween(300),
+                            spaceDegreeAnimExitSpec = tween(300),
+                            style = Pie.Style.Stroke()
+                        )
                     }
                 }
 
@@ -216,7 +345,6 @@ fun StatisticsScreen(
                 ) {
 
                     val barsList = remember { mutableListOf<Bars>() }
-                    println("StatisticsScreen: mediaTypeCountByYears ${mediaTypeCountByYears}")
                         mediaTypeCountByYears.take(if (isLandscape) mediaTypeCountByYears.size else 5)
                         .forEach { year ->
                             barsList.add(
@@ -315,84 +443,6 @@ fun StatisticsScreen(
                             labelProperties = LabelProperties(enabled = true, labels = labelsList)
                         )
                 }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 30.dp),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    var media = snapshotFlow { mediaTypeCount }
-                    val dataList = remember { mutableStateOf(emptyList<Pie>()) }
-                    val selectedColor = MaterialTheme.colorScheme.primary //Color.Green.copy(alpha = 0.5f)
-                    var pieIndex by remember { mutableIntStateOf(0) }
-                    var clicked by remember { mutableStateOf(false) }
-
-
-                    LaunchedEffect(key1 = mediaTypeCount, withLocationCount) {
-                        media.collectLatest {
-                            dataList.value = listOf(
-                                Pie(
-                                    label = textFavorited,
-                                    data = favoriteCount.toDouble(),
-                                    color = favoritedColor,
-                                    selectedColor = selectedColor
-                                ),
-                                Pie(
-                                    label = textTrashed,
-                                    data = trashedCount.toDouble(),
-                                    color = trashedColor,
-                                    selectedColor = selectedColor
-                                ),
-                                Pie(
-                                    label = textTrashed,
-                                    data = ignoredCount.toDouble(),
-                                    color = ignoredColor,
-                                    selectedColor = selectedColor
-                                ),
-                                Pie(
-                                    label = textWithLocation,
-                                    data = withLocationCount.toDouble(),
-                                    color = withLocationColor,
-                                    selectedColor = selectedColor
-                                )
-                            )
-                        }
-                    }
-
-                    Column {
-                        PieChart(
-                            modifier = Modifier.size(150.dp),
-                            data = dataList.value,
-                            onPieClick = {
-                                println("${it.label} Clicked")
-                                pieIndex = dataList.value.indexOf(it)
-                                dataList.value =
-                                    dataList.value.mapIndexed { mapIndex, pie -> pie.copy(selected = pieIndex == mapIndex) }
-                                clicked = true
-                            },
-                            //selectedScale = 1.2f,
-                            scaleAnimEnterSpec = spring<Float>(
-                                dampingRatio = Spring.DampingRatioMediumBouncy,
-                                stiffness = Spring.StiffnessLow
-                            ),
-                            colorAnimEnterSpec = tween(300),
-                            colorAnimExitSpec = tween(300),
-                            scaleAnimExitSpec = tween(300),
-                            spaceDegreeAnimExitSpec = tween(300),
-                            style = Pie.Style.Stroke()
-                        )
-                    }
-                    Column {
-                        Text(text = "${textFavorited}: ${favoriteCount}", color = if (clicked && pieIndex == 0) selectedColor else favoritedColor)
-                        Text(text = "${textTrashed}: ${trashedCount}", color = if (clicked && pieIndex == 1) selectedColor else trashedColor)
-                        Text(text = "${textIgnored}: ${ignoredCount}", color = if (clicked && pieIndex == 2) selectedColor else ignoredColor)
-                        Text(text = "${textWithLocation}: ${withLocationCount}", color = if (clicked && pieIndex == 3) selectedColor else withLocationColor)
-                    }
-                }
-
-
 
                 Row {
                     Spacer(modifier = Modifier.height(100.dp))
