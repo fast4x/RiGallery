@@ -27,6 +27,7 @@
 - Search all media with terms and/or tags  also support multiple tags
 - Ignored media and/or albums
 - Trash
+- Statistics
 <br><br>
 
 
