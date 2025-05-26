@@ -101,5 +101,5 @@ Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8
 ## 🫂 Acknowledgments
 - [**Gallery**](https://github.com/IacobIonut01/Gallery)
 - [**Website** by Rohith Pai](https://github.com/chayotic)
-- [**Logo** bydAtA-TRoN](https://github.com/dAtA-TRoN)
+- [**Logo** by dAtA-TRoN](https://github.com/dAtA-TRoN)
 - [**FlatIcon.com**](https://www.flaticon.com/): Download Free Icons, Stickers for your projects. Resources made by, for designers.
