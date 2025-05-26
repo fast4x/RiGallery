@@ -1,5 +1,5 @@
 <div align="center">
-<img src ="/docs/assets/logo/rigallery_logo_without_background.webp" width="170" height="170" />
+<img src ="/docs/assets/logo/rigallery_logo.webp" width="170" height="170" />
 
 # RiGallery
 **An Advanced Android Media Gallery**
@@ -27,6 +27,7 @@
 - Search all media with terms and/or tags  also support multiple tags
 - Ignored media and/or albums
 - Trash
+- Statistics
 <br><br>
 
 
@@ -100,4 +101,5 @@ Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8
 ## 🫂 Acknowledgments
 - [**Gallery**](https://github.com/IacobIonut01/Gallery)
 - [**Website** by Rohith Pai](https://github.com/chayotic)
+- [**Logo** by dAtA-TRoN](https://github.com/dAtA-TRoN)
 - [**FlatIcon.com**](https://www.flaticon.com/): Download Free Icons, Stickers for your projects. Resources made by, for designers.
