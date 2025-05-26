@@ -11,6 +11,7 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import it.fast4x.rigallery.feature_node.domain.model.Event
 import it.fast4x.rigallery.feature_node.domain.model.IgnoredAlbum
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaVersion
@@ -28,9 +29,10 @@ import it.fast4x.rigallery.feature_node.domain.util.Converters
         TimelineSettings::class,
         Media.ClassifiedMedia::class,
         Media.EncryptedMedia2::class,
-        Vault::class
+        Vault::class,
+        Event::class
     ],
-    version = 11,
+    version = 14,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -43,6 +45,9 @@ import it.fast4x.rigallery.feature_node.domain.util.Converters
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 10, to = 11),
+        AutoMigration(from = 11, to = 12),
+        AutoMigration(from = 12, to = 13),
+        AutoMigration(from = 13, to = 14),
     ]
 )
 @TypeConverters(Converters::class)
@@ -57,6 +62,9 @@ abstract class InternalDatabase : RoomDatabase() {
     abstract fun getClassifierDao(): ClassifierDao
 
     abstract fun getVaultDao(): VaultDao
+
+    abstract fun getEventDao(): EventDao
+
 
     companion object {
         const val NAME = "internal_db"

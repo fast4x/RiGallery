@@ -37,7 +37,7 @@ interface MediaDao {
     fun getMediaWithDominantColor(): Flow<List<UriMedia>>
 
     @Query("SELECT * FROM media WHERE id = :id LIMIT 1")
-    suspend fun getMediaById(id: Long): UriMedia
+    suspend fun getMediaById(id: Long): UriMedia?
 
     @Query("SELECT * FROM media WHERE albumID = :albumId ORDER BY timestamp DESC")
     suspend fun getMediaByAlbumId(albumId: Long): List<UriMedia>

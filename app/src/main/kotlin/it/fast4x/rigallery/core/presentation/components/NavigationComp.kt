@@ -439,6 +439,7 @@ fun NavigationComp(
                     if (query) viewModel.searchMediaState else viewModel.mediaFlow
                 }.collectAsStateWithLifecycle(context = Dispatchers.IO)
 
+                //println("NavigationComp this is")
 
                 MediaViewScreen(
                     navigateUp = navPipe::navigateUp,

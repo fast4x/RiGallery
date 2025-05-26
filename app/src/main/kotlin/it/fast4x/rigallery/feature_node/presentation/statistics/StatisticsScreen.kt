@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -37,12 +43,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,13 +61,20 @@ import ir.ehsannarmani.compose_charts.models.AnimationMode
 import ir.ehsannarmani.compose_charts.models.BarProperties
 import ir.ehsannarmani.compose_charts.models.Bars
 import ir.ehsannarmani.compose_charts.models.DrawStyle
+import ir.ehsannarmani.compose_charts.models.HorizontalIndicatorProperties
+import ir.ehsannarmani.compose_charts.models.LabelHelperProperties
 import ir.ehsannarmani.compose_charts.models.LabelProperties
 import ir.ehsannarmani.compose_charts.models.Line
 import ir.ehsannarmani.compose_charts.models.Pie
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.util.isLandscape
 import it.fast4x.rigallery.core.util.randomColor
+import it.fast4x.rigallery.feature_node.domain.util.isImage
+import it.fast4x.rigallery.feature_node.presentation.common.components.MediaImage
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
+import it.fast4x.rigallery.feature_node.presentation.util.Screen
+import it.fast4x.rigallery.feature_node.presentation.util.mediaSharedElement
+import it.fast4x.rigallery.feature_node.presentation.util.rememberFeedbackManager
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -78,7 +93,7 @@ fun StatisticsScreen(
     val mediaTypeCountByYears by viewModelMedia.mediaTypeCountByYears.collectAsStateWithLifecycle()
     val mediaTypeCount by viewModelMedia.mediaTypeCount.collectAsStateWithLifecycle()
     val mediaTypesCount by viewModelMedia.mediaTypesCount.collectAsStateWithLifecycle()
-
+    val topMedia by viewModelMedia.topMedia.collectAsStateWithLifecycle()
 
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(
@@ -253,7 +268,11 @@ fun StatisticsScreen(
                     Column {
                         mediaTypesCount.forEachIndexed { index, it ->
                             Text(text = "${it.mimeType}: ${it.value}", color = if (clicked && pieIndex == 0) selectedColor else
-                                dataListColor.value[index]
+                                try {
+                                    dataListColor.value[index]
+                                } catch (e: Exception) {
+                                    Color.Transparent
+                                }
                             )
                         }
                     }
@@ -375,7 +394,18 @@ fun StatisticsScreen(
                                 spacing = 3.dp,
                                 style = DrawStyle.Fill
                             ),
-                            //labelHelperProperties = LabelHelperProperties(enabled = false),
+                            labelHelperProperties = LabelHelperProperties(
+                                enabled = true,
+                                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            ),
+                            labelProperties = LabelProperties(
+                                enabled = true,
+                                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            ),
+                            indicatorProperties = HorizontalIndicatorProperties(
+                                enabled = true,
+                                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            ),
                             animationSpec = spring(
                                 dampingRatio = Spring.DampingRatioMediumBouncy,
                                 stiffness = Spring.StiffnessLow
@@ -440,8 +470,80 @@ fun StatisticsScreen(
                             animationMode = AnimationMode.Together(delayBuilder = {
                                 it * 500L
                             }),
-                            labelProperties = LabelProperties(enabled = true, labels = labelsList)
+                            labelProperties = LabelProperties(
+                                enabled = true,
+                                labels = labelsList,
+                                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            ),
+                            labelHelperProperties = LabelHelperProperties(
+                                enabled = true,
+                                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            ),
+                            indicatorProperties = HorizontalIndicatorProperties(
+                                enabled = true,
+                                textStyle = TextStyle.Default.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            ),
                         )
+                }
+
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 30.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+
+                    LazyVerticalGrid(
+                        state = rememberLazyGridState(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(500.dp),
+                        columns = GridCells.Fixed(4),
+                        contentPadding = PaddingValues(16.dp),
+                        userScrollEnabled = canScroll,
+                        horizontalArrangement = Arrangement.spacedBy(1.dp),
+                        verticalArrangement = Arrangement.spacedBy(1.dp)
+                    ) {
+
+                        item(
+                            span = { GridItemSpan(maxLineSpan) }
+                        ) { Text(
+                            text = "Your top 10",
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        ) }
+
+                        itemsIndexed(
+                            items = topMedia,
+                            key = { _, item -> item.toString() },
+                            contentType = { _, item -> item.isImage }
+                        ) { index, media ->
+                            Box() {
+                                MediaImage(
+                                    modifier = Modifier
+                                        .animateItem(),
+                                    media = media,
+                                    canClick = canScroll,
+                                    onItemClick = {
+                                        navigate(Screen.MediaViewScreen.route + "?mediaId=${it.id}&query=false")
+                                    },
+                                    onItemLongClick = {},
+                                    selectionState = remember { mutableStateOf(false) },
+                                    selectedMedia = SnapshotStateList()
+                                )
+                                Text(
+                                    text = (index+1).toString(),
+                                    color = Color.Red,
+                                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                                    fontStyle = MaterialTheme.typography.titleLarge.fontStyle,
+                                    fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
+
+                        }
+                    }
                 }
 
                 Row {

@@ -63,6 +63,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.composables.core.BottomSheet
 import com.composables.core.SheetDetent.Companion.FullyExpanded
 import com.composables.core.rememberBottomSheetState
@@ -106,7 +107,9 @@ import it.fast4x.rigallery.ui.theme.BlackScrim
 import com.github.panpf.sketch.BitmapImage
 import com.github.panpf.sketch.request.ImageRequest
 import com.github.panpf.sketch.sketch
+import it.fast4x.rigallery.feature_node.domain.model.Event
 import it.fast4x.rigallery.feature_node.domain.model.rememberLocationData
+import it.fast4x.rigallery.feature_node.presentation.statistics.StatisticsViewModel
 import it.fast4x.rigallery.feature_node.presentation.util.ViewScreenConstants.FullyExpanded
 import it.fast4x.rigallery.feature_node.presentation.util.rememberExifInterface
 import it.fast4x.rigallery.feature_node.presentation.util.rememberExifMetadata
@@ -115,6 +118,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -387,6 +391,8 @@ fun <T : Media> MediaViewScreen(
         }
     }
 
+    val eventViewModel = hiltViewModel<StatisticsViewModel>()
+
     val bottomPadding =
         remember(configuration.orientation) {
             //if (!isGestureEnabled && isLandscape) 0.dp
@@ -443,11 +449,29 @@ fun <T : Media> MediaViewScreen(
                 val canPlay = remember(playWhenReady, currentMedia, media, currentPage) {
                     mutableStateOf(playWhenReady && currentMedia == media && currentPage == index)
                 }
+
+                var checkEvent by remember { mutableStateOf(false) }
+                LaunchedEffect(media) {
+                    checkEvent = true
+                }
+
                 AnimatedVisibility(
                     visible = media != null,
                     enter = enterAnimation,
                     exit = exitAnimation
                 ) {
+
+                    if (checkEvent) {
+                        eventViewModel.insertEvent(
+                            Event(
+                                id = UUID.randomUUID().mostSignificantBits,
+                                mediaId = media!!.id,
+                                timestamp = System.currentTimeMillis()
+                            )
+                        )
+                        checkEvent = false
+                    }
+
                     var offset by remember {
                         mutableStateOf(IntOffset(0, 0))
                     }
@@ -523,7 +547,9 @@ fun <T : Media> MediaViewScreen(
                                                 onClick = {
                                                     if (sheetState.currentDetent == imageOnlyDetent) {
                                                         showUI = !showUI
-                                                        windowInsetsController.toggleSystemBars(showUI)
+                                                        windowInsetsController.toggleSystemBars(
+                                                            showUI
+                                                        )
                                                     }
                                                 }
                                             )
