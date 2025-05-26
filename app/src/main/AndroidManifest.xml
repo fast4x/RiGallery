@@ -91,7 +91,7 @@
     <application
         android:name=".GalleryApp"
         android:allowBackup="true"
-        android:banner="@drawable/ic_launcher_foreground"
+        android:banner="@mipmap/ic_launcher"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
