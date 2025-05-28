@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,8 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.cropper.crop
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.util.titlecaseFirstCharIfItIsLowercase
 import java.util.Locale
 
@@ -99,6 +100,8 @@ fun MediaItemHeader(
             .titlecaseFirstCharIfItIsLowercase()
     }
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     Row(
         modifier = (if (showAsBig) bigModifier else smallModifier)
             .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
@@ -128,8 +131,12 @@ fun MediaItemHeader(
         if (!showAsBig && onChecked != null) {
             AnimatedVisibility(
                 visible = isCheckVisible.value,
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 CheckBox(
                     isChecked = isChecked.value,

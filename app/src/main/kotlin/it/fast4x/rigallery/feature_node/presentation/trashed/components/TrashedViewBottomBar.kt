@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.RestoreFromTrash
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
 import it.fast4x.rigallery.feature_node.presentation.mediaview.components.BottomBarColumn
@@ -48,10 +51,15 @@ fun TrashedViewBottomBar(
 ) {
     val scope = rememberCoroutineScope()
     val result = rememberActivityResult()
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     AnimatedVisibility(
         visible = showUI,
-        enter = Constants.Animation.enterAnimation(Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION),
-        exit = Constants.Animation.exitAnimation(Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION),
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        ),
         modifier = Modifier
             .fillMaxWidth()
     ) {

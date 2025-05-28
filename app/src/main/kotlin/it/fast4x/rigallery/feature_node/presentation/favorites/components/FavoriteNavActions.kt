@@ -14,11 +14,12 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.res.stringResource
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 
@@ -33,10 +34,17 @@ fun <T: Media> FavoriteNavActions(
     val removeAllTitle = stringResource(R.string.remove_all)
     val removeSelectedTitle = stringResource(R.string.remove_selected)
     val title = if (selectionState.value) removeSelectedTitle else removeAllTitle
+
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     AnimatedVisibility(
         visible = mediaState.value.media.isNotEmpty(),
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        )
     ) {
         TextButton(
             onClick = {

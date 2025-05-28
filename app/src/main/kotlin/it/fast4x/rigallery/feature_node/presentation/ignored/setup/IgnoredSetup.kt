@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
-import it.fast4x.rigallery.core.Constants.Animation.navigateInAnimation
-import it.fast4x.rigallery.core.Constants.Animation.navigateUpAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.IgnoredAlbum
 import it.fast4x.rigallery.feature_node.domain.model.matchesAlbum
 import it.fast4x.rigallery.feature_node.presentation.ignored.setup.screens.SetupConfirmationScreen
@@ -33,14 +33,36 @@ fun IgnoredSetup(
 
     val uiState by vm.uiState.collectAsStateWithLifecycle()
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     NavHost(
         modifier = Modifier.fillMaxSize(),
         navController = navController,
         startDestination = IgnoredSetupDestination.Label(),
-        enterTransition = { navigateInAnimation },
-        exitTransition = { navigateUpAnimation },
-        popEnterTransition = { navigateInAnimation },
-        popExitTransition = { navigateUpAnimation }
+        enterTransition = {
+            //navigateInAnimation
+            TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            )
+        },
+        exitTransition = {
+            //navigateUpAnimation
+            TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
+        },
+        popEnterTransition = {
+            //navigateInAnimation
+            TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            )
+        },
+        popExitTransition = {
+            //navigateUpAnimation
+            TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
+        }
     ) {
         composable(
             route = IgnoredSetupDestination.Label()

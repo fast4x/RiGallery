@@ -33,13 +33,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import it.fast4x.rigallery.core.Constants
-import it.fast4x.rigallery.core.Constants.Animation.navigateInAnimation
-import it.fast4x.rigallery.core.Constants.Animation.navigateUpAnimation
 import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
 import it.fast4x.rigallery.core.Constants.Target.TARGET_IGNOREDMEDIA
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Album.rememberHideTimelineOnAlbum
 import it.fast4x.rigallery.core.Settings.Misc.rememberLastScreen
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.util.OnLifecycleEvent
 import it.fast4x.rigallery.core.presentation.components.util.permissionGranted
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
@@ -156,14 +156,36 @@ fun NavigationComp(
         timelineViewModel.updatePermissionState(permissionState)
     }
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     SharedTransitionLayout {
         NavHost(
             navController = navController,
             startDestination = startDest,
-            enterTransition = { navigateInAnimation },
-            exitTransition = { navigateUpAnimation },
-            popEnterTransition = { navigateInAnimation },
-            popExitTransition = { navigateUpAnimation }
+            enterTransition = {
+                //navigateInAnimation
+                TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            },
+            exitTransition = {
+                //navigateUpAnimation
+                TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            },
+            popEnterTransition = {
+                //navigateInAnimation
+                TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            },
+            popExitTransition = {
+                //navigateUpAnimation
+                TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            }
         ) {
             composable(
                 route = Screen.SetupScreen(),

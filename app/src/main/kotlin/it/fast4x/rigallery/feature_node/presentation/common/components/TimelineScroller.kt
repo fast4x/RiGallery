@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Misc.rememberDefaultDateFormat
 import it.fast4x.rigallery.core.Settings.Misc.rememberExtendedDateFormat
 import it.fast4x.rigallery.core.Settings.Misc.rememberWeeklyDateFormat
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaItem
 import it.fast4x.rigallery.feature_node.presentation.util.getDate
@@ -70,6 +70,7 @@ fun <T : Media> TimelineScroller(
     settings: ScrollbarSettings = rememberScrollbarSettings(headers),
     content: @Composable () -> Unit
 ) {
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     if (!settings.enabled) content()
     else Box {
         content()
@@ -118,8 +119,12 @@ fun <T : Media> TimelineScroller(
                 ) {
                     androidx.compose.animation.AnimatedVisibility(
                         visible = !currentDate.isNullOrEmpty() && isSelected,
-                        enter = enterAnimation(250),
-                        exit = exitAnimation(1000)
+                        enter =  TransitionEffect.enter(
+                            TransitionEffect.entries[transitionEffect]
+                        ),
+                        exit =  TransitionEffect.exit(
+                            TransitionEffect.entries[transitionEffect]
+                        )
                     ) {
                         Text(
                             text = currentDate.toString(),

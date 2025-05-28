@@ -54,11 +54,11 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideSearchBar
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchHistory
 import it.fast4x.rigallery.core.Settings.Search.rememberSearchTagsHistory
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaGridView
@@ -99,6 +99,7 @@ fun MainSearchBar(
     val mediaFlowState = mediaViewModel.mediaFlow.collectAsStateWithLifecycle()
 
     val scope = rememberCoroutineScope()
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
     LaunchedEffect(state.value.media, query, canQuery) {
         println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
@@ -281,8 +282,12 @@ fun MainSearchBar(
 
                 AnimatedVisibility(
                     visible = lastQueryIsEmpty,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     SearchHistory(
                         mediaWithLocation,
@@ -297,8 +302,12 @@ fun MainSearchBar(
 
                 AnimatedVisibility(
                     visible = !lastQueryIsEmpty,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
 
 //                    if (mediaIsEmpty) {

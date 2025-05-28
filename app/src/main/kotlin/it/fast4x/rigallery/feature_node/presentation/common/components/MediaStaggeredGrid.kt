@@ -56,8 +56,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.common.collect.Iterables.removeIf
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.Error
 import it.fast4x.rigallery.core.presentation.components.LoadingMedia
 import it.fast4x.rigallery.core.presentation.components.MediaItemHeader
@@ -105,6 +105,8 @@ fun <T: Media> MediaStaggeredGrid(
         }
     }
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     val topContent: LazyStaggeredGridScope.() -> Unit = remember(aboveGridContent) {
         {
             if (aboveGridContent != null) {
@@ -125,8 +127,12 @@ fun <T: Media> MediaStaggeredGrid(
             ) {
                 AnimatedVisibility(
                     visible = mediaState.value.isLoading,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     LoadingMedia()
                 }
@@ -138,8 +144,12 @@ fun <T: Media> MediaStaggeredGrid(
             ) {
                 AnimatedVisibility(
                     visible = mediaState.value.media.isEmpty() && !mediaState.value.isLoading,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     emptyContent()
                 }

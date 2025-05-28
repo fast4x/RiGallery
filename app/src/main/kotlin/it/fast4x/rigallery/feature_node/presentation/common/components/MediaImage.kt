@@ -57,6 +57,8 @@ import com.github.panpf.sketch.request.ComposableImageRequest
 import com.github.panpf.sketch.resize.Scale
 import com.github.panpf.sketch.transition.CrossfadeTransition
 import com.github.panpf.sketch.util.key
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
@@ -106,6 +108,8 @@ fun <T: Media> MediaImage(
          )
     }
     //val aspectRatio by remember(media){ mutableFloatStateOf(1f) }
+
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
     Box(
         modifier = Modifier
@@ -198,8 +202,12 @@ fun <T: Media> MediaImage(
 
         AnimatedVisibility(
             visible = remember(media) { media.isVideo },
-            enter = Animation.enterAnimation,
-            exit = Animation.exitAnimation,
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            ),
             modifier = Modifier.align(Alignment.TopEnd)
         ) {
             VideoDurationHeader(
@@ -214,8 +222,12 @@ fun <T: Media> MediaImage(
             visible = remember(media) {
                 media.isFavorite
             },
-            enter = Animation.enterAnimation,
-            exit = Animation.exitAnimation,
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            ),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
         ) {
@@ -233,8 +245,12 @@ fun <T: Media> MediaImage(
 
         AnimatedVisibility(
             visible = selectionState.value,
-            enter = Animation.enterAnimation,
-            exit = Animation.exitAnimation
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
         ) {
             Box(
                 modifier = Modifier

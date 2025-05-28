@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,8 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.presentation.edit.components.core.SupportiveLazyLayout
 import it.fast4x.rigallery.feature_node.presentation.util.getEditImageCapableApps
 import it.fast4x.rigallery.feature_node.presentation.util.launchEditImageIntent
@@ -52,10 +53,15 @@ fun ExternalEditor(
     val padding = remember(isSupportingPanel) {
         if (isSupportingPanel) PaddingValues(0.dp) else PaddingValues(horizontal = 16.dp, vertical = 2.dp)
     }
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     AnimatedVisibility(
         visible = currentUri != null,
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        )
     ) {
         SupportiveLazyLayout(
             modifier = Modifier
@@ -83,8 +89,12 @@ fun ExternalEditor(
                 }
                 AnimatedVisibility(
                     visible = icon != null,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     EditApp(
                         bitmap = icon!!,

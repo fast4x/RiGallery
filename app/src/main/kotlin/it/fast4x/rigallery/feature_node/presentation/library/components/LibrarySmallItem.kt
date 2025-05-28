@@ -9,6 +9,7 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 
 @Composable
 fun LibrarySmallItem(
@@ -33,6 +34,7 @@ fun LibrarySmallItem(
     indicatorCounter: Int = 0,
     contentDescription: String = title
 ) {
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     ListItem(
         colors = ListItemDefaults.colors(
             containerColor = containerColor,
@@ -69,8 +71,12 @@ fun LibrarySmallItem(
         trailingContent = {
             AnimatedVisibility(
                 useIndicator && indicatorCounter > 0,
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 Text(
                     text = remember(indicatorCounter) {

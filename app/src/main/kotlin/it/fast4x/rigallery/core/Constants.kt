@@ -84,17 +84,17 @@ object Constants {
      */
     object Animation {
 
-        val enterAnimation = fadeIn(tween(DEFAULT_LOW_VELOCITY_SWIPE_DURATION))
-        val exitAnimation = fadeOut(tween(DEFAULT_LOW_VELOCITY_SWIPE_DURATION))
+//        val enterAnimation = fadeIn(tween(DEFAULT_LOW_VELOCITY_SWIPE_DURATION))
+//        val exitAnimation = fadeOut(tween(DEFAULT_LOW_VELOCITY_SWIPE_DURATION))
 
-        val navigateInAnimation = fadeIn(tween(DEFAULT_NAVIGATION_ANIMATION_DURATION))
-        val navigateUpAnimation = fadeOut(tween(DEFAULT_NAVIGATION_ANIMATION_DURATION))
+//        val navigateInAnimation = fadeIn(tween(DEFAULT_NAVIGATION_ANIMATION_DURATION))
+//        val navigateUpAnimation = fadeOut(tween(DEFAULT_NAVIGATION_ANIMATION_DURATION))
 
-        fun enterAnimation(durationMillis: Int): EnterTransition =
-            fadeIn(tween(durationMillis))
-
-        fun exitAnimation(durationMillis: Int): ExitTransition =
-            fadeOut(tween(durationMillis))
+//        fun enterAnimation(durationMillis: Int): EnterTransition =
+//            fadeIn(tween(durationMillis))
+//
+//        fun exitAnimation(durationMillis: Int): ExitTransition =
+//            fadeOut(tween(durationMillis))
 
     }
 

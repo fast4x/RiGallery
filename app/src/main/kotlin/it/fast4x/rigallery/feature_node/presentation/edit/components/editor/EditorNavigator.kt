@@ -4,14 +4,15 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import it.fast4x.rigallery.core.Constants.Animation.navigateInAnimation
-import it.fast4x.rigallery.core.Constants.Animation.navigateUpAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.editor.Adjustment
 import it.fast4x.rigallery.feature_node.domain.model.editor.DrawMode
 import it.fast4x.rigallery.feature_node.domain.model.editor.DrawType
@@ -51,14 +52,36 @@ fun EditorNavigator(
     isSupportingPanel: Boolean = false
 ) {
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = EditorDestination.Editor,
-        enterTransition = { navigateInAnimation },
-        exitTransition = { navigateUpAnimation },
-        popEnterTransition = { navigateInAnimation },
-        popExitTransition = { navigateUpAnimation }
+        enterTransition = {
+            //navigateInAnimation
+            TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            )
+        },
+        exitTransition = {
+            //navigateUpAnimation
+            TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
+        },
+        popEnterTransition = {
+            //navigateInAnimation
+            TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            )
+        },
+        popExitTransition = {
+            //navigateUpAnimation
+            TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
+        }
     ) {
         composable<EditorDestination.Editor> {
             EditorSelector(

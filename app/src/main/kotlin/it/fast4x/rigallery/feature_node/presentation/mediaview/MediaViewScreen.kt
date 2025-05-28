@@ -67,8 +67,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.composables.core.BottomSheet
 import com.composables.core.SheetDetent.Companion.FullyExpanded
 import com.composables.core.rememberBottomSheetState
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Constants.DEFAULT_LOW_VELOCITY_SWIPE_DURATION
 import it.fast4x.rigallery.core.Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
@@ -107,6 +105,8 @@ import it.fast4x.rigallery.ui.theme.BlackScrim
 import com.github.panpf.sketch.BitmapImage
 import com.github.panpf.sketch.request.ImageRequest
 import com.github.panpf.sketch.sketch
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.Event
 import it.fast4x.rigallery.feature_node.domain.model.rememberLocationData
 import it.fast4x.rigallery.feature_node.presentation.statistics.StatisticsViewModel
@@ -455,10 +455,16 @@ fun <T : Media> MediaViewScreen(
                     checkEvent = true
                 }
 
+                val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
                 AnimatedVisibility(
                     visible = media != null,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
 
                     if (checkEvent) {
@@ -595,8 +601,12 @@ fun <T : Media> MediaViewScreen(
 
                                     AnimatedVisibility(
                                         visible = showUI,
-                                        enter = enterAnimation(DEFAULT_TOP_BAR_ANIMATION_DURATION),
-                                        exit = exitAnimation(DEFAULT_TOP_BAR_ANIMATION_DURATION),
+                                        enter =  TransitionEffect.enter(
+                                            TransitionEffect.entries[transitionEffect]
+                                        ),
+                                        exit =  TransitionEffect.exit(
+                                            TransitionEffect.entries[transitionEffect]
+                                        ),
                                         modifier = Modifier.fillMaxSize()
                                     ) {
                                         VideoPlayerController(
@@ -671,6 +681,7 @@ fun <T : Media> MediaViewScreen(
                 animationSpec = tween(DEFAULT_TOP_BAR_ANIMATION_DURATION),
                 label = "MediaViewActionsAlpha"
             )
+            val transitionEffect by Settings.Misc.rememberTransitionEffect()
             BottomSheet(
                 state = sheetState,
                 enabled = showUI && target != TARGET_TRASH && showInfo,
@@ -695,8 +706,12 @@ fun <T : Media> MediaViewScreen(
                     )
                     AnimatedVisibility(
                         visible = currentMedia != null,
-                        enter = enterAnimation,
-                        exit = exitAnimation
+                        enter =  TransitionEffect.enter(
+                            TransitionEffect.entries[transitionEffect]
+                        ),
+                        exit =  TransitionEffect.exit(
+                            TransitionEffect.entries[transitionEffect]
+                        )
                     ) {
                         Row(
                             modifier = Modifier

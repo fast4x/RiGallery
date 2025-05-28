@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -34,8 +35,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.core.Constants
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.LocationData
 import it.fast4x.rigallery.feature_node.domain.model.rememberLocationData
 import it.fast4x.rigallery.feature_node.presentation.util.rememberExifInterface
@@ -54,10 +55,15 @@ fun MediaViewAppBar(
     onShowInfo: () -> Unit,
     locationData: LocationData? = null
 ) {
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     AnimatedVisibility(
         visible = showUI,
-        enter = enterAnimation(Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION),
-        exit = exitAnimation(Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION)
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        )
     ) {
         Row(
             modifier = Modifier
@@ -88,8 +94,12 @@ fun MediaViewAppBar(
             ) {
                 AnimatedVisibility(
                     visible = showDate,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     Text(
                         text = currentDate.uppercase(),
@@ -103,8 +113,12 @@ fun MediaViewAppBar(
                 
                 AnimatedVisibility(
                     visible = locationData?.location?.isEmpty() == false,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     IconButton(
                         onClick = onShowInfo

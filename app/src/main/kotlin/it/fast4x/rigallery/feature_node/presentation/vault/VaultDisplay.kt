@@ -62,10 +62,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastCoerceAtLeast
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Constants.cellsList
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
 import it.fast4x.rigallery.core.presentation.components.ModalSheet
 import it.fast4x.rigallery.feature_node.domain.model.Media
@@ -139,7 +139,7 @@ fun VaultDisplay(
         }
     }
     val postEncryptLauncher = rememberActivityResult()
-
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     LaunchedEffect(isRunning) {
         if (isRunning) {
             bottomSheetState.show()
@@ -245,8 +245,12 @@ fun VaultDisplay(
                             )
                             androidx.compose.animation.AnimatedVisibility(
                                 visible = vaultState.value.vaults.size > 1,
-                                enter = enterAnimation,
-                                exit = exitAnimation
+                                enter =  TransitionEffect.enter(
+                                    TransitionEffect.entries[transitionEffect]
+                                ),
+                                exit =  TransitionEffect.exit(
+                                    TransitionEffect.entries[transitionEffect]
+                                )
                             ) {
                                 Icon(
                                     modifier = Modifier

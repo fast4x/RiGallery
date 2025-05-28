@@ -411,4 +411,5 @@
     <string name="analysis_for_location">Analysis for location</string>
     <string name="analysis_of_media">Analysis of Media</string>
     <string name="media_in_database">Media in database: %1$s</string>
+    <string name="transition_effect">Transition effect</string>
 </resources>

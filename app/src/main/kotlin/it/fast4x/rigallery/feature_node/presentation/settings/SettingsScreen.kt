@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -74,6 +75,7 @@ import it.fast4x.rigallery.core.SettingsEntity
 import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.enums.Option
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
 import it.fast4x.rigallery.feature_node.presentation.settings.components.SettingsAppHeader
 import it.fast4x.rigallery.feature_node.presentation.settings.components.SettingsItem
@@ -558,9 +560,35 @@ fun rememberSettingsList(
             summary = context.getString(R.string.shared_elements_summary),
             isChecked = sharedElements,
             onCheck = { sharedElements = it },
+            screenPosition = Position.Middle
+        )
+    }
+
+    var showTransitionEffectMenu by remember { mutableStateOf(false) }
+    var showTransitionEffect by Settings.Misc.rememberTransitionEffect()
+    val showTransitionEffectPref = remember(showTransitionEffect) {
+        SettingsEntity.Preference(
+            title =  context.getString(R.string.transition_effect),
+            summary = TransitionEffect.entries[showTransitionEffect].name,
+            onClick = { showTransitionEffectMenu = true },
             screenPosition = Position.Bottom
         )
     }
+    OptionSheetMenu(
+        title = context.getString(R.string.transition_effect),
+        options = TransitionEffect.entries.map{ option ->
+            Option(
+                ordinal = option.ordinal,
+                name = option.name,
+                title = option.name,
+                icon = Icons.Outlined.Map //option.icon
+            )
+        },
+        visible = showTransitionEffectMenu,
+        onSelected = { showTransitionEffect = it },
+        onDismiss = { showTransitionEffectMenu = false }
+    )
+
 
     return remember(
         arrayOf(
@@ -597,6 +625,7 @@ fun rememberSettingsList(
             add(autoHideOnVideoPlayPref)
             add(autoPlayVideoPref)
             add(sharedElementsPref)
+            add(showTransitionEffectPref)
             add(SettingsEntity.Header(title = context.getString(R.string.navigation)))
             //add(showOldNavbarPref) // NOT REQUIRED
             add(autoHideSearch)

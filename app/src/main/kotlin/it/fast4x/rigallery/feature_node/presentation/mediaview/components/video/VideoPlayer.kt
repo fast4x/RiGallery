@@ -39,8 +39,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Settings.Misc.rememberAudioFocus
 import it.fast4x.rigallery.core.presentation.components.util.swipe
 import it.fast4x.rigallery.feature_node.data.data_source.KeychainHolder
@@ -50,6 +48,8 @@ import it.fast4x.rigallery.feature_node.domain.util.isEncrypted
 import it.fast4x.rigallery.feature_node.presentation.util.printWarning
 import io.sanghun.compose.video.RepeatMode
 import io.sanghun.compose.video.uri.VideoPlayerMediaItem
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import kotlinx.coroutines.delay
 import java.io.File
 import kotlin.time.Duration.Companion.seconds
@@ -98,6 +98,8 @@ fun <T : Media> VideoPlayer(
             }
         }
     }
+
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
     LaunchedEffect(isPlaying.value) {
         (context as? Activity)?.let { activity ->
@@ -230,8 +232,12 @@ fun <T : Media> VideoPlayer(
     }
     AnimatedVisibility(
         visible = exoPlayer != null,
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        )
     ) {
         LaunchedEffect(isPlaying.value) {
             exoPlayer!!.playWhenReady = isPlaying.value

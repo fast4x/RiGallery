@@ -40,7 +40,7 @@ tensorflowLite = "2.16.1"
 tensorflowLiteTaskVision = "0.4.4"
 tensorflowLiteGpu = "2.16.1"
 #uiautomator = "2.3.0"
-composealpha = "1.8.0"
+compose = "1.8.2"
 kotlinxSerializationJson = "1.8.0"
 workRuntimeKtx = "2.10.1"
 zoomimageViewSketch = "1.1.1"
@@ -71,6 +71,7 @@ androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", versi
 androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3Exoplayer" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation-runtime-ktx" }
 androidx-profileinstaller = { module = "androidx.profileinstaller:profileinstaller", version.ref = "profileinstaller" }
+androidx-animation = {group = "androidx.compose.animation", name = "animation-android", version.ref = "compose"}
 
 # Coil
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
@@ -81,16 +82,16 @@ avif-coder-coil = { module = "com.github.awxkee:avif-coder-coil", version.ref = 
 
 # Compose
 compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "composealpha" }
-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "composealpha" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "compose" }
 compose-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle-runtime" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version = "1.7.8" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 compose-material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3" }
-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "composealpha" }
-compose-ui-tooling-preview = { group = "androidx.compose.ui", name= "ui-tooling-preview", version.ref = "composealpha" }
-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "composealpha" }
-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "composealpha" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name= "ui-tooling-preview", version.ref = "compose" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "compose" }
 compose-video = { module = "io.sanghun:compose-video", version.ref = "composeVideo" }
 
 # Compose-shimmer

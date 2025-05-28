@@ -92,8 +92,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Settings.Misc.rememberTrashEnabled
 import it.fast4x.rigallery.core.presentation.components.DragHandle
 import it.fast4x.rigallery.core.presentation.components.NavigationBarSpacer
@@ -142,6 +140,8 @@ import it.fast4x.rigallery.feature_node.presentation.vault.components.SelectVaul
 import it.fast4x.rigallery.ui.theme.Shapes
 import com.github.panpf.sketch.AsyncImage
 import com.github.panpf.sketch.rememberAsyncImagePainter
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.presentation.util.OpenStreetMapUrl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -157,6 +157,7 @@ fun <T : Media> MediaViewDetails(
     currentVault: Vault?,
     navigate: (String) -> Unit
 ) {
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -182,8 +183,12 @@ fun <T : Media> MediaViewDetails(
         androidx.compose.animation.AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
             visible = currentMedia != null && !currentMedia.isTrashed,
-            enter = enterAnimation,
-            exit = exitAnimation
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
         ) {
             if (currentMedia != null) {
                 Column {
@@ -317,8 +322,12 @@ fun <T : Media> MediaViewDetails(
                                     trailingContent = {
                                         androidx.compose.animation.AnimatedVisibility(
                                             visible = mediaCategoryThumbnail != null,
-                                            enter = enterAnimation,
-                                            exit = exitAnimation
+                                            enter =  TransitionEffect.enter(
+                                                TransitionEffect.entries[transitionEffect]
+                                            ),
+                                            exit =  TransitionEffect.exit(
+                                                TransitionEffect.entries[transitionEffect]
+                                            )
                                         ) {
                                             Image(
                                                 painter = rememberAsyncImagePainter(
@@ -508,10 +517,15 @@ fun LocationItem(
     modifier: Modifier = Modifier,
     locationData: LocationData?
 ) {
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     AnimatedVisibility(
         visible = locationData != null,
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        )
     ) {
         if (locationData != null) {
             val context = LocalContext.current

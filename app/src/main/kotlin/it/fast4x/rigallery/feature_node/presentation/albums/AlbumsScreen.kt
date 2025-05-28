@@ -69,14 +69,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Album.LastSort
 import it.fast4x.rigallery.core.Settings.Album.rememberLastSort
 import it.fast4x.rigallery.core.enums.AlbumsSortOrder
 import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.enums.Option
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.EmptyAlbum
 import it.fast4x.rigallery.core.presentation.components.Error
 import it.fast4x.rigallery.core.presentation.components.FilterButton
@@ -240,11 +239,16 @@ fun AlbumsScreen(
 //        }
 
     }
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     /** Error State Handling Block **/
     AnimatedVisibility(
         visible = albumsState.value.error.isNotEmpty(),
-        enter = enterAnimation,
-        exit = exitAnimation
+        enter =  TransitionEffect.enter(
+            TransitionEffect.entries[transitionEffect]
+        ),
+        exit =  TransitionEffect.exit(
+            TransitionEffect.entries[transitionEffect]
+        )
     ) {
         Error(errorMessage = albumsState.value.error)
     }
@@ -278,6 +282,7 @@ fun AlbumMediaGrid(
     var albumsOrder = remember(albumsLastSort) { albumsLastSort.orderType }
     var albumsKind = remember(albumsLastSort) { albumsLastSort.kind }
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
     LazyVerticalGrid(
         state = gridState,
@@ -314,8 +319,12 @@ fun AlbumMediaGrid(
         ) {
             AnimatedVisibility(
                 visible = albumsState.value.albumsPinned.isNotEmpty(),
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 Column {
                     Text(
@@ -340,8 +349,12 @@ fun AlbumMediaGrid(
         ) {
             AnimatedVisibility(
                 visible = albumsState.value.albumsUnpinned.isNotEmpty(),
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -435,8 +448,12 @@ fun AlbumMediaGrid(
         ) {
             AnimatedVisibility(
                 visible = mediaState.value.media.isNotEmpty() && albumsState.value.albums.isNotEmpty(),
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 Text(
                     modifier = Modifier
@@ -460,8 +477,12 @@ fun AlbumMediaGrid(
         ) {
             AnimatedVisibility(
                 visible = albumsState.value.albums.isEmpty() && albumsState.value.error.isEmpty(),
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 EmptyAlbum()
             }
@@ -473,8 +494,12 @@ fun AlbumMediaGrid(
         ) {
             AnimatedVisibility(
                 visible = albumsState.value.isLoading,
-                enter = enterAnimation,
-                exit = exitAnimation
+                enter =  TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                ),
+                exit =  TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
             ) {
                 LoadingAlbum()
             }

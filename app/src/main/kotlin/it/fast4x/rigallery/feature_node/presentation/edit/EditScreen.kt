@@ -64,8 +64,8 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.domain.model.editor.Adjustment
 import it.fast4x.rigallery.feature_node.domain.model.editor.CropState
 import it.fast4x.rigallery.feature_node.domain.model.editor.DrawMode
@@ -145,6 +145,8 @@ fun EditScreen2(
         label = "animatedBlurRadius"
     )
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     Box {
         Scaffold(
             modifier = Modifier
@@ -167,8 +169,12 @@ fun EditScreen2(
                 ) {
                     AnimatedVisibility(
                         visible = navigator.scaffoldValue[SupportingPaneScaffoldRole.Supporting] == PaneAdaptedValue.Hidden,
-                        enter = enterAnimation,
-                        exit = exitAnimation
+                        enter =  TransitionEffect.enter(
+                            TransitionEffect.entries[transitionEffect]
+                        ),
+                        exit =  TransitionEffect.exit(
+                            TransitionEffect.entries[transitionEffect]
+                        )
                     ) {
                         EditorNavigator(
                             modifier = Modifier
@@ -231,8 +237,12 @@ fun EditScreen2(
 
                             AnimatedVisibility(
                                 visible = !showingExternalEditorScreen && (editApps.isNotEmpty() || isChanged) && !showMarkup,
-                                enter = enterAnimation,
-                                exit = exitAnimation
+                                enter =  TransitionEffect.enter(
+                                    TransitionEffect.entries[transitionEffect]
+                                ),
+                                exit =  TransitionEffect.exit(
+                                    TransitionEffect.entries[transitionEffect]
+                                )
                             ) {
                                 IconButton(
                                     onClick = {
@@ -255,8 +265,12 @@ fun EditScreen2(
 
                             AnimatedVisibility(
                                 visible = showMarkup,
-                                enter = enterAnimation,
-                                exit = exitAnimation
+                                enter =  TransitionEffect.enter(
+                                    TransitionEffect.entries[transitionEffect]
+                                ),
+                                exit =  TransitionEffect.exit(
+                                    TransitionEffect.entries[transitionEffect]
+                                )
                             ) {
                                 Row {
                                     VerticalDivider(
@@ -297,8 +311,12 @@ fun EditScreen2(
 
                         AnimatedVisibility(
                             visible = isChanged,
-                            enter = enterAnimation,
-                            exit = exitAnimation
+                            enter =  TransitionEffect.enter(
+                                TransitionEffect.entries[transitionEffect]
+                            ),
+                            exit =  TransitionEffect.exit(
+                                TransitionEffect.entries[transitionEffect]
+                            )
                         ) {
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(2.dp)
@@ -333,8 +351,12 @@ fun EditScreen2(
                         AnimatedVisibility(
                             modifier = Modifier.padding(end = 16.dp),
                             visible = !isChanged && showingEditorScreen,
-                            enter = enterAnimation,
-                            exit = exitAnimation
+                            enter =  TransitionEffect.enter(
+                                TransitionEffect.entries[transitionEffect]
+                            ),
+                            exit =  TransitionEffect.exit(
+                                TransitionEffect.entries[transitionEffect]
+                            )
                         ) {
                             Text(
                                 text = stringResource(R.string.up_to_date),
@@ -411,8 +433,12 @@ fun EditScreen2(
 
         AnimatedVisibility(
             visible = isSaving,
-            enter = enterAnimation,
-            exit = exitAnimation
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
         ) {
             Box(
                 modifier = Modifier

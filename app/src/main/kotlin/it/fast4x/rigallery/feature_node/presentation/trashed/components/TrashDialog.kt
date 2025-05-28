@@ -57,8 +57,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.core.presentation.components.DragHandle
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.util.getUri
@@ -73,6 +71,8 @@ import it.fast4x.rigallery.ui.theme.Shapes
 import com.github.panpf.sketch.AsyncImage
 import com.github.panpf.sketch.request.ComposableImageRequest
 import com.github.panpf.sketch.resize.Scale
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,6 +86,7 @@ fun <T: Media> TrashDialog(
     val dataCopy = data.toMutableStateList()
     var confirmed by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
     BackHandler(
         appBottomSheetState.isVisible && !confirmed
     ) {
@@ -122,8 +123,12 @@ fun <T: Media> TrashDialog(
             ) {
                 AnimatedVisibility(
                     visible = !confirmed,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     val text = when (action) {
                         TRASH -> stringResource(R.string.dialog_to_trash)
@@ -165,8 +170,12 @@ fun <T: Media> TrashDialog(
 
                 AnimatedVisibility(
                     visible = confirmed,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     val text =
                         when (action) {

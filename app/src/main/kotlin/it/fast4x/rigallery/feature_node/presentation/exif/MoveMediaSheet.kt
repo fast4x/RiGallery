@@ -40,7 +40,9 @@ import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants
 import it.fast4x.rigallery.core.Constants.albumCellsList
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Album.rememberAlbumGridSize
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.DragHandle
 import it.fast4x.rigallery.feature_node.domain.model.Album
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
@@ -75,6 +77,8 @@ fun <T: Media> MoveMediaSheet(
     var newPath by remember(mediaList) { mutableStateOf("") }
 
     val newAlbumSheetState = rememberAppBottomSheetState()
+
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
     val request = rememberActivityResult {
         scope.launch {
@@ -140,8 +144,12 @@ fun <T: Media> MoveMediaSheet(
                         .navigationBarsPadding()
                         .size(128.dp)
                         .align(Alignment.CenterHorizontally),
-                    enter = Constants.Animation.enterAnimation,
-                    exit = Constants.Animation.exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     CircularProgressIndicator(
                         progress = {
@@ -154,8 +162,12 @@ fun <T: Media> MoveMediaSheet(
                 val albumSize by rememberAlbumGridSize()
                 AnimatedVisibility(
                     visible = progress == 0f,
-                    enter = Constants.Animation.enterAnimation,
-                    exit = Constants.Animation.exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     LazyVerticalGrid(
                         state = rememberLazyGridState(),

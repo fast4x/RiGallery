@@ -38,6 +38,7 @@ import it.fast4x.rigallery.core.Constants.cellsList
 import it.fast4x.rigallery.core.Settings.PREFERENCE_NAME
 import it.fast4x.rigallery.core.enums.Languages
 import it.fast4x.rigallery.core.enums.MediaType
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.FilterKind
 import it.fast4x.rigallery.core.util.rememberPreference
 import it.fast4x.rigallery.feature_node.domain.util.MediaOrder
@@ -407,6 +408,15 @@ object Settings {
             rememberPreference(key = CHECK_UPDATE, defaultValue = false)
 
         fun getSetting(context: Context, key: Preferences.Key<String>) = context.dataStore.data.map { it[key] }
+
+        val TRANSITION_EFFECT = intPreferencesKey("transition_effect")
+
+        @Composable
+        fun rememberTransitionEffect() =
+            rememberPreference(key = TRANSITION_EFFECT, defaultValue = TransitionEffect.Expand.ordinal)
+//                .apply {
+//                value = if (value > TransitionEffect.entries.size-1) TransitionEffect.Expand.ordinal else value
+//            }
     }
 }
 

@@ -35,12 +35,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
-import it.fast4x.rigallery.core.Constants.Animation.navigateInAnimation
-import it.fast4x.rigallery.core.Constants.Animation.navigateUpAnimation
+import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Misc.rememberForceTheme
 import it.fast4x.rigallery.core.Settings.Misc.rememberIsDarkMode
+import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.feature_node.presentation.common.ChanneledViewModel
 import it.fast4x.rigallery.feature_node.presentation.mediaview.MediaViewScreen
 import it.fast4x.rigallery.feature_node.presentation.util.SecureWindow
@@ -115,15 +113,38 @@ fun VaultScreen(
         )
     }
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
+
     SharedTransitionLayout {
         NavHost(
             modifier = Modifier.fillMaxSize(),
             navController = navController,
             startDestination = startDestination,
-            enterTransition = { navigateInAnimation },
-            exitTransition = { navigateUpAnimation },
-            popEnterTransition = { navigateInAnimation },
-            popExitTransition = { navigateUpAnimation }
+            enterTransition = {
+                //navigateInAnimation
+                TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            },
+            exitTransition = {
+                //navigateUpAnimation
+                TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            },
+            popEnterTransition = {
+                //navigateInAnimation
+                TransitionEffect.enter(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            },
+            popExitTransition = {
+                //navigateUpAnimation
+                TransitionEffect.exit(
+                    TransitionEffect.entries[transitionEffect]
+                )
+            }
         ) {
             composable(VaultScreens.LoadingScreen()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -159,8 +180,12 @@ fun VaultScreen(
                 }
                 AnimatedVisibility(
                     visible = isAuthenticated,
-                    enter = enterAnimation,
-                    exit = exitAnimation
+                    enter =  TransitionEffect.enter(
+                        TransitionEffect.entries[transitionEffect]
+                    ),
+                    exit =  TransitionEffect.exit(
+                        TransitionEffect.entries[transitionEffect]
+                    )
                 ) {
                     VaultDisplay(
                         navigateUp = navigateUp,

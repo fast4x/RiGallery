@@ -214,6 +214,7 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
     implementation(libs.androidx.graphics.shapes)
     implementation(libs.androidx.startup.runtime)
+    implementation(libs.androidx.animation)
 
     // Compose - Shimmer
     implementation(libs.compose.shimmer)

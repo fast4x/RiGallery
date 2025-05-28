@@ -29,8 +29,6 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.core.Constants.Animation.enterAnimation
-import it.fast4x.rigallery.core.Constants.Animation.exitAnimation
 import it.fast4x.rigallery.feature_node.domain.model.editor.CropState
 import it.fast4x.rigallery.feature_node.domain.model.editor.DrawMode
 import it.fast4x.rigallery.feature_node.domain.model.editor.PathProperties
@@ -46,6 +44,8 @@ import com.smarttoolfactory.cropper.model.OutlineType
 import com.smarttoolfactory.cropper.model.RectCropShape
 import com.smarttoolfactory.cropper.settings.CropDefaults
 import com.smarttoolfactory.cropper.settings.CropOutlineProperty
+import it.fast4x.rigallery.core.Settings
+import it.fast4x.rigallery.core.enums.TransitionEffect
 
 
 @Composable
@@ -81,6 +81,8 @@ fun ImageViewer(
         }
     }
 
+    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
     Box(
         modifier = modifier
             .then(if (!isSupportingPanel) Modifier.padding(top = 16.dp) else Modifier)
@@ -95,8 +97,12 @@ fun ImageViewer(
         AnimatedVisibility(
             modifier = Modifier.fillMaxSize(),
             visible = resizedBitmap != null && !cropState.showCropper,
-            enter = enterAnimation,
-            exit = exitAnimation
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
         ) {
             val painter by rememberBitmapPainter(resizedBitmap!!)
             val zoomState = rememberZoomState()
@@ -142,8 +148,12 @@ fun ImageViewer(
 
         AnimatedVisibility(
             visible = cropState.showCropper,
-            enter = enterAnimation,
-            exit = exitAnimation
+            enter =  TransitionEffect.enter(
+                TransitionEffect.entries[transitionEffect]
+            ),
+            exit =  TransitionEffect.exit(
+                TransitionEffect.entries[transitionEffect]
+            )
         ) {
             val cropProperties = remember {
                 CropDefaults.properties(
