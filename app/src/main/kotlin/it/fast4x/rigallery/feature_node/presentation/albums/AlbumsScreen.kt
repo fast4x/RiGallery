@@ -126,7 +126,11 @@ fun AlbumsScreen(
         )
     }
 
+    var isScrollingInProgress: MutableState<Boolean> = remember { mutableStateOf(false) }
+
     var finalPaddingValues by remember(paddingValues) { mutableStateOf(paddingValues) }
+
+    println("AlbumsScreen isScrolling ${isScrolling.value} activeState ${searchBarActive.value}")
 
     Scaffold(
         modifier = Modifier.padding(
@@ -138,7 +142,7 @@ fun AlbumsScreen(
                 bottomPadding = paddingValues.calculateBottomPadding(),
                 navigate = navigate,
                 toggleNavbar = toggleNavbar,
-                isScrolling = isScrolling,
+                isScrolling = isScrollingInProgress,
                 activeState = searchBarActive,
                 sharedTransitionScope = sharedTransitionScope,
                 animatedContentScope = animatedContentScope,
@@ -160,7 +164,12 @@ fun AlbumsScreen(
         }
 
         val gridState = rememberLazyGridState()
-        var level by remember { mutableIntStateOf(1) } //rememberAlbumGridSize()
+
+        LaunchedEffect(gridState.isScrollInProgress) {
+            isScrollingInProgress.value = gridState.isScrollInProgress
+        }
+
+        var level by remember { mutableIntStateOf(1) }
         AnimatedVisibility(
             visible = level == 0,
             enter = scaleIn() + fadeIn(),
