@@ -405,7 +405,7 @@
     <string name="analysis_for_location">Analisi della posizione</string>
     <string name="analysis_of_media">Analisi dei Media</string>
     <string name="media_in_database">Media nel database: %1$s</string>
-    <string name="transition_effect">Transition effect</string>
+    <string name="transition_effect">Effetti di transizione</string>
     <plurals name="item_count">
         <item quantity="one">%s elemento</item>
         <item quantity="other">%s elementi</item>
