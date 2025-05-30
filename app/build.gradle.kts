@@ -24,8 +24,8 @@ android {
         applicationId = "it.fast4x.rigallery"
         minSdk = 30
         targetSdk = 35
-        versionCode = 3
-        versionName = "0.1.2"
+        versionCode = 4
+        versionName = "0.1.3"
 
         buildConfigField("String", "APPLICATION_NAME", "\"$applicationName\"")
 
