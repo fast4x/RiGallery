@@ -204,12 +204,7 @@ fun <T: Media> MediaScreen(
                 }
             }
         ) { it ->
-            val padding = it.calculateTopPadding().value
-                val animatePadding: Float by animateFloatAsState(
-                    targetValue = it.calculateTopPadding().value,
-                    label = "animatePadding",
-                    animationSpec = tween(DEFAULT_TOP_BAR_ANIMATION_DURATION)
-                )
+                val padding = it.calculateTopPadding().value
                 val yOffsetAnimation: Dp by animateDpAsState(
                     if (!isScrolling.value) padding.dp else 0.dp, tween(1000)
                 )
@@ -218,7 +213,6 @@ fun <T: Media> MediaScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .graphicsLayer { translationY = yOffsetAnimation.toPx() }
-                        //.padding(if (isScrolling.value) PaddingValues(0.dp) else PaddingValues(top = animatePadding.dp))
                 ) {
 
                     AnimatedVisibility(
