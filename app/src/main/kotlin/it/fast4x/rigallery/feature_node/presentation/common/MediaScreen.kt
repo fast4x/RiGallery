@@ -14,6 +14,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -58,10 +59,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION
@@ -201,16 +204,21 @@ fun <T: Media> MediaScreen(
                 }
             }
         ) { it ->
+            val padding = it.calculateTopPadding().value
                 val animatePadding: Float by animateFloatAsState(
                     targetValue = it.calculateTopPadding().value,
                     label = "animatePadding",
                     animationSpec = tween(DEFAULT_TOP_BAR_ANIMATION_DURATION)
                 )
+                val yOffsetAnimation: Dp by animateDpAsState(
+                    if (!isScrolling.value) padding.dp else 0.dp, tween(1000)
+                )
                 Column(
                     verticalArrangement = Arrangement.Top,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(if (isScrolling.value) PaddingValues(0.dp) else PaddingValues(top = animatePadding.dp))
+                        .graphicsLayer { translationY = yOffsetAnimation.toPx() }
+                        //.padding(if (isScrolling.value) PaddingValues(0.dp) else PaddingValues(top = animatePadding.dp))
                 ) {
 
                     AnimatedVisibility(
