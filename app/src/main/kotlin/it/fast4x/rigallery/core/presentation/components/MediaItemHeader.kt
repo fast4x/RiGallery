@@ -104,8 +104,8 @@ fun MediaItemHeader(
 
     Row(
         modifier = (if (showAsBig) bigModifier else smallModifier)
-            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
-                MaterialTheme.shapes.medium)
+//            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
+//                MaterialTheme.shapes.medium)
             .padding(start = 10.dp)
             .padding(vertical = 5.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
