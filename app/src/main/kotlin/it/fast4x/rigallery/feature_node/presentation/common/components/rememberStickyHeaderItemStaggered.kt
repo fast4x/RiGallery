@@ -1,6 +1,7 @@
 package it.fast4x.rigallery.feature_node.presentation.common.components
 
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -14,14 +15,14 @@ import it.fast4x.rigallery.core.util.titlecaseFirstCharIfItIsLowercase
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaItem
 import it.fast4x.rigallery.feature_node.domain.model.isHeaderKey
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun <T: Media> rememberStickyHeaderItem(
-    gridState: LazyGridState,
+fun <T: Media> rememberStickyHeaderItemStaggered(
+    gridState: LazyStaggeredGridState,
     headers: SnapshotStateList<MediaItem.Header<T>>,
     mappedData: SnapshotStateList<MediaItem<T>>
 ): State<String?> {
-
     val stringToday = stringResource(id = R.string.header_today)
     val stringYesterday = stringResource(id = R.string.header_yesterday)
     val stringJanuary = stringResource(id = R.string.tag_january)
@@ -43,8 +44,17 @@ fun <T: Media> rememberStickyHeaderItem(
     val stickyHeaderLastItem = remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(gridState, headers, mappedData) {
+        println("rememberStickyHeaderItemStaggered: mappedData = ${mappedData}")
+        println("rememberStickyHeaderItemStaggered: headers = ${headers}")
+        println("rememberStickyHeaderItemStaggered: stickyHeaderLastItem = ${gridState.layoutInfo.visibleItemsInfo}")
+
+        snapshotFlow { gridState.layoutInfo.visibleItemsInfo.map { it.offset } }.collectLatest {
+            println("rememberStickyHeaderItemStaggered: offset = $it")
+        }
+
         snapshotFlow { gridState.layoutInfo.visibleItemsInfo }
-            .collect { visibleItems ->
+            .collectLatest { visibleItems ->
+
                 val firstItem = visibleItems.firstOrNull()
                 val firstHeaderIndex = visibleItems.firstOrNull {
                     it.key.isHeaderKey && !it.key.toString().contains("big")
@@ -87,15 +97,18 @@ fun <T: Media> rememberStickyHeaderItem(
                         .replace("November", stringNovember)
                         .replace("December", stringDecember)
                         .titlecaseFirstCharIfItIsLowercase()
+                    println("rememberStickyHeaderItemStaggered: newItem = $newItem, previousHeader = $previousHeader")
                     if (firstItem != null && !firstItem.key.isHeaderKey) {
                         previousHeader
                     } else {
                         newItem
                     }
+
                 } else {
                     stickyHeaderLastItem.value
                 }
             }
     }
+    println("rememberStickyHeaderItemStaggered: stickyHeaderLastItem = ${stickyHeaderLastItem.value}")
     return stickyHeaderLastItem
 }

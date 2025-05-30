@@ -123,8 +123,10 @@ fun <T : Media> MediaGridView(
 //            }
 //    }
 
-    val gridState = rememberLazyGridState()
+
     val useStaggeredGrid by Settings.Misc.rememberStaggeredGrid()
+    val gridState = rememberLazyGridState()
+    val staggeredGridState = rememberLazyStaggeredGridState()
 
     println("MediaGridView: enableStickyHeaders = $enableStickyHeaders")
 
@@ -134,11 +136,18 @@ fun <T : Media> MediaGridView(
         val headers by rememberedDerivedState(mediaState.value) {
             mediaState.value.headers.toMutableStateList()
         }
-        val stickyHeaderItem by rememberStickyHeaderItem(
+        println("MediaGridView: headers = ${headers.joinToString(",") { it.text }}")
+
+        val stickyHeaderItem by if (!useStaggeredGrid) rememberStickyHeaderItem(
             gridState = gridState,
             headers = headers,
             mappedData = mappedData
+        ) else rememberStickyHeaderItemStaggered(
+            gridState = staggeredGridState,
+            headers = headers,
+            mappedData = mappedData
         )
+
 
         val hideSearchBarSetting by rememberAutoHideSearchBar()
         val searchBarPadding by animateDpAsState(
@@ -168,6 +177,8 @@ fun <T : Media> MediaGridView(
             searchBarOffset = { if (showSearchBar) 28.roundSpToPx(density) + searchBarPaddingPx else 0 },
             toolbarOffset = { if (showSearchBar) 0 else 64.roundDpToPx(density) + searchBarHeightPx },
             stickyHeader = {
+                println("MediaGridView: stickyHeaderItem = $stickyHeaderItem")
+
                 if (isScrolling.value && stickyHeaderItem != null) {
                     val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
                     Text(

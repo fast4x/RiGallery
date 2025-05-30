@@ -113,7 +113,7 @@
     <string name="trash_incompatible_title">Manche Dateien können nicht in den Papierkorb verschoben werden!</string>
     <string name="trash_incompatible_summary">Diese Dateien werden stattdessen endgültig gelöscht.</string>
     <string name="error_toast">Es ist ein Fehler aufgetreten!</string>
-    <string name="beta"></string>
+    <string name="beta">Beta</string>
     <string name="remove_metadata">Metadaten entfernen</string>
     <string name="remove_location">Standort entfernen</string>
     <string name="description">Beschreibung</string>
