@@ -245,7 +245,7 @@ fun CategoriesMediaGrid(
             key = { it.category!! }
         ) { item ->
             Column(
-                modifier = Modifier.animateItem(),
+                //modifier = Modifier.animateItem(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -281,9 +281,9 @@ fun CategoriesMediaGrid(
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .animateItem()
-                    .animateContentSize(),
+                    .fillMaxWidth(),
+                    //.animateItem()
+                    //.animateContentSize(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

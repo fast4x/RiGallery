@@ -19,8 +19,8 @@ fun CategoryViewScreen(
     navigateUp: () -> Unit,
     navigate: (String) -> Unit,
     toggleNavbar: (Boolean) -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     category: String
 ) {
     val viewModel = hiltViewModel<CategoryViewModel>().apply {
@@ -60,7 +60,7 @@ fun CategoryViewScreen(
         customViewingNavigation = { media ->
             navigate(Screen.MediaViewScreen.idAndCategory(media.id, category))
         },
-        sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = animatedContentScope
+        //sharedTransitionScope = sharedTransitionScope,
+        //animatedContentScope = animatedContentScope
     )
 }

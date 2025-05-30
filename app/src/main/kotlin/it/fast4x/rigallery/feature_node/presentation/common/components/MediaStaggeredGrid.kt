@@ -93,8 +93,8 @@ fun <T: Media> MediaStaggeredGrid(
     aboveGridContent: @Composable() (() -> Unit)?,
     isScrolling: MutableState<Boolean>,
     emptyContent: @Composable () -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit
 ) {
     LaunchedEffect(gridState.isScrollInProgress) {
@@ -187,8 +187,8 @@ fun <T: Media> MediaStaggeredGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -210,8 +210,8 @@ fun <T: Media> MediaStaggeredGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 2, nextLevel = 2, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -233,8 +233,8 @@ fun <T: Media> MediaStaggeredGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 4, nextLevel = 3, previousLevel = 1, onZoomLevelChange = { level = it }
             )
         }
@@ -256,8 +256,8 @@ fun <T: Media> MediaStaggeredGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 6, nextLevel = 3, previousLevel = 2, onZoomLevelChange = { level = it }
             )
         }
@@ -279,8 +279,8 @@ fun <T: Media> MediaStaggeredGrid(
             onMediaClick = onMediaClick,
             topContent = topContent,
             bottomContent = bottomContent,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = animatedContentScope
+            //sharedTransitionScope = sharedTransitionScope,
+            //animatedContentScope = animatedContentScope
         )
     }
 
@@ -301,8 +301,8 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
     topContent: LazyStaggeredGridScope.() -> Unit,
     bottomContent: LazyStaggeredGridScope.() -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -421,13 +421,13 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                         }
                     }
                 } else if (it is MediaItem.MediaViewItem) {
-                    with(sharedTransitionScope) {
+                    //with(sharedTransitionScope) {
                         MediaImage(
-                            modifier = Modifier
-                                .mediaSharedElement(
-                                    media = it.media,
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
+//                            modifier = Modifier
+//                                .mediaSharedElement(
+//                                    media = it.media,
+//                                    animatedVisibilityScope = animatedContentScope
+//                                ),
                             media = it.media,
                             staggered = true,
                             selectionState = selectionState,
@@ -445,7 +445,7 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
                                 toggleSelection(mediaState.value.media.indexOf(it))
                             }
                         }
-                    }
+                    //}
                 }
             }
 
@@ -470,8 +470,8 @@ private fun <T: Media> MediaStaggeredGridContent(
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
     topContent: LazyStaggeredGridScope.() -> Unit,
     bottomContent: LazyStaggeredGridScope.() -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
 ) {
 
 
@@ -491,13 +491,13 @@ private fun <T: Media> MediaStaggeredGridContent(
             key = { _, item -> item.toString() },
             contentType = { _, item -> item.isImage }
         ) { index, media ->
-            with(sharedTransitionScope) {
+            //with(sharedTransitionScope) {
                 MediaImage(
-                    modifier = Modifier
-                        .mediaSharedElement(
-                            media = media,
-                            animatedVisibilityScope = animatedContentScope
-                        ),
+//                    modifier = Modifier
+//                        .mediaSharedElement(
+//                            media = media,
+//                            animatedVisibilityScope = animatedContentScope
+//                        ),
                     media = media,
                     staggered = true,
                     selectionState = selectionState,
@@ -516,7 +516,7 @@ private fun <T: Media> MediaStaggeredGridContent(
                         }
                     }
                 )
-            }
+            //}
         }
 
         bottomContent()

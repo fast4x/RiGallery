@@ -102,7 +102,7 @@ fun <T: Media> PickerMediaScreen(
                 is MediaItem.MediaViewItem -> {
                     val selectionState = remember { mutableStateOf(true) }
                     MediaImage(
-                        modifier = Modifier.animateItem(),
+                        //modifier = Modifier.animateItem(),
                         media = item.media,
                         selectionState = selectionState,
                         selectedMedia = selectedMedia,

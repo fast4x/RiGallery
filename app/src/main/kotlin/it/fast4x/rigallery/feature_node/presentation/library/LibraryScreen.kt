@@ -89,8 +89,8 @@ fun LibraryScreen(
     paddingValues: PaddingValues,
     isScrolling: MutableState<Boolean>,
     searchBarActive: MutableState<Boolean>,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
 ) {
 
 
@@ -106,8 +106,8 @@ fun LibraryScreen(
                 toggleNavbar = toggleNavbar,
                 isScrolling = isScrolling,
                 activeState = searchBarActive,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope
             ) {
                 IconButton(onClick = { navigate(Screen.SettingsScreen()) }) {
                     Icon(
@@ -129,8 +129,8 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -143,8 +143,8 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 2, nextLevel = 2, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -157,8 +157,8 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 4, nextLevel = 3, previousLevel = 1, onZoomLevelChange = { level = it }
             )
         }
@@ -171,8 +171,8 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 6, nextLevel = 3, previousLevel = 2, onZoomLevelChange = { level = it }
             )
         }
@@ -187,8 +187,8 @@ fun LibraryMediaGrid(
     gridState: LazyGridState,
     paddingValues: PaddingValues,
     navigate: (String) -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ){
 
@@ -329,7 +329,7 @@ fun LibraryMediaGrid(
                 ) {
                     Column(
                         modifier = Modifier
-                            .animateItem()
+                            //.animateItem()
                             .padding(horizontal = 16.dp)
                             .padding(top = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -356,7 +356,7 @@ fun LibraryMediaGrid(
                     ) { category ->
                         Column(
                             modifier = Modifier
-                                .animateItem()
+                                //.animateItem()
                                 .padding(horizontal = 16.dp)
                                 .clip(RoundedCornerShape(16.dp))
                                 .clickable {
@@ -398,15 +398,15 @@ fun LibraryMediaGrid(
                                     items = medias,
                                     key = { it }
                                 ) {
-                                    with(sharedTransitionScope) {
+                                    //with(sharedTransitionScope) {
                                         MediaImage(
                                             modifier = Modifier
                                                 .size(116.dp)
-                                                .clip(RoundedCornerShape(16.dp))
-                                                .mediaSharedElement(
-                                                    media = it,
-                                                    animatedVisibilityScope = animatedContentScope
-                                                ),
+                                                .clip(RoundedCornerShape(16.dp)),
+//                                                .mediaSharedElement(
+//                                                    media = it,
+//                                                    animatedVisibilityScope = animatedContentScope
+//                                                ),
                                             media = it,
                                             selectedMedia = remember { mutableStateListOf() },
                                             selectionState = remember { mutableStateOf(false) },
@@ -427,7 +427,7 @@ fun LibraryMediaGrid(
                                             },
                                             canClick = true
                                         )
-                                    }
+                                    //}
                                 }
                             }
                         }
@@ -441,7 +441,7 @@ fun LibraryMediaGrid(
                 ) {
                     ButtonToStartProcess(
                         modifier = Modifier
-                            .animateItem()
+                           //.animateItem()
                             .padding(16.dp),
                         title = stringResource(R.string.categorise_your_media)
                     ) {
@@ -459,8 +459,8 @@ fun LibraryMediaGrid(
                             .padding(bottom = 16.dp)
                     ) {
                         LibrarySmallItem(
-                            modifier = Modifier
-                                .animateItem(),
+                            //modifier = Modifier
+                            //    .animateItem(),
                             title = stringResource(R.string.disclaimer),
                             subtitle = stringResource(R.string.disclaimer_classification),
                             icon = Icons.Default.Info,
@@ -478,7 +478,7 @@ fun LibraryMediaGrid(
                     ) {
                         LibrarySmallItem(
                             modifier = Modifier
-                                .animateItem()
+                                //.animateItem()
                                 .clickable {
                                     noClassification = true
                                 },

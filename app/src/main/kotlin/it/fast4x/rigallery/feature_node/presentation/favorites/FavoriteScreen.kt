@@ -42,8 +42,8 @@ fun FavoriteScreen(
     navigate: (route: String) -> Unit,
     navigateUp: () -> Unit,
     toggleNavbar: (Boolean) -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
 ) = MediaScreen(
     paddingValues = paddingValues,
     target = TARGET_FAVORITES,
@@ -62,8 +62,8 @@ fun FavoriteScreen(
     navigate = navigate,
     navigateUp = navigateUp,
     toggleNavbar = toggleNavbar,
-    sharedTransitionScope = sharedTransitionScope,
-    animatedContentScope = animatedContentScope,
+    //sharedTransitionScope = sharedTransitionScope,
+    //animatedContentScope = animatedContentScope,
 ) { result ->
     if (result.resultCode == Activity.RESULT_OK) {
         selectedMedia.clear()

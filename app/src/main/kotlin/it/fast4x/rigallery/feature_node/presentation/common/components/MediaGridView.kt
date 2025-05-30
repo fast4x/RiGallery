@@ -55,6 +55,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.core.Settings
@@ -88,8 +89,8 @@ fun <T : Media> MediaGridView(
     aboveGridContent: @Composable (() -> Unit)? = null,
     isScrolling: MutableState<Boolean>,
     emptyContent: @Composable () -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit = {},
 ) {
     val mappedData by rememberedDerivedState(mediaState, showMonthlyHeader) {
@@ -97,7 +98,7 @@ fun <T : Media> MediaGridView(
         else mediaState.value.mappedMedia).toMutableStateList()
     }
 
-    println("MediaGridView: showMonthlyHeader = $showMonthlyHeader, mappedData = $mappedData")
+    //println("MediaGridView: showMonthlyHeader = $showMonthlyHeader, mappedData = $mappedData")
 
     BackHandler(
         enabled = selectionState.value && allowSelection,
@@ -125,17 +126,19 @@ fun <T : Media> MediaGridView(
     val gridState = rememberLazyGridState()
     val useStaggeredGrid by Settings.Misc.rememberStaggeredGrid()
 
+    println("MediaGridView: enableStickyHeaders = $enableStickyHeaders")
+
     AnimatedVisibility(
         visible = enableStickyHeaders
     ) {
         val headers by rememberedDerivedState(mediaState.value) {
             mediaState.value.headers.toMutableStateList()
         }
-//        val stickyHeaderItem by rememberStickyHeaderItem(
-//            gridState = gridState,
-//            headers = headers,
-//            mappedData = mappedData
-//        )
+        val stickyHeaderItem by rememberStickyHeaderItem(
+            gridState = gridState,
+            headers = headers,
+            mappedData = mappedData
+        )
 
         val hideSearchBarSetting by rememberAutoHideSearchBar()
         val searchBarPadding by animateDpAsState(
@@ -165,62 +168,22 @@ fun <T : Media> MediaGridView(
             searchBarOffset = { if (showSearchBar) 28.roundSpToPx(density) + searchBarPaddingPx else 0 },
             toolbarOffset = { if (showSearchBar) 0 else 64.roundDpToPx(density) + searchBarHeightPx },
             stickyHeader = {
-                // TODO MEDIAGRID STICKY HEADER FOR GROUP ITEM
-//                val show by remember(
-//                    mediaState,
-//                    stickyHeaderItem
-//                ) {
-//                    derivedStateOf {
-//                        mediaState.value.media.isNotEmpty() && stickyHeaderItem != null
-//                    }
-//                }
-//                AnimatedVisibility(
-//                    visible = show,
-//                    enter = enterAnimation,
-//                    exit = exitAnimation
-//                ) {
-//                    val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
-//
-//                    Row(
-//                        modifier = Modifier.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
-//                            .padding(horizontal = 5.dp)
-//                            .background(MaterialTheme.colorScheme.inverseOnSurface)
-//                    ) {
-//                        Box(
-//                            modifier = Modifier
-//                                .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
-//                                    MaterialTheme.shapes.medium)
-//                                .padding(start = 10.dp)
-//                                .padding(vertical = 5.dp)
-//                                //.background(MaterialTheme.colorScheme.background)
-//                                .fillMaxWidth()
-//                        ){
-//                            Text(
-//                                text = text,
-//                                style = MaterialTheme.typography.titleLarge,
-//                                color = MaterialTheme.colorScheme.onSurface,
-//                                modifier = Modifier
-////                                .background(
-////                                    Brush.verticalGradient(
-////                                        listOf(
-////                                            // 3.dp is the elevation the LargeTopAppBar use
-////                                            MaterialTheme.colorScheme.surfaceColorAtElevation(
-////                                                3.dp
-////                                            ),
-////                                            Color.Transparent
-////                                        )
-////                                    )
-////                                )
-//                                    //.padding(horizontal = 16.dp)
-//                                    //.padding(top = 24.dp + searchBarPadding, bottom = 24.dp)
-////                                    .fillMaxWidth()
-//                            )
-//                        }
-//
-//                    }
-//
-//
-//                }
+                if (isScrolling.value && stickyHeaderItem != null) {
+                    val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .background(
+                                MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                            )
+                            //.padding(horizontal = 16.dp)
+                            .padding(top = 32.dp)
+                            .fillMaxWidth()
+                    )
+                }
             }
         ) {
             if (useStaggeredGrid)
@@ -239,8 +202,8 @@ fun <T : Media> MediaGridView(
                     isScrolling = isScrolling,
                     emptyContent = emptyContent,
                     onMediaClick = onMediaClick,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedContentScope = animatedContentScope
+                    //sharedTransitionScope = sharedTransitionScope,
+                    //animatedContentScope = animatedContentScope
                 )
             else
                 MediaGrid(
@@ -258,8 +221,8 @@ fun <T : Media> MediaGridView(
                     isScrolling = isScrolling,
                     emptyContent = emptyContent,
                     onMediaClick = onMediaClick,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedContentScope = animatedContentScope
+                    //sharedTransitionScope = sharedTransitionScope,
+                    //animatedContentScope = animatedContentScope
                 )
         }
     }
@@ -282,8 +245,8 @@ fun <T : Media> MediaGridView(
                 isScrolling = isScrolling,
                 emptyContent = emptyContent,
                 onMediaClick = onMediaClick,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope
             )
         else
             MediaGrid(
@@ -301,8 +264,8 @@ fun <T : Media> MediaGridView(
                 isScrolling = isScrolling,
                 emptyContent = emptyContent,
                 onMediaClick = onMediaClick,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope
             )
     }
 

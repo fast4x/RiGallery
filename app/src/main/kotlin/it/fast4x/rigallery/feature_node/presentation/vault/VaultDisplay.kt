@@ -403,8 +403,8 @@ fun VaultDisplay(
                 emptyContent = {
                     EmptyMedia()
                 },
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope
             )
 
     }

@@ -158,7 +158,7 @@ fun NavigationComp(
 
     val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
-    SharedTransitionLayout {
+    //SharedTransitionLayout {
         NavHost(
             navController = navController,
             startDestination = startDest,
@@ -215,8 +215,8 @@ fun NavigationComp(
                     toggleNavbar = navPipe::toggleNavbar,
                     isScrolling = isScrolling,
                     searchBarActive = searchBarActive,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -238,8 +238,8 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -262,8 +262,8 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -281,8 +281,8 @@ fun NavigationComp(
                     onAlbumLongClick = albumsViewModel.onAlbumLongClick,
                     filterOptions = albumsViewModel.rememberFilters(),
                     onMoveAlbumToTrash = albumsViewModel::moveAlbumToTrash,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -327,8 +327,8 @@ fun NavigationComp(
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
                     isScrolling = isScrolling,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -379,8 +379,8 @@ fun NavigationComp(
                     addMedia = vm::addMedia,
                     vaultState = vaultState,
                     navigate = navPipe::navigate,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -430,8 +430,8 @@ fun NavigationComp(
                     addMedia = viewModel::addMedia,
                     vaultState = vaultState,
                     navigate = navPipe::navigate,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -474,8 +474,8 @@ fun NavigationComp(
                     addMedia = viewModel::addMedia,
                     vaultState = vaultState,
                     navigate = navPipe::navigate,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
             composable(
@@ -525,8 +525,8 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
 
@@ -551,8 +551,8 @@ fun NavigationComp(
                     paddingValues = paddingValues,
                     isScrolling = isScrolling,
                     searchBarActive = searchBarActive,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
 
@@ -582,8 +582,8 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     toggleNavbar = navPipe::toggleNavbar,
                     category = category,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
 
@@ -625,8 +625,8 @@ fun NavigationComp(
                     addMedia = viewModel::addMedia,
                     vaultState = vaultState,
                     navigate = navPipe::navigate,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this
                 )
             }
 
@@ -654,5 +654,5 @@ fun NavigationComp(
                 )
             }
         }
-    }
+    //}
 }

@@ -56,10 +56,12 @@ class StandaloneActivity : ComponentActivity() {
                     }
                     val vaults = viewModel.vaults.collectAsStateWithLifecycle()
                     val mediaState = viewModel.mediaState.collectAsStateWithLifecycle()
-                    val staticState by remember { mutableStateOf(true) }
-                    SharedTransitionLayout {
-                        AnimatedContent(staticState, label = "standalone") { staticState ->
-                            if (staticState) {
+                    //val staticState by remember { mutableStateOf(true) }
+
+                    //println("StandaloneActivity onCreate: $action")
+                    //SharedTransitionLayout {
+                        //AnimatedContent(staticState, label = "standalone") { staticState ->
+                            //if (staticState) {
                                 MediaViewScreen(
                                     navigateUp = { finish() },
                                     toggleRotate = ::toggleOrientation,
@@ -71,12 +73,12 @@ class StandaloneActivity : ComponentActivity() {
                                     addMedia = viewModel::addMedia,
                                     vaultState = vaults,
                                     navigate = {},
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedContentScope = this
+                                    //sharedTransitionScope = this@SharedTransitionLayout,
+                                    //animatedContentScope = this
                                 )
-                            }
-                        }
-                    }
+                            //}
+                        //}
+                    //}
                 }
                 BackHandler {
                     finish()

@@ -159,8 +159,8 @@ fun <T : Media> MediaViewScreen(
     deleteMedia: ((Vault, T, () -> Unit) -> Unit)? = null,
     currentVault: Vault? = null,
     navigate: (String) -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
 ) = ProvideInsets {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -481,7 +481,7 @@ fun <T : Media> MediaViewScreen(
                     var offset by remember {
                         mutableStateOf(IntOffset(0, 0))
                     }
-                    with(sharedTransitionScope) {
+                    //with(sharedTransitionScope) {
                         MediaPreviewComponent(
                             media = media,
 //                                .mediaSharedElement(
@@ -623,7 +623,7 @@ fun <T : Media> MediaViewScreen(
                                 }
                             }
                         )
-                    }
+                    //}
                 }
             }
 

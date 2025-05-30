@@ -242,8 +242,8 @@ fun VaultScreen(
                         )
                     },
                     navigate = navigate,
-                    sharedTransitionScope = this@SharedTransitionLayout,
-                    animatedContentScope = this@composable
+                    //sharedTransitionScope = this@SharedTransitionLayout,
+                    //animatedContentScope = this@composable
                 )
             }
         }

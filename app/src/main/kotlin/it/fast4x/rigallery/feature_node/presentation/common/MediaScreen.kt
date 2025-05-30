@@ -11,8 +11,13 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -59,6 +64,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import it.fast4x.rigallery.R
+import it.fast4x.rigallery.core.Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION
 import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
 import it.fast4x.rigallery.core.Constants.cellsList
@@ -108,8 +114,8 @@ fun <T: Media> MediaScreen(
     toggleNavbar: (Boolean) -> Unit,
     isScrolling: MutableState<Boolean> = remember { mutableStateOf(false) },
     searchBarActive: MutableState<Boolean> = remember { mutableStateOf(false) },
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     onActivityResult: (result: ActivityResult) -> Unit,
 ) {
     val showSearchBar = remember { albumId == -1L && target == null }
@@ -184,8 +190,8 @@ fun <T: Media> MediaScreen(
                         },
                         isScrolling = isScrolling,
                         activeState = searchBarActive,
-                        sharedTransitionScope = sharedTransitionScope,
-                        animatedContentScope = animatedContentScope,
+                        //sharedTransitionScope = sharedTransitionScope,
+                        //animatedContentScope = animatedContentScope,
                     ) {
                         NavigationActions(
                             actions = navActionsContent,
@@ -195,45 +201,48 @@ fun <T: Media> MediaScreen(
                 }
             }
         ) { it ->
+                val animatePadding: Float by animateFloatAsState(
+                    targetValue = it.calculateTopPadding().value,
+                    label = "animatePadding",
+                    animationSpec = tween(DEFAULT_TOP_BAR_ANIMATION_DURATION)
+                )
                 Column(
                     verticalArrangement = Arrangement.Top,
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(it)
+                        .padding(if (isScrolling.value) PaddingValues(0.dp) else PaddingValues(top = animatePadding.dp))
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(horizontal = 15.dp)
-                            .padding(vertical = 10.dp)
-                            .fillMaxWidth()
+
+                    AnimatedVisibility(
+                        visible = !isScrolling.value,
+                        enter = slideInVertically { it * 2 },
+                        exit = slideOutVertically { it * 2 },
                     ) {
-                        Text(
-                            text = MediaType.entries[showMediaType].title,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
-                                .clickable{
-                                    showMediaTypeMenu = true
-                                }
-                                .padding(5.dp)
-                        )
-//                        IconButton(onClick = { showMediaTypeMenu = true }) {
-//                            Icon(
-//                                imageVector = MediaType.entries[showMediaType].icon,
-//                                contentDescription = null
-//                            )
-//                        }
+                                .padding(horizontal = 15.dp)
+                                .padding(vertical = 10.dp)
+                                .fillMaxWidth()
+                        ) {
+                            Text(
+                                text = MediaType.entries[showMediaType].title,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .clickable {
+                                        showMediaTypeMenu = true
+                                    }
+                                    .padding(5.dp)
+                            )
 
-//                        Text(text = mediaState.value.media.size.toString(),
-//                            fontStyle = MaterialTheme.typography.labelSmall.fontStyle)
+                            Spacer(modifier = Modifier.weight(1f))
 
-                        Spacer(modifier = Modifier.weight(1f))
+                            MediaCountInfo(mediaState)
 
-                        MediaCountInfo(mediaState)
-
+                        }
                     }
 
                     MediaGridView(
@@ -261,8 +270,8 @@ fun <T: Media> MediaScreen(
                         aboveGridContent = aboveGridContent,
                         isScrolling = isScrolling,
                         emptyContent = emptyContent,
-                        sharedTransitionScope = sharedTransitionScope,
-                        animatedContentScope = animatedContentScope
+                        //sharedTransitionScope = sharedTransitionScope,
+                        //animatedContentScope = animatedContentScope
                     ) {
                         if (customViewingNavigation == null) {
                             val albumRoute = "albumId=$albumId"

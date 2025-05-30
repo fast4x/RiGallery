@@ -87,8 +87,8 @@ fun <T: Media> MediaGrid(
     aboveGridContent: @Composable() (() -> Unit)?,
     isScrolling: MutableState<Boolean>,
     emptyContent: @Composable () -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit
 ) {
     LaunchedEffect(gridState.isScrollInProgress) {
@@ -182,8 +182,8 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -206,8 +206,8 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 2, nextLevel = 2, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -230,8 +230,8 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //nimatedContentScope = animatedContentScope,
                 columns = 4, nextLevel = 3, previousLevel = 1, onZoomLevelChange = { level = it }
             )
         }
@@ -254,8 +254,8 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedContentScope,
+                //sharedTransitionScope = sharedTransitionScope,
+                //animatedContentScope = animatedContentScope,
                 columns = 6, nextLevel = 3, previousLevel = 2, onZoomLevelChange = { level = it }
             )
         }
@@ -277,8 +277,8 @@ fun <T: Media> MediaGrid(
             onMediaClick = onMediaClick,
             topContent = topContent,
             bottomContent = bottomContent,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedContentScope = animatedContentScope
+            //sharedTransitionScope = sharedTransitionScope,
+            //animatedContentScope = animatedContentScope
         )
     }
 
@@ -301,26 +301,11 @@ private fun <T: Media> MediaGridContentWithHeaders(
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
     topContent: LazyGridScope.() -> Unit,
     bottomContent: LazyGridScope.() -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val stringToday = stringResource(id = R.string.header_today)
-    val stringYesterday = stringResource(id = R.string.header_yesterday)
-    val stringJanuary = stringResource(id = R.string.tag_january)
-    val stringFebruary = stringResource(id = R.string.tag_february)
-    val stringMarch = stringResource(id = R.string.tag_march)
-    val stringApril = stringResource(id = R.string.tag_april)
-    val stringMay = stringResource(id = R.string.tag_may)
-    val stringJune = stringResource(id = R.string.tag_june)
-    val stringJuly = stringResource(id = R.string.tag_july)
-    val stringAugust = stringResource(id = R.string.tag_august)
-    val stringSeptember = stringResource(id = R.string.tag_september)
-    val stringOctober = stringResource(id = R.string.tag_october)
-    val stringNovember = stringResource(id = R.string.tag_november)
-    val stringDecember = stringResource(id = R.string.tag_december)
-
 
 
     val feedbackManager = rememberFeedbackManager()
@@ -433,13 +418,13 @@ private fun <T: Media> MediaGridContentWithHeaders(
                         }
                     }
                 } else if (it is MediaItem.MediaViewItem) {
-                    with(sharedTransitionScope) {
+                    //with(sharedTransitionScope) {
                         MediaImage(
-                            modifier = Modifier
-                                .mediaSharedElement(
-                                    media = it.media,
-                                    animatedVisibilityScope = animatedContentScope
-                                ),
+//                            modifier = Modifier
+//                                .mediaSharedElement(
+//                                    media = it.media,
+//                                    animatedVisibilityScope = animatedContentScope
+//                                ),
                             media = it.media,
                             selectionState = selectionState,
                             selectedMedia = selectedMedia,
@@ -456,7 +441,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 toggleSelection(mediaState.value.media.indexOf(it))
                             }
                         }
-                    }
+                    //}
                 }
             }
 
@@ -482,8 +467,8 @@ private fun <T: Media> MediaGridContent(
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
     topContent: LazyGridScope.() -> Unit,
     bottomContent: LazyGridScope.() -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
 ) {
 
 
@@ -504,13 +489,13 @@ private fun <T: Media> MediaGridContent(
             key = { _, item -> item.toString() },
             contentType = { _, item -> item.isImage }
         ) { index, media ->
-            with(sharedTransitionScope) {
+            //with(sharedTransitionScope) {
                 MediaImage(
-                    modifier = Modifier
-                        .mediaSharedElement(
-                            media = media,
-                            animatedVisibilityScope = animatedContentScope
-                        ),
+//                    modifier = Modifier
+//                        .mediaSharedElement(
+//                            media = media,
+//                            animatedVisibilityScope = animatedContentScope
+//                        ),
                     media = media,
                     selectionState = selectionState,
                     selectedMedia = selectedMedia,
@@ -528,7 +513,7 @@ private fun <T: Media> MediaGridContent(
                         }
                     }
                 )
-            }
+            //}
         }
 
         bottomContent()

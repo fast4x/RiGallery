@@ -40,6 +40,7 @@ class ChanneledViewModel @Inject constructor() : ViewModel() {
                     navController.navigateUp()
 
                 is Event.ToggleNavigationBarEvent -> {
+                    println("Bottom bar visibility changed to $it")
                     bottomBarState.value = it.isVisible
                 }
             }

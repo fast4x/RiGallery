@@ -42,8 +42,8 @@ inline fun <reified T: Media> TrashedGridScreen(
     noinline navigate: (route: String) -> Unit,
     noinline navigateUp: () -> Unit,
     noinline toggleNavbar: (Boolean) -> Unit,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
+    //sharedTransitionScope: SharedTransitionScope,
+    //animatedContentScope: AnimatedContentScope,
 ) = MediaScreen(
     paddingValues = paddingValues,
     target = TARGET_TRASH,
@@ -65,8 +65,8 @@ inline fun <reified T: Media> TrashedGridScreen(
     navigate = navigate,
     navigateUp = navigateUp,
     toggleNavbar = toggleNavbar,
-    sharedTransitionScope = sharedTransitionScope,
-    animatedContentScope = animatedContentScope
+    //sharedTransitionScope = sharedTransitionScope,
+    //animatedContentScope = animatedContentScope
 ) { result ->
     if (result.resultCode == Activity.RESULT_OK) {
         selectedMedia.clear()
