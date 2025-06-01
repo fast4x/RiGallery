@@ -55,6 +55,7 @@
 - Indonesian
 - Interlingua
 - Irish
+- Italian
 - Japanese
 - Korean
 - Norwegian
