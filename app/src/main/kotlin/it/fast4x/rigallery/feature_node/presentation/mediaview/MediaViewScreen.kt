@@ -238,7 +238,7 @@ fun <T : Media> MediaViewScreen(
             } else 0.dp
         )
     }
-    val navigationBarHeight = rememberNavigationBarHeight()
+    //val navigationBarHeight = rememberNavigationBarHeight()
     val bottomBarHeightDefault by remember(isGestureEnabled, isLandscape) {
         mutableStateOf(
             if (!isGestureEnabled && isLandscape) 84.dp
@@ -447,7 +447,7 @@ fun <T : Media> MediaViewScreen(
                     )
                 }
 
-                println("MediaViewScreen: currentMedia uri ${currentMedia?.getUri().toString()}")
+                //println("MediaViewScreen: currentMedia uri ${currentMedia?.getUri().toString()}")
 
                 val canPlay = remember(playWhenReady, currentMedia, media, currentPage) {
                     mutableStateOf(playWhenReady && currentMedia == media && currentPage == index)
@@ -484,6 +484,15 @@ fun <T : Media> MediaViewScreen(
                     var offset by remember {
                         mutableStateOf(IntOffset(0, 0))
                     }
+
+                    LaunchedEffect(showUI) {
+                        if (showUI) {
+                            delay(5.seconds)
+                            showUI = false
+                            windowInsetsController.toggleSystemBars(false)
+                        }
+                    }
+
                     //with(sharedTransitionScope) {
                         MediaPreviewComponent(
                             media = media,
