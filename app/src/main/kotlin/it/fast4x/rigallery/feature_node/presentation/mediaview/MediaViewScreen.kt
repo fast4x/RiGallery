@@ -446,6 +446,9 @@ fun <T : Media> MediaViewScreen(
                         index
                     )
                 }
+
+                println("MediaViewScreen: currentMedia uri ${currentMedia?.getUri().toString()}")
+
                 val canPlay = remember(playWhenReady, currentMedia, media, currentPage) {
                     mutableStateOf(playWhenReady && currentMedia == media && currentPage == index)
                 }

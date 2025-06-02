@@ -40,13 +40,12 @@ import it.fast4x.rigallery.core.Settings.Misc.rememberForceTheme
 import it.fast4x.rigallery.core.Settings.Misc.rememberIsDarkMode
 import it.fast4x.rigallery.core.presentation.components.AppBarContainer
 import it.fast4x.rigallery.core.presentation.components.NavigationComp
-import it.fast4x.rigallery.feature_node.domain.repository.MediaRepository
 import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
 import it.fast4x.rigallery.core.extensions.checkupdate.CheckAvailableNewVersion
+import it.fast4x.rigallery.core.extensions.providers.LocalMediaProvider
 import it.fast4x.rigallery.core.util.ext.OkHttpRequest
-import it.fast4x.rigallery.feature_node.data.data_source.InternalDatabase
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +56,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -126,6 +124,12 @@ class MainActivity : AppCompatActivity() {
                         updateAvailable = {}
                     )
             }
+
+            // TODO MediaProvider
+            //val mediaProvider = LocalMediaProvider(this)
+            //mediaProvider.startMediaProvider()
+            //println("LocalMediaProvider baseUrl ${mediaProvider.baseUrl()}/pic=/storage/emulated/0/DCIM/Camera/IMG_20250503_115721.jpg")
+
 
             GalleryTheme {
                 val navController = rememberNavController()
