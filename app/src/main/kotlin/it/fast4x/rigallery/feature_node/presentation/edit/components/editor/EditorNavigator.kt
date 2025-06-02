@@ -18,7 +18,7 @@ import it.fast4x.rigallery.feature_node.domain.model.editor.DrawMode
 import it.fast4x.rigallery.feature_node.domain.model.editor.DrawType
 import it.fast4x.rigallery.feature_node.domain.model.editor.EditorDestination
 import it.fast4x.rigallery.feature_node.domain.model.editor.EditorItems.Adjust
-import it.fast4x.rigallery.feature_node.domain.model.editor.EditorItems.Crop
+import it.fast4x.rigallery.feature_node.domain.model.editor.EditorItems.Transform
 import it.fast4x.rigallery.feature_node.domain.model.editor.EditorItems.Filters
 import it.fast4x.rigallery.feature_node.domain.model.editor.EditorItems.Markup
 import it.fast4x.rigallery.feature_node.domain.model.editor.ImageFilter
@@ -89,7 +89,7 @@ fun EditorNavigator(
                 onItemClick = { editorItem ->
                     val dest = when (editorItem) {
                         Adjust -> EditorDestination.Adjust
-                        Crop -> EditorDestination.Crop
+                        Transform -> EditorDestination.Transform
                         Filters -> EditorDestination.Filters
                         Markup -> EditorDestination.Markup
                     }
@@ -136,7 +136,7 @@ fun EditorNavigator(
             )
         }
 
-        composable<EditorDestination.Crop> {
+        composable<EditorDestination.Transform> {
             CropperSection(
                 isSupportingPanel = isSupportingPanel,
                 onActionClick = {

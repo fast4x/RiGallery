@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.Adjust
 import androidx.compose.material.icons.outlined.Crop
 import androidx.compose.material.icons.outlined.Draw
 import androidx.compose.material.icons.outlined.Filter
+import androidx.compose.material.icons.outlined.Transform
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -19,7 +20,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Parcelize
 enum class EditorItems : Parcelable {
-    Crop,
+    Transform,
     Adjust,
     Filters,
     Markup;
@@ -27,7 +28,7 @@ enum class EditorItems : Parcelable {
     @get:Composable
     val translatedName : String
         get() = when (this) {
-            Crop -> stringResource(R.string.crop)
+            Transform -> stringResource(R.string.transform)
             Adjust -> stringResource(R.string.adjust)
             Filters -> stringResource(R.string.filters)
             Markup -> stringResource(R.string.markup)
@@ -36,7 +37,7 @@ enum class EditorItems : Parcelable {
     @IgnoredOnParcel
     val icon: ImageVector
         get() = when (this) {
-            Crop -> Icons.Outlined.Crop
+            Transform -> Icons.Outlined.Transform
             Adjust -> Icons.Outlined.Adjust
             Filters -> Icons.Outlined.Filter
             Markup -> Icons.Outlined.Draw

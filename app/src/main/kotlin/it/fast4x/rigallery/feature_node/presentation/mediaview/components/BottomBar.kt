@@ -48,6 +48,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.GpsOff
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Pause
@@ -753,6 +754,8 @@ fun <T : Media> MediaViewActions2(
                 }
             }
         } else {
+            // Info Component
+            InfoButton(currentMedia, enabled = enabled, onInfoClick = infoMedia )
             // Auto Advance Component
             BarButton(currentMedia, enabled = enabled,
                 title = if (isAutoAdvanceEnabled) stringResource(R.string.slideshow_pause) else stringResource(R.string.slideshow_play),
@@ -760,10 +763,6 @@ fun <T : Media> MediaViewActions2(
                 onClick = { if (isAutoAdvanceEnabled) onAutoAdvance(false) else onAutoAdvance(true) },
                 showLoader = if (isAutoAdvanceEnabled) true else false
             )
-            // Info Component
-            InfoButton(currentMedia, enabled = enabled, onInfoClick = infoMedia )
-            // Share Component
-            ShareButton(currentMedia, enabled = enabled)
             // Favorite Component
             if (handler != null && currentMedia.canMakeActions) {
                 FavoriteButton(currentMedia, handler, enabled = enabled)
@@ -779,6 +778,8 @@ fun <T : Media> MediaViewActions2(
                     restoreMedia = restoreMedia
                 )
             }
+            // Share Component
+            ShareButton(currentMedia, enabled = enabled)
             // Edit
             if (!currentMedia.isEncrypted) {
                 EditButton(currentMedia, enabled = enabled)
@@ -962,7 +963,7 @@ fun <T : Media> InfoButton(
 ) {
     BottomBarColumn(
         currentMedia = media,
-        imageVector = Icons.Outlined.Info,
+        imageVector = Icons.Outlined.KeyboardArrowUp,
         followTheme = followTheme,
         title = stringResource(R.string.media_info),
         enabled = enabled,
@@ -1161,7 +1162,7 @@ fun <T : Media> BottomBarColumn(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
             .defaultMinSize(
-                minWidth = 90.dp
+                minWidth = 40.dp
             )
             .height(84.dp)
             .combinedClickable(
@@ -1198,14 +1199,15 @@ fun <T : Media> BottomBarColumn(
                     .height(32.dp).align(Alignment.Center)
             )
         }
-        Spacer(modifier = Modifier.size(4.dp))
-        Text(
-            text = title,
-            modifier = Modifier,
-            fontWeight = FontWeight.Medium,
-            style = MaterialTheme.typography.bodyMedium,
-            color = tintColor,
-            textAlign = TextAlign.Center,
-        )
+        //TODO Valuate removing text in bottom bar column
+//        Spacer(modifier = Modifier.size(4.dp))
+//        Text(
+//            text = title,
+//            modifier = Modifier,
+//            fontWeight = FontWeight.Medium,
+//            style = MaterialTheme.typography.bodyMedium,
+//            color = tintColor,
+//            textAlign = TextAlign.Center,
+//        )
     }
 }

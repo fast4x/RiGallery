@@ -10,7 +10,7 @@ sealed class EditorDestination {
     data object Editor : EditorDestination()
 
     @Serializable
-    data object Crop : EditorDestination()
+    data object Transform : EditorDestination()
 
     @Serializable
     data object Adjust : EditorDestination()

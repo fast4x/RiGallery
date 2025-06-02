@@ -24,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.FilterQuality
@@ -79,14 +80,14 @@ fun <T: Media> ZoomablePagerImage(
         AnimatedVisibility(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && allowBlur && !isPowerSavingMode) {
             val blurAlpha by animateFloatAsState(
                 animationSpec = tween(DEFAULT_TOP_BAR_ANIMATION_DURATION),
-                targetValue = if (uiEnabled) 0.7f else 0f,
+                targetValue = if (uiEnabled) 0.6f else 0f,
                 label = "blurAlpha"
             )
             AsyncImage(
                 modifier = Modifier
                     .fillMaxSize()
                     .alpha(blurAlpha)
-                    .blur(100.dp),
+                    .blur(90.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded),
                 request = ComposableImageRequest(media.getUri().toString()) {
                     crossfade()
                     resizeOnDraw()

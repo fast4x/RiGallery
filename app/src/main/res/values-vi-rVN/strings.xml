@@ -406,6 +406,7 @@
     <string name="analysis_of_media">Analysis of Media</string>
     <string name="media_in_database">Media in database: %1$s</string>
     <string name="transition_effect">Transition effect</string>
+    <string name="transform">Transform</string>
     <plurals name="item_count">
         <item quantity="other">%s mục</item>
     </plurals>

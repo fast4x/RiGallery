@@ -136,7 +136,7 @@ fun EditScreen2(
     var cropState by rememberSaveable { mutableStateOf(CropState()) }
     LaunchedEffect(navBackStackEntry) {
         cropState = cropState.copy(
-            showCropper = navBackStackEntry?.destination?.hasRoute<EditorDestination.Crop>() == true
+            showCropper = navBackStackEntry?.destination?.hasRoute<EditorDestination.Transform>() == true
         )
     }
 
