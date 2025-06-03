@@ -177,7 +177,8 @@ fun <T : Media> MediaGridView(
             stickyHeader = {
                 println("MediaGridView: stickyHeaderItem = $stickyHeaderItem")
 
-                if (isScrolling.value && stickyHeaderItem != null) {
+                //if (isScrolling.value && stickyHeaderItem != null) {
+                if (stickyHeaderItem != null) {
                     val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
                     Text(
                         text = text,
@@ -188,8 +189,8 @@ fun <T : Media> MediaGridView(
                             .background(
                                 MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
                             )
-                            //.padding(horizontal = 16.dp)
-                            .padding(top = 32.dp)
+                            .padding(horizontal = 16.dp)
+                            //.padding(top = 32.dp)
                             .fillMaxWidth()
                     )
                 }

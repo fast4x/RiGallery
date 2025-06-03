@@ -295,30 +295,31 @@ fun rememberSettingsList(
         )
     }
 
-    var showMediaTypeMenu by remember { mutableStateOf(false) }
-    var showMediaType by Settings.Misc.rememberShowMediaType()
-    val showMediaTypePref = remember(showMediaType) {
-        SettingsEntity.Preference(
-            title = "Media type", //context.getString(R.string.show_media_type),
-            summary = MediaType.entries[showMediaType].title,
-            onClick = { showMediaTypeMenu = true },
-            screenPosition = Position.Top
-        )
-    }
-    OptionSheetMenu(
-        title = "Media type",
-        options = MediaType.entries.map{ option ->
-            Option(
-                ordinal = option.ordinal,
-                name = option.name,
-                title = option.title,
-                icon = option.icon
-            )
-        },
-        visible = showMediaTypeMenu,
-        onSelected = { showMediaType = it },
-        onDismiss = { showMediaTypeMenu = false }
-    )
+    // TODO Valuate if necessary media type
+//    var showMediaTypeMenu by remember { mutableStateOf(false) }
+//    var showMediaType by Settings.Misc.rememberShowMediaType()
+//    val showMediaTypePref = remember(showMediaType) {
+//        SettingsEntity.Preference(
+//            title = "Media type", //context.getString(R.string.show_media_type),
+//            summary = MediaType.entries[showMediaType].title,
+//            onClick = { showMediaTypeMenu = true },
+//            screenPosition = Position.Top
+//        )
+//    }
+//    OptionSheetMenu(
+//        title = "Media type",
+//        options = MediaType.entries.map{ option ->
+//            Option(
+//                ordinal = option.ordinal,
+//                name = option.name,
+//                title = option.title,
+//                icon = option.icon
+//            )
+//        },
+//        visible = showMediaTypeMenu,
+//        onSelected = { showMediaType = it },
+//        onDismiss = { showMediaTypeMenu = false }
+//    )
 
     var darkModeValue by Settings.Misc.rememberIsDarkMode()
     val darkThemePref = remember(darkModeValue, forceTheme) {
@@ -613,7 +614,7 @@ fun rememberSettingsList(
             add(allowVibrationsPref)
             add(checkUpdateValuePref)
             add(SettingsEntity.Header(title = context.getString(R.string.customization)))
-            add(showMediaTypePref)
+            //add(showMediaTypePref)
             add(dateHeaderPref)
             add(groupByMonthPref)
             add(allowBlurPref)

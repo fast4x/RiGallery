@@ -136,9 +136,9 @@ open class MediaViewModel @Inject constructor(
         repository.getSetting(Settings.Misc.IGNORE_VIDEOS, false)
             .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    val mediaType =
-        repository.getSetting(Settings.Misc.MEDIATYPE, MediaType.All.ordinal)
-            .stateIn(viewModelScope, SharingStarted.Eagerly, MediaType.All.ordinal)
+//    val mediaType =
+//        repository.getSetting(Settings.Misc.MEDIATYPE, MediaType.All.ordinal)
+//            .stateIn(viewModelScope, SharingStarted.Eagerly, MediaType.All.ordinal)
 
     val languageApp =
         repository.getSetting(Settings.Misc.LANGUAGE_APP, Languages.System.code)
@@ -162,12 +162,14 @@ open class MediaViewModel @Inject constructor(
             ) { defaultDateFormat, extendedDateFormat, weeklyDateFormat ->
                 Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
             },
-            combine (mediaType, ignoredMediaList) { mediaType, ignoredMediaList ->
-                Pair(mediaType, ignoredMediaList)
-            }
+//            combine (mediaType, ignoredMediaList) { mediaType, ignoredMediaList ->
+//                Pair(mediaType, ignoredMediaList)
+//            }
+            ignoredMediaList
 
         ) { result, groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat),
-            (mediaType, ignoredMediaList) ->
+            //(mediaType, ignoredMediaList) ->
+            ignoredMediaList ->
 
             if (result is Resource.Error) return@combine MediaState(
                 error = result.message ?: "",
@@ -177,8 +179,8 @@ open class MediaViewModel @Inject constructor(
             val data = (result.data ?: emptyList()).toMutableList().apply {
                 removeAll { media -> blacklistedAlbums.any { it.shouldIgnore(media) } }
                 removeAll { media -> media.id == ignoredMediaList.find { it.id == media.id }?.id }
-                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage || media.isAudio }
-                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo || media.isAudio }
+//                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage || media.isAudio }
+//                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo || media.isAudio }
                 //if (mediaType == MediaType.Audios.ordinal) removeAll { media -> media.isVideo || media.isImage }
             }
 
@@ -206,16 +208,19 @@ open class MediaViewModel @Inject constructor(
             ) { defaultDateFormat, extendedDateFormat, weeklyDateFormat ->
                 Triple(defaultDateFormat, extendedDateFormat, weeklyDateFormat)
             },
-           ignoredMediaList,mediaType
+           //ignoredMediaList,mediaType
+            ignoredMediaList
         ) {
           groupedByMonth, blacklistedAlbums, (defaultDateFormat, extendedDateFormat, weeklyDateFormat),
-            ignoredMediaList, mediaType ->
+            //ignoredMediaList, mediaType ->
+          ignoredMediaList ->
 
             println("ignoredMediaFlow: $ignoredMediaList")
-            val data = ignoredMediaList.toMutableList().apply {
-                if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
-                if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
-            }
+            val data = ignoredMediaList
+//                .toMutableList().apply {
+//                    if (mediaType == MediaType.Video.ordinal) removeAll { media -> media.isImage }
+//                    if (mediaType == MediaType.Images.ordinal) removeAll { media -> media.isVideo }
+//                }
 
             updateDatabase()
             mapMediaToItem(

@@ -14,12 +14,19 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateBounds
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,12 +38,19 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,6 +61,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -89,6 +104,7 @@ import it.fast4x.rigallery.feature_node.presentation.common.components.MediaGrid
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -133,8 +149,10 @@ fun <T: Media> MediaScreen(
         }
     }
 
-    var showMediaTypeMenu by remember { mutableStateOf(false) }
-    var showMediaType by Settings.Misc.rememberShowMediaType()
+    //var showMediaTypeMenu by remember { mutableStateOf(false) }
+    //var showMediaType by Settings.Misc.rememberShowMediaType()
+
+    var showSearch by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -182,66 +200,84 @@ fun <T: Media> MediaScreen(
                         scrollBehavior = scrollBehavior
                     )
                 } else {
-                    MainSearchBar(
-                        bottomPadding = paddingValues.calculateBottomPadding(),
-                        navigate = navigate,
-                        toggleNavbar = toggleNavbar,
-                        selectionState = remember(selectedMedia) {
-                            if (selectedMedia.isNotEmpty()) selectionState else null
-                        },
-                        isScrolling = isScrolling,
-                        activeState = searchBarActive,
-                    ) {
-                        NavigationActions(
-                            actions = navActionsContent,
-                            onActivityResult = onActivityResult
-                        )
+
+                    LaunchedEffect(isScrolling.value) {
+                        showSearch = false
                     }
+
+                    AnimatedVisibility(
+                        modifier = Modifier
+                            .padding(bottom = paddingValues.calculateTopPadding()),
+                        visible = !isScrolling.value,
+                        enter = slideInVertically(),
+                        exit = slideOutVertically(),
+                        content = {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.End,
+                                modifier = Modifier
+                                    .padding(paddingValues)
+                                    .fillMaxWidth()
+                                    .animateContentSize()
+                            ) {
+                                IconButton(
+                                    modifier = Modifier
+                                        .height(64.dp)
+                                        .width(96.dp)
+                                        .padding(all = 5.dp)
+                                        .background(
+                                            color = MaterialTheme.colorScheme.surfaceColorAtElevation(
+                                                2.dp
+                                            ),
+                                            shape = RoundedCornerShape(percent = 12)
+                                        ),
+                                    onClick = {
+                                        showSearch = true
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Search,
+                                        modifier = Modifier.fillMaxHeight(),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        }
+                    )
+                    AnimatedVisibility(
+                        modifier = Modifier
+                            .padding(bottom = paddingValues.calculateTopPadding()),
+                        visible = showSearch,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                        content = {
+                            MainSearchBar(
+                                bottomPadding = paddingValues.calculateBottomPadding(),
+                                navigate = navigate,
+                                toggleNavbar = toggleNavbar,
+                                selectionState = remember(selectedMedia) {
+                                    if (selectedMedia.isNotEmpty()) selectionState else null
+                                },
+                                isScrolling = isScrolling,
+                                activeState = searchBarActive,
+                            ) {
+                                NavigationActions(
+                                    actions = navActionsContent,
+                                    onActivityResult = onActivityResult
+                                )
+                            }
+                        }
+                    )
                 }
+
             }
         ) { it ->
-                val padding = it.calculateTopPadding().value
-                val yOffsetAnimation: Dp by animateDpAsState(
-                    if (!isScrolling.value) padding.dp else 0.dp, tween(1000)
-                )
                 Column(
                     verticalArrangement = Arrangement.Top,
                     modifier = Modifier
                         .fillMaxSize()
-                        .graphicsLayer { translationY = yOffsetAnimation.toPx() }
+                        .padding(paddingValues)
                 ) {
-
-                    AnimatedVisibility(
-                        visible = !isScrolling.value,
-                        enter = slideInVertically { it * 2 },
-                        exit = slideOutVertically { it * 2 },
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(horizontal = 15.dp)
-                                .padding(vertical = 10.dp)
-                                .fillMaxWidth()
-                        ) {
-                            Text(
-                                text = MediaType.entries[showMediaType].title,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier
-                                    .clickable {
-                                        showMediaTypeMenu = true
-                                    }
-                                    .padding(5.dp)
-                            )
-
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            MediaCountInfo(mediaState)
-
-                        }
-                    }
 
                     MediaGridView(
                         mediaState = mediaState,
@@ -282,20 +318,20 @@ fun <T: Media> MediaScreen(
 
                 }
 
-            OptionSheetMenu(
-                title = "Media type",
-                options = MediaType.entries.map{ option ->
-                    Option(
-                        ordinal = option.ordinal,
-                        name = option.name,
-                        title = option.title,
-                        icon = option.icon
-                    )
-                },
-                visible = showMediaTypeMenu,
-                onSelected = { showMediaType = it },
-                onDismiss = { showMediaTypeMenu = false }
-            )
+//            OptionSheetMenu(
+//                title = "Media type",
+//                options = MediaType.entries.map{ option ->
+//                    Option(
+//                        ordinal = option.ordinal,
+//                        name = option.name,
+//                        title = option.title,
+//                        icon = option.icon
+//                    )
+//                },
+//                visible = showMediaTypeMenu,
+//                onSelected = { showMediaType = it },
+//                onDismiss = { showMediaTypeMenu = false }
+//            )
 
         }
         if (target != TARGET_TRASH) {

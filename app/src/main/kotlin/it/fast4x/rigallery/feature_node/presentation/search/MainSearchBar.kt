@@ -90,7 +90,7 @@ fun MainSearchBar(
     }
 
     val mediaWithLocation = mediaViewModel.mediaWithLocation.collectAsStateWithLifecycle()
-    println("MainSearchBar: mediaWithLocation: ${mediaWithLocation.value.size}")
+    //println("MainSearchBar: mediaWithLocation: ${mediaWithLocation.value.size}")
 
     val state = mediaViewModel.searchMediaState.collectAsStateWithLifecycle()
 
@@ -100,7 +100,7 @@ fun MainSearchBar(
     val transitionEffect by Settings.Misc.rememberTransitionEffect()
 
     LaunchedEffect(state.value.media, query, canQuery) {
-        println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
+        //println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
         if (query.isNotEmpty() && state.value.media.isEmpty() && canQuery) {
 
             if (query.isNotEmpty()) {
@@ -236,7 +236,7 @@ fun MainSearchBar(
                                     modifier = Modifier.fillMaxHeight(),
                                     contentDescription = null
                                 )
-                            }
+                        }
                     },
                     trailingIcon = {
                         IconButton(

@@ -1,15 +1,20 @@
 package it.fast4x.rigallery.feature_node.presentation.common.components
 
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.VerticalDistribute
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -56,7 +61,7 @@ fun <T : Media> rememberScrollbarSettings(
             thumbThickness = 24.dp,
             thumbUnselectedColor = Color.Transparent,
             thumbSelectedColor = Color.Transparent,
-            hideDisplacement = 0.dp
+            hideDisplacement = 0.dp,
         )
     }
 }
@@ -72,7 +77,8 @@ fun <T : Media> TimelineScroller(
 ) {
     val transitionEffect by Settings.Misc.rememberTransitionEffect()
     if (!settings.enabled) content()
-    else Box {
+    else
+        Box {
         content()
         InternalLazyVerticalGridScrollbar(
             state = state,
@@ -142,7 +148,7 @@ fun <T : Media> TimelineScroller(
                         modifier = Modifier
                             .size(48.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.tertiary,
+                                color = MaterialTheme.colorScheme.secondary,
                                 shape = RoundedCornerShape(
                                     topStartPercent = 100,
                                     bottomStartPercent = 100
@@ -152,10 +158,16 @@ fun <T : Media> TimelineScroller(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_scroll_arrow),
+                            imageVector = Icons.Outlined.VerticalDistribute,
+                            modifier = Modifier.fillMaxHeight(),
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onTertiary
+                            tint = MaterialTheme.colorScheme.onSecondary
                         )
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.ic_scroll_arrow),
+//                            contentDescription = null,
+//                            tint = MaterialTheme.colorScheme.onTertiary
+//                        )
                     }
                 }
             }

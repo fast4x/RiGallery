@@ -149,13 +149,14 @@ object Settings {
 
     object Misc {
 
-        val MEDIATYPE = intPreferencesKey("mediatype")
-
-        @Composable
-        fun rememberShowMediaType() =
-            rememberPreference(key = MEDIATYPE, defaultValue = MediaType.All.ordinal).apply {
-                value = if (value > MediaType.entries.size-1) MediaType.All.ordinal else value
-            }
+        // TODO Valuate if necessary media type
+//        val MEDIATYPE = intPreferencesKey("mediatype")
+//
+//        @Composable
+//        fun rememberShowMediaType() =
+//            rememberPreference(key = MEDIATYPE, defaultValue = MediaType.All.ordinal).apply {
+//                value = if (value > MediaType.entries.size-1) MediaType.All.ordinal else value
+//            }
 
 
 
