@@ -123,27 +123,28 @@ fun <T : Media> TimelineScroller(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    androidx.compose.animation.AnimatedVisibility(
-                        visible = !currentDate.isNullOrEmpty() && isSelected,
-                        enter =  TransitionEffect.enter(
-                            TransitionEffect.entries[transitionEffect]
-                        ),
-                        exit =  TransitionEffect.exit(
-                            TransitionEffect.entries[transitionEffect]
-                        )
-                    ) {
-                        Text(
-                            text = currentDate.toString(),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier
-                                .background(
-                                    color = MaterialTheme.colorScheme.primary,
-                                    shape = RoundedCornerShape(100)
-                                )
-                                .padding(horizontal = 8.dp, vertical = 4.dp)
-                        )
-                    }
+                    // TODO Valuate if necessary text in timeline scroller
+//                    androidx.compose.animation.AnimatedVisibility(
+//                        visible = !currentDate.isNullOrEmpty() && isSelected,
+//                        enter =  TransitionEffect.enter(
+//                            TransitionEffect.entries[transitionEffect]
+//                        ),
+//                        exit =  TransitionEffect.exit(
+//                            TransitionEffect.entries[transitionEffect]
+//                        )
+//                    ) {
+//                        Text(
+//                            text = currentDate.toString(),
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            color = MaterialTheme.colorScheme.onPrimary,
+//                            modifier = Modifier
+//                                .background(
+//                                    color = MaterialTheme.colorScheme.primary,
+//                                    shape = RoundedCornerShape(100)
+//                                )
+//                                .padding(horizontal = 8.dp, vertical = 4.dp)
+//                        )
+//                    }
                     Box(
                         modifier = Modifier
                             .size(48.dp)
