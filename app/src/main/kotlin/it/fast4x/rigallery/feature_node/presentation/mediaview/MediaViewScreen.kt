@@ -159,8 +159,6 @@ fun <T : Media> MediaViewScreen(
     deleteMedia: ((Vault, T, () -> Unit) -> Unit)? = null,
     currentVault: Vault? = null,
     navigate: (String) -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
 ) = ProvideInsets {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -485,21 +483,17 @@ fun <T : Media> MediaViewScreen(
                         mutableStateOf(IntOffset(0, 0))
                     }
 
-                    LaunchedEffect(showUI) {
-                        if (showUI) {
+                    LaunchedEffect(showUI, sheetState.currentDetent) {
+                        if (showUI && sheetState.currentDetent == imageOnlyDetent) {
                             delay(5.seconds)
                             showUI = false
                             windowInsetsController.toggleSystemBars(false)
                         }
                     }
 
-                    //with(sharedTransitionScope) {
+
                         MediaPreviewComponent(
                             media = media,
-//                                .mediaSharedElement(
-//                                    media = media!!,
-//                                    animatedVisibilityScope = animatedContentScope
-//                                ),
                             modifier = Modifier
                                 .graphicsLayer {
                                     scaleX = mediaSize
@@ -635,7 +629,7 @@ fun <T : Media> MediaViewScreen(
                                 }
                             }
                         )
-                    //}
+
                 }
             }
 
