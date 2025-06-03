@@ -89,8 +89,6 @@ fun LibraryScreen(
     paddingValues: PaddingValues,
     isScrolling: MutableState<Boolean>,
     searchBarActive: MutableState<Boolean>,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
 ) {
 
 
@@ -106,8 +104,6 @@ fun LibraryScreen(
                 toggleNavbar = toggleNavbar,
                 isScrolling = isScrolling,
                 activeState = searchBarActive,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope
             ) {
                 IconButton(onClick = { navigate(Screen.SettingsScreen()) }) {
                     Icon(
@@ -129,8 +125,6 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -143,8 +137,6 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 2, nextLevel = 2, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -157,8 +149,6 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 4, nextLevel = 3, previousLevel = 1, onZoomLevelChange = { level = it }
             )
         }
@@ -171,8 +161,6 @@ fun LibraryScreen(
                 gridState = gridState,
                 paddingValues = it,
                 navigate = navigate,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 6, nextLevel = 3, previousLevel = 2, onZoomLevelChange = { level = it }
             )
         }
@@ -187,8 +175,6 @@ fun LibraryMediaGrid(
     gridState: LazyGridState,
     paddingValues: PaddingValues,
     navigate: (String) -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ){
 
@@ -398,15 +384,11 @@ fun LibraryMediaGrid(
                                     items = medias,
                                     key = { it }
                                 ) {
-                                    //with(sharedTransitionScope) {
+
                                         MediaImage(
                                             modifier = Modifier
                                                 .size(116.dp)
                                                 .clip(RoundedCornerShape(16.dp)),
-//                                                .mediaSharedElement(
-//                                                    media = it,
-//                                                    animatedVisibilityScope = animatedContentScope
-//                                                ),
                                             media = it,
                                             selectedMedia = remember { mutableStateListOf() },
                                             selectionState = remember { mutableStateOf(false) },
@@ -427,7 +409,7 @@ fun LibraryMediaGrid(
                                             },
                                             canClick = true
                                         )
-                                    //}
+
                                 }
                             }
                         }

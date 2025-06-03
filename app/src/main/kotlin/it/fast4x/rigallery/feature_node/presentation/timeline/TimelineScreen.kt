@@ -48,8 +48,6 @@ inline fun <reified T: Media> TimelineScreen(
     noinline toggleNavbar: (Boolean) -> Unit,
     isScrolling: MutableState<Boolean>,
     searchBarActive: MutableState<Boolean> = mutableStateOf(false),
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
 ) {
 
     MediaScreen(
@@ -84,8 +82,6 @@ inline fun <reified T: Media> TimelineScreen(
         toggleNavbar = toggleNavbar,
         isScrolling = isScrolling,
         searchBarActive = searchBarActive,
-        //sharedTransitionScope = sharedTransitionScope,
-        //animatedContentScope = animatedContentScope,
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedMedia.clear()

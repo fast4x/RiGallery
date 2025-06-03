@@ -73,8 +73,6 @@ class StandaloneActivity : ComponentActivity() {
                                     addMedia = viewModel::addMedia,
                                     vaultState = vaults,
                                     navigate = {},
-                                    //sharedTransitionScope = this@SharedTransitionLayout,
-                                    //animatedContentScope = this
                                 )
                             //}
                         //}

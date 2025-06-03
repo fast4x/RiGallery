@@ -202,8 +202,6 @@ fun VaultScreen(
                             navPipe.navigate(VaultScreens.VaultSetup())
                         },
                         restoreVault = viewModel::restoreVault,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedContentScope = this@composable,
                         workerProgress = viewModel.progress,
                         workerIsRunning = viewModel.isRunning
                     )
@@ -242,8 +240,6 @@ fun VaultScreen(
                         )
                     },
                     navigate = navigate,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this@composable
                 )
             }
         }

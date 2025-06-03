@@ -215,8 +215,6 @@ fun NavigationComp(
                     toggleNavbar = navPipe::toggleNavbar,
                     isScrolling = isScrolling,
                     searchBarActive = searchBarActive,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
                 )
             }
             composable(

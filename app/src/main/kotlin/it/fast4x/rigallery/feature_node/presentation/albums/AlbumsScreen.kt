@@ -112,8 +112,7 @@ fun AlbumsScreen(
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
     onMoveAlbumToTrash: (ActivityResultLauncher<IntentSenderRequest>, Album) -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
+
 ) {
     val lastSort by rememberLastSort()
     LaunchedEffect(lastSort) {
@@ -144,8 +143,7 @@ fun AlbumsScreen(
                 toggleNavbar = toggleNavbar,
                 isScrolling = isScrollingInProgress,
                 activeState = searchBarActive,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
+
             ) {
                 IconButton(onClick = { navigate(Screen.SettingsScreen.route) }) {
                     Icon(
@@ -184,8 +182,6 @@ fun AlbumsScreen(
                 onAlbumClick = onAlbumClick,
                 onAlbumLongClick = onAlbumLongClick,
                 onMoveAlbumToTrash = onMoveAlbumToTrash,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -203,8 +199,6 @@ fun AlbumsScreen(
                 onAlbumClick = onAlbumClick,
                 onAlbumLongClick = onAlbumLongClick,
                 onMoveAlbumToTrash = onMoveAlbumToTrash,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 2, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -275,8 +269,6 @@ fun AlbumMediaGrid(
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
     onMoveAlbumToTrash: (ActivityResultLauncher<IntentSenderRequest>, Album) -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ){
     val displayMode by remember { mutableStateOf(1) }
@@ -432,15 +424,9 @@ fun AlbumMediaGrid(
             key = { item -> item.toString() }
         ) { item ->
             val trashResult = rememberActivityResult()
-            //with(sharedTransitionScope) {
+
                 AlbumComponent(
-//                    modifier = Modifier
-//                        .animateItem(),
-//                    thumbnailModifier = Modifier
-//                        .mediaSharedElement(
-//                            album = item,
-//                            animatedVisibilityScope = animatedContentScope
-//                        ),
+
                     album = item,
                     onItemClick = onAlbumClick,
                     onTogglePinClick = onAlbumLongClick,
@@ -448,7 +434,7 @@ fun AlbumMediaGrid(
                         onMoveAlbumToTrash(trashResult, it)
                     }
                 )
-            //}
+
         }
 
         item(

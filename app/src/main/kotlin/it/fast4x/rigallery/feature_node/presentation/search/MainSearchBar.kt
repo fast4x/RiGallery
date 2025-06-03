@@ -79,8 +79,6 @@ fun MainSearchBar(
     toggleNavbar: (Boolean) -> Unit,
     isScrolling: MutableState<Boolean>,
     activeState: MutableState<Boolean>,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
     menuItems: @Composable (RowScope.() -> Unit)? = null,
 ) {
     var historySet by rememberSearchHistory()
@@ -347,8 +345,6 @@ fun MainSearchBar(
                                 emptyContent = {
                                         EmptyMedia()
                                 },
-                                //animatedContentScope = animatedContentScope,
-                                //sharedTransitionScope = sharedTransitionScope
                             )
 
                         // emptymedia include loading indicator

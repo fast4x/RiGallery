@@ -87,8 +87,6 @@ fun <T: Media> MediaGrid(
     aboveGridContent: @Composable() (() -> Unit)?,
     isScrolling: MutableState<Boolean>,
     emptyContent: @Composable () -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit
 ) {
     LaunchedEffect(gridState.isScrollInProgress) {
@@ -182,8 +180,6 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -206,8 +202,6 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 2, nextLevel = 2, previousLevel = 0, onZoomLevelChange = { level = it }
             )
         }
@@ -230,8 +224,6 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                //sharedTransitionScope = sharedTransitionScope,
-                //nimatedContentScope = animatedContentScope,
                 columns = 4, nextLevel = 3, previousLevel = 1, onZoomLevelChange = { level = it }
             )
         }
@@ -254,8 +246,6 @@ fun <T: Media> MediaGrid(
                 onMediaClick = onMediaClick,
                 topContent = topContent,
                 bottomContent = bottomContent,
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope,
                 columns = 6, nextLevel = 3, previousLevel = 2, onZoomLevelChange = { level = it }
             )
         }
@@ -418,13 +408,9 @@ private fun <T: Media> MediaGridContentWithHeaders(
                         }
                     }
                 } else if (it is MediaItem.MediaViewItem) {
-                    //with(sharedTransitionScope) {
+
                         MediaImage(
-//                            modifier = Modifier
-//                                .mediaSharedElement(
-//                                    media = it.media,
-//                                    animatedVisibilityScope = animatedContentScope
-//                                ),
+
                             media = it.media,
                             selectionState = selectionState,
                             selectedMedia = selectedMedia,
@@ -441,7 +427,7 @@ private fun <T: Media> MediaGridContentWithHeaders(
                                 toggleSelection(mediaState.value.media.indexOf(it))
                             }
                         }
-                    //}
+
                 }
             }
 
@@ -489,13 +475,9 @@ private fun <T: Media> MediaGridContent(
             key = { _, item -> item.toString() },
             contentType = { _, item -> item.isImage }
         ) { index, media ->
-            //with(sharedTransitionScope) {
+
                 MediaImage(
-//                    modifier = Modifier
-//                        .mediaSharedElement(
-//                            media = media,
-//                            animatedVisibilityScope = animatedContentScope
-//                        ),
+
                     media = media,
                     selectionState = selectionState,
                     selectedMedia = selectedMedia,
@@ -513,7 +495,7 @@ private fun <T: Media> MediaGridContent(
                         }
                     }
                 )
-            //}
+
         }
 
         bottomContent()

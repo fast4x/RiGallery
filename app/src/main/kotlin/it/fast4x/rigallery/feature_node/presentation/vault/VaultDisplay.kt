@@ -100,8 +100,6 @@ fun VaultDisplay(
     restoreVault: (Vault) -> Unit,
     workerProgress: StateFlow<Float>,
     workerIsRunning: StateFlow<Boolean>,
-    sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
 ) {
     val isRunning by workerIsRunning.collectAsStateWithLifecycle()
     val progress by workerProgress.collectAsStateWithLifecycle()
@@ -403,8 +401,6 @@ fun VaultDisplay(
                 emptyContent = {
                     EmptyMedia()
                 },
-                //sharedTransitionScope = sharedTransitionScope,
-                //animatedContentScope = animatedContentScope
             )
 
     }

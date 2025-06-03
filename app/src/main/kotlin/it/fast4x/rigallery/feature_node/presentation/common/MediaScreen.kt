@@ -117,8 +117,6 @@ fun <T: Media> MediaScreen(
     toggleNavbar: (Boolean) -> Unit,
     isScrolling: MutableState<Boolean> = remember { mutableStateOf(false) },
     searchBarActive: MutableState<Boolean> = remember { mutableStateOf(false) },
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
     onActivityResult: (result: ActivityResult) -> Unit,
 ) {
     val showSearchBar = remember { albumId == -1L && target == null }
@@ -193,8 +191,6 @@ fun <T: Media> MediaScreen(
                         },
                         isScrolling = isScrolling,
                         activeState = searchBarActive,
-                        //sharedTransitionScope = sharedTransitionScope,
-                        //animatedContentScope = animatedContentScope,
                     ) {
                         NavigationActions(
                             actions = navActionsContent,
@@ -272,8 +268,6 @@ fun <T: Media> MediaScreen(
                         aboveGridContent = aboveGridContent,
                         isScrolling = isScrolling,
                         emptyContent = emptyContent,
-                        //sharedTransitionScope = sharedTransitionScope,
-                        //animatedContentScope = animatedContentScope
                     ) {
                         if (customViewingNavigation == null) {
                             val albumRoute = "albumId=$albumId"
