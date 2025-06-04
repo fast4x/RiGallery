@@ -126,7 +126,7 @@ inline fun <LazyState : ScrollableState, LazyItem> StickyHeaderLayout(
         Box(
             modifier = Modifier
                 .alpha(alphaAnimation)
-                .offset { offsetAnimation }
+                //.offset { offsetAnimation }
         ) {
             stickyHeader()
         }
