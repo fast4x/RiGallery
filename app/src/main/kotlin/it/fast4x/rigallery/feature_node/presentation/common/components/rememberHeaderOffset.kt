@@ -115,8 +115,11 @@ inline fun <LazyState : ScrollableState, LazyItem> StickyHeaderLayout(
         }, label = "offsetAnimation"
     )
 
+    println("StickyHeaderLayout: offsetAnimation.y = ${offsetAnimation.y}")
+
+    // TODO NOT NECESSARY, THIS CAUSE HIDE STICKY HEADER WHEN SCROLL
     val alphaAnimation by animateFloatAsState(
-        targetValue = remember(offsetAnimation) { if (offsetAnimation.y < -100) 0f else 1f },
+        targetValue = remember(offsetAnimation) { if (offsetAnimation.y < -350) 0f else 1f },
         label = "alphaAnimation",
         animationSpec = tween(100, 10),
     )

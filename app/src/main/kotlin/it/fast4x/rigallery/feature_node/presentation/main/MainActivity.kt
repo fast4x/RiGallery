@@ -44,7 +44,6 @@ import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
 import it.fast4x.rigallery.core.extensions.checkupdate.CheckAvailableNewVersion
-import it.fast4x.rigallery.core.extensions.providers.LocalMediaProvider
 import it.fast4x.rigallery.core.util.ext.OkHttpRequest
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
@@ -134,6 +133,7 @@ class MainActivity : AppCompatActivity() {
             GalleryTheme {
                 val navController = rememberNavController()
                 val isScrolling = remember { mutableStateOf(false) }
+                val showSearchBar = remember { mutableStateOf(false) }
                 val bottomBarState = rememberSaveable { mutableStateOf(true) }
                 val systemBarFollowThemeState = rememberSaveable { mutableStateOf(true) }
                 val forcedTheme by rememberForceTheme()
@@ -161,6 +161,7 @@ class MainActivity : AppCompatActivity() {
                             navController = navController,
                             paddingValues = paddingValues,
                             bottomBarState = bottomBarState.value,
+                            onShowSearchBar = { showSearchBar.value = it },
                             isScrolling = isScrolling.value
                         ) {
                             NavigationComp(
@@ -169,7 +170,8 @@ class MainActivity : AppCompatActivity() {
                                 bottomBarState = bottomBarState,
                                 systemBarFollowThemeState = systemBarFollowThemeState,
                                 toggleRotate = ::toggleOrientation,
-                                isScrolling = isScrolling
+                                isScrolling = isScrolling,
+                                showSearchBar = showSearchBar
                             )
                         }
                     }

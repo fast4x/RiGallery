@@ -8,9 +8,7 @@
 package it.fast4x.rigallery.feature_node.presentation.timeline
 
 import android.app.Activity
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
@@ -18,13 +16,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.hilt.navigation.compose.hiltViewModel
 import it.fast4x.rigallery.BuildConfig
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
-import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaScreen
 import it.fast4x.rigallery.feature_node.presentation.timeline.components.TimelineNavActions
 
@@ -33,7 +29,7 @@ import it.fast4x.rigallery.feature_node.presentation.timeline.components.Timelin
 inline fun <reified T: Media> TimelineScreen(
     paddingValues: PaddingValues,
     albumId: Long = -1L,
-    albumName: String =  BuildConfig.APPLICATION_NAME,
+    albumName: String = BuildConfig.APPLICATION_NAME,
     handler: MediaHandleUseCase,
     mediaState: State<MediaState<T>>,
     albumsState: State<AlbumState>,
@@ -48,6 +44,7 @@ inline fun <reified T: Media> TimelineScreen(
     noinline toggleNavbar: (Boolean) -> Unit,
     isScrolling: MutableState<Boolean>,
     searchBarActive: MutableState<Boolean> = mutableStateOf(false),
+    showSearchBar: MutableState<Boolean>,
 ) {
 
     MediaScreen(
@@ -81,7 +78,9 @@ inline fun <reified T: Media> TimelineScreen(
         navigateUp = navigateUp,
         toggleNavbar = toggleNavbar,
         isScrolling = isScrolling,
+        showSearch = showSearchBar,
         searchBarActive = searchBarActive,
+
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedMedia.clear()

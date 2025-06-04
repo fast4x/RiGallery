@@ -30,6 +30,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +61,7 @@ fun IgnoredScreen(
     navigateUp: () -> Unit,
     startSetup: () -> Unit,
     albumsState: State<AlbumState>,
+    showSearch: MutableState<Boolean>,
 ) {
     val vm = hiltViewModel<IgnoredViewModel>()
     val scrollBehavior =

@@ -3,9 +3,7 @@ package it.fast4x.rigallery.feature_node.presentation.ignoredmedia
 import android.app.Activity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -13,16 +11,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.res.stringResource
 import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
 import it.fast4x.rigallery.core.Constants.Target.TARGET_IGNOREDMEDIA
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media.UriMedia
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
 import it.fast4x.rigallery.feature_node.presentation.common.MediaScreen
-import it.fast4x.rigallery.feature_node.presentation.favorites.components.EmptyFavorites
 import it.fast4x.rigallery.feature_node.presentation.ignoredmedia.components.EmptyIgnoredMedia
-import it.fast4x.rigallery.feature_node.presentation.ignoredmedia.components.IgnoredMediaNavActions
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -39,6 +34,7 @@ fun IgnoredMediaScreen(
     navigate: (route: String) -> Unit,
     navigateUp: () -> Unit,
     toggleNavbar: (Boolean) -> Unit,
+    showSearch: MutableState<Boolean>,
 ) = MediaScreen(
     paddingValues = paddingValues,
     target = TARGET_IGNOREDMEDIA,
@@ -58,9 +54,11 @@ fun IgnoredMediaScreen(
     navigate = navigate,
     navigateUp = navigateUp,
     toggleNavbar = toggleNavbar,
-) { result ->
-    if (result.resultCode == Activity.RESULT_OK) {
-        selectedMedia.clear()
-        selectionState.value = false
-    }
-}
+    onActivityResult = { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            selectedMedia.clear()
+            selectionState.value = false
+        }
+    },
+    showSearch = showSearch,
+)

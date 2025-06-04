@@ -13,6 +13,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -126,15 +128,12 @@ fun <T : Media> MediaGridView(
     val gridState = rememberLazyGridState()
     val staggeredGridState = rememberLazyStaggeredGridState()
 
-    println("MediaGridView: enableStickyHeaders = $enableStickyHeaders")
-
     AnimatedVisibility(
         visible = enableStickyHeaders
     ) {
         val headers by rememberedDerivedState(mediaState.value) {
             mediaState.value.headers.toMutableStateList()
         }
-        println("MediaGridView: headers = ${headers.joinToString(",") { it.text }}")
 
         val stickyHeaderItem by if (!useStaggeredGrid) rememberStickyHeaderItem(
             gridState = gridState,
@@ -175,25 +174,32 @@ fun <T : Media> MediaGridView(
             searchBarOffset = { if (showSearchBar) 28.roundSpToPx(density) + searchBarPaddingPx else 0 },
             toolbarOffset = { if (showSearchBar) 0 else 64.roundDpToPx(density) + searchBarHeightPx },
             stickyHeader = {
-                println("MediaGridView: stickyHeaderItem = $stickyHeaderItem")
-
-                //if (isScrolling.value && stickyHeaderItem != null) {
-                if (stickyHeaderItem != null) {
-                    val text by rememberedDerivedState(stickyHeaderItem) { stickyHeaderItem ?: "" }
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .background(
-                                MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
-                            )
-                            .padding(horizontal = 16.dp)
-                            //.padding(top = 32.dp)
-                            .fillMaxWidth()
-                    )
-                }
+//                AnimatedVisibility(
+//                    visible = stickyHeaderItem != null,
+//                    enter = fadeIn(),
+//                    exit = fadeOut()
+//                ) {
+                    //if (isScrolling.value && stickyHeaderItem != null) {
+                    //if (stickyHeaderItem != null) {
+                        val text by rememberedDerivedState(stickyHeaderItem) {
+                            stickyHeaderItem ?: ""
+                        }
+                        Text(
+                            text = text,
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .background(
+                                    MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                                )
+                                //.padding(horizontal = 5.dp)
+                                .padding(paddingValues)
+                                //.padding(top = 32.dp)
+                                .fillMaxWidth()
+                        )
+                    //}
+                //}
             }
         ) {
             if (useStaggeredGrid)

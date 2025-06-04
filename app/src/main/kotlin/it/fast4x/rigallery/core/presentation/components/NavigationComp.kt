@@ -9,7 +9,6 @@
 package it.fast4x.rigallery.core.presentation.components
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -78,7 +77,8 @@ fun NavigationComp(
     bottomBarState: MutableState<Boolean>,
     systemBarFollowThemeState: MutableState<Boolean>,
     toggleRotate: () -> Unit,
-    isScrolling: MutableState<Boolean>
+    isScrolling: MutableState<Boolean>,
+    showSearchBar: MutableState<Boolean>
 ) {
     val searchBarActive = rememberSaveable {
         mutableStateOf(false)
@@ -215,6 +215,7 @@ fun NavigationComp(
                     toggleNavbar = navPipe::toggleNavbar,
                     isScrolling = isScrolling,
                     searchBarActive = searchBarActive,
+                    showSearchBar = showSearchBar,
                 )
             }
             composable(
@@ -236,8 +237,7 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
+                    showSearch = showSearchBar,
                 )
             }
             composable(
@@ -260,8 +260,7 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
+                    showSearch = showSearchBar,
                 )
             }
             composable(
@@ -325,6 +324,7 @@ fun NavigationComp(
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
                     isScrolling = isScrolling,
+                    showSearchBar = showSearchBar,
                     //sharedTransitionScope = this@SharedTransitionLayout,
                     //animatedContentScope = this
                 )
@@ -490,7 +490,8 @@ fun NavigationComp(
                 IgnoredScreen(
                     navigateUp = navPipe::navigateUp,
                     startSetup = { navPipe.navigate(Screen.IgnoredSetupScreen()) },
-                    albumsState = albumsState
+                    albumsState = albumsState,
+                    showSearch = showSearchBar
                 )
             }
 
@@ -523,8 +524,7 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
+                    showSearch = showSearchBar,
                 )
             }
 
@@ -580,8 +580,7 @@ fun NavigationComp(
                     navigate = navPipe::navigate,
                     toggleNavbar = navPipe::toggleNavbar,
                     category = category,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
+                    showSearch = showSearchBar
                 )
             }
 

@@ -22,6 +22,7 @@ class ComposeInitializer : Initializer<Unit> {
             GalleryTheme {
                 val navController = rememberNavController()
                 val isScrolling = remember { mutableStateOf(false) }
+                val showSearchBar = remember { mutableStateOf(false) }
                 val bottomBarState = rememberSaveable { mutableStateOf(true) }
                 val systemBarFollowThemeState = rememberSaveable { mutableStateOf(true) }
                 Scaffold(
@@ -31,6 +32,7 @@ class ComposeInitializer : Initializer<Unit> {
                             navController = navController,
                             paddingValues = paddingValues,
                             bottomBarState = bottomBarState.value,
+                            onShowSearchBar = { showSearchBar.value = it },
                             isScrolling = isScrolling.value
                         ) {
                             NavigationComp(
@@ -39,7 +41,8 @@ class ComposeInitializer : Initializer<Unit> {
                                 bottomBarState = bottomBarState,
                                 systemBarFollowThemeState = systemBarFollowThemeState,
                                 toggleRotate = { },
-                                isScrolling = isScrolling
+                                isScrolling = isScrolling,
+                                showSearchBar = showSearchBar
                             )
                         }
                     }

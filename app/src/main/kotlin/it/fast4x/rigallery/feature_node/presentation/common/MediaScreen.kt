@@ -10,32 +10,20 @@ package it.fast4x.rigallery.feature_node.presentation.common
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.animateBounds
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -43,21 +31,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -74,37 +56,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.R
-import it.fast4x.rigallery.core.Constants.DEFAULT_TOP_BAR_ANIMATION_DURATION
 import it.fast4x.rigallery.core.Constants.Target.TARGET_FAVORITES
 import it.fast4x.rigallery.core.Constants.Target.TARGET_TRASH
-import it.fast4x.rigallery.core.Constants.cellsList
-import it.fast4x.rigallery.core.Settings
-import it.fast4x.rigallery.core.Settings.Misc.rememberGridSize
-import it.fast4x.rigallery.core.enums.MediaType
-import it.fast4x.rigallery.core.enums.Option
 import it.fast4x.rigallery.core.presentation.components.EmptyMedia
 import it.fast4x.rigallery.core.presentation.components.NavigationActions
 import it.fast4x.rigallery.core.presentation.components.NavigationButton
-import it.fast4x.rigallery.core.presentation.components.OptionSheetMenu
 import it.fast4x.rigallery.core.presentation.components.SelectionSheet
 import it.fast4x.rigallery.feature_node.domain.model.AlbumState
 import it.fast4x.rigallery.feature_node.domain.model.Media
 import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.use_case.MediaHandleUseCase
-import it.fast4x.rigallery.feature_node.presentation.common.components.MediaCountInfo
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaGridView
 import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -133,8 +101,10 @@ fun <T: Media> MediaScreen(
     toggleNavbar: (Boolean) -> Unit,
     isScrolling: MutableState<Boolean> = remember { mutableStateOf(false) },
     searchBarActive: MutableState<Boolean> = remember { mutableStateOf(false) },
+    showSearch:  MutableState<Boolean> = remember { mutableStateOf(false) },
     onActivityResult: (result: ActivityResult) -> Unit,
-) {
+
+    ) {
     val showSearchBar = remember { albumId == -1L && target == null }
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
@@ -149,10 +119,12 @@ fun <T: Media> MediaScreen(
         }
     }
 
+    println("MediaScreen: showSearch = ${showSearch.value}")
+
     //var showMediaTypeMenu by remember { mutableStateOf(false) }
     //var showMediaType by Settings.Misc.rememberShowMediaType()
 
-    var showSearch by remember { mutableStateOf(false) }
+    //var showSearchLocal by remember(showSearch) { mutableStateOf(showSearch) }
 
     Box(
         modifier = Modifier
@@ -202,52 +174,52 @@ fun <T: Media> MediaScreen(
                 } else {
 
                     LaunchedEffect(isScrolling.value) {
-                        showSearch = false
+                        showSearch.value = false
                     }
-
+// TODO REMOVE IN THE FUTURE
+//                    AnimatedVisibility(
+//                        modifier = Modifier
+//                            .padding(bottom = paddingValues.calculateTopPadding()),
+//                        visible = !isScrolling.value,
+//                        enter = slideInVertically(),
+//                        exit = slideOutVertically(),
+//                        content = {
+//                            Row(
+//                                verticalAlignment = Alignment.CenterVertically,
+//                                horizontalArrangement = Arrangement.End,
+//                                modifier = Modifier
+//                                    .padding(paddingValues)
+//                                    .fillMaxWidth()
+//                                    .animateContentSize()
+//                            ) {
+//                                IconButton(
+//                                    modifier = Modifier
+//                                        .height(64.dp)
+//                                        .width(96.dp)
+//                                        .padding(all = 5.dp)
+//                                        .background(
+//                                            color = MaterialTheme.colorScheme.surfaceColorAtElevation(
+//                                                2.dp
+//                                            ),
+//                                            shape = RoundedCornerShape(percent = 12)
+//                                        ),
+//                                    onClick = {
+//                                        showSearch.value = true
+//                                    }
+//                                ) {
+//                                    Icon(
+//                                        imageVector = Icons.Outlined.Search,
+//                                        modifier = Modifier.fillMaxHeight(),
+//                                        contentDescription = null
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    )
                     AnimatedVisibility(
                         modifier = Modifier
                             .padding(bottom = paddingValues.calculateTopPadding()),
-                        visible = !isScrolling.value,
-                        enter = slideInVertically(),
-                        exit = slideOutVertically(),
-                        content = {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.End,
-                                modifier = Modifier
-                                    .padding(paddingValues)
-                                    .fillMaxWidth()
-                                    .animateContentSize()
-                            ) {
-                                IconButton(
-                                    modifier = Modifier
-                                        .height(64.dp)
-                                        .width(96.dp)
-                                        .padding(all = 5.dp)
-                                        .background(
-                                            color = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                                2.dp
-                                            ),
-                                            shape = RoundedCornerShape(percent = 12)
-                                        ),
-                                    onClick = {
-                                        showSearch = true
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.Search,
-                                        modifier = Modifier.fillMaxHeight(),
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                        }
-                    )
-                    AnimatedVisibility(
-                        modifier = Modifier
-                            .padding(bottom = paddingValues.calculateTopPadding()),
-                        visible = showSearch,
+                        visible = showSearch.value,
                         enter = fadeIn(),
                         exit = fadeOut(),
                         content = {

@@ -291,8 +291,6 @@ private fun <T: Media> MediaGridContentWithHeaders(
     onMediaClick: @DisallowComposableCalls (media: T) -> Unit,
     topContent: LazyGridScope.() -> Unit,
     bottomContent: LazyGridScope.() -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()

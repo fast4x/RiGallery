@@ -8,9 +8,7 @@ package it.fast4x.rigallery.feature_node.presentation.trashed
 import android.app.Activity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -42,8 +40,7 @@ inline fun <reified T: Media> TrashedGridScreen(
     noinline navigate: (route: String) -> Unit,
     noinline navigateUp: () -> Unit,
     noinline toggleNavbar: (Boolean) -> Unit,
-    //sharedTransitionScope: SharedTransitionScope,
-    //animatedContentScope: AnimatedContentScope,
+    showSearch: MutableState<Boolean>,
 ) = MediaScreen(
     paddingValues = paddingValues,
     target = TARGET_TRASH,
@@ -65,11 +62,11 @@ inline fun <reified T: Media> TrashedGridScreen(
     navigate = navigate,
     navigateUp = navigateUp,
     toggleNavbar = toggleNavbar,
-    //sharedTransitionScope = sharedTransitionScope,
-    //animatedContentScope = animatedContentScope
-) { result ->
-    if (result.resultCode == Activity.RESULT_OK) {
-        selectedMedia.clear()
-        selectionState.value = false
-    }
-}
+    onActivityResult = { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            selectedMedia.clear()
+            selectionState.value = false
+        }
+    },
+    showSearch = showSearch,
+)

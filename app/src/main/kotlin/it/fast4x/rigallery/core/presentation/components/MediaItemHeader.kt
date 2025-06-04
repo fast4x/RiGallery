@@ -106,9 +106,9 @@ fun MediaItemHeader(
         modifier = (if (showAsBig) bigModifier else smallModifier)
 //            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
 //                MaterialTheme.shapes.medium)
-            .padding(start = 10.dp)
+            //.padding(start = 10.dp)
             .padding(vertical = 5.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

@@ -1,11 +1,10 @@
 package it.fast4x.rigallery.feature_node.presentation.classifier
 
 import android.app.Activity
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,7 +18,8 @@ fun CategoryViewScreen(
     navigateUp: () -> Unit,
     navigate: (String) -> Unit,
     toggleNavbar: (Boolean) -> Unit,
-    category: String
+    category: String,
+    showSearch: MutableState<Boolean>
 ) {
     val viewModel = hiltViewModel<CategoryViewModel>().apply {
         this.category = category
@@ -34,29 +34,30 @@ fun CategoryViewScreen(
     val mediaState = viewModel.mediaByCategory.collectAsStateWithLifecycle()
 
     MediaScreen(
-        albumName = category,
-        customDateHeader = stringResource(R.string.s_items,  mediaState.value.media.size),
-        selectedMedia = viewModel.selectedMedia,
-        selectionState = viewModel.selectionState,
-        mediaState = mediaState,
         target = "category_$category",
+        albumName = category,
+        handler = viewModel.handler,
+        mediaState = mediaState,
+        selectionState = viewModel.selectionState,
+        selectedMedia = viewModel.selectedMedia,
         toggleSelection = {
             viewModel.toggleSelection(mediaState.value, it)
         },
-        navigateUp = navigateUp,
-        handler = viewModel.handler,
+        customDateHeader = stringResource(R.string.s_items,  mediaState.value.media.size),
+        customViewingNavigation = { media ->
+            navigate(Screen.MediaViewScreen.idAndCategory(media.id, category))
+        },
         navActionsContent = { expandedDropDown, result ->
         },
         navigate = navigate,
+        navigateUp = navigateUp,
+        toggleNavbar = toggleNavbar,
         onActivityResult = { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 viewModel.selectedMedia.clear()
                 viewModel.selectionState.value = false
             }
         },
-        toggleNavbar = toggleNavbar,
-        customViewingNavigation = { media ->
-            navigate(Screen.MediaViewScreen.idAndCategory(media.id, category))
-        },
+        showSearch = showSearch,
     )
 }

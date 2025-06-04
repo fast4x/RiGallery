@@ -8,9 +8,7 @@ package it.fast4x.rigallery.feature_node.presentation.favorites
 import android.app.Activity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -42,6 +40,7 @@ fun FavoriteScreen(
     navigate: (route: String) -> Unit,
     navigateUp: () -> Unit,
     toggleNavbar: (Boolean) -> Unit,
+    showSearch: MutableState<Boolean>,
 ) = MediaScreen(
     paddingValues = paddingValues,
     target = TARGET_FAVORITES,
@@ -60,9 +59,11 @@ fun FavoriteScreen(
     navigate = navigate,
     navigateUp = navigateUp,
     toggleNavbar = toggleNavbar,
-) { result ->
-    if (result.resultCode == Activity.RESULT_OK) {
-        selectedMedia.clear()
-        selectionState.value = false
-    }
-}
+    onActivityResult = { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            selectedMedia.clear()
+            selectionState.value = false
+        }
+    },
+    showSearch = showSearch,
+)
