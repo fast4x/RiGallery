@@ -10,11 +10,8 @@ package it.fast4x.rigallery.core.presentation.components
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -34,23 +31,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.HideSource
 import androidx.compose.material.icons.filled.QueryStats
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Verified
-import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Album
 import androidx.compose.material.icons.outlined.Category
-import androidx.compose.material.icons.outlined.DocumentScanner
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.ImageSearch
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Photo
-import androidx.compose.material.icons.outlined.PhotoAlbum
-import androidx.compose.material.icons.outlined.PhotoLibrary
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -142,6 +131,7 @@ fun AppBarContainer(
     bottomBarState: Boolean,
     paddingValues: PaddingValues,
     isScrolling: Boolean,
+    onShowSearchBar: (Boolean) -> Unit,
     content: @Composable () -> Unit,
 ) {
     val context = LocalContext.current
@@ -156,6 +146,7 @@ fun AppBarContainer(
 //
     val scope = rememberCoroutineScope()
     val expandedDropDown = remember { mutableStateOf(false) }
+    val toggleSearchBar = remember { mutableStateOf(false) }
     val appBottomSheetState = rememberAppBottomSheetState()
     LaunchedEffect(appBottomSheetState.isVisible, expandedDropDown.value) {
         scope.launch {
@@ -340,13 +331,17 @@ fun AppBarContainer(
                     bottomBarState && (!isScrolling || !hideNavBarSetting) && anySelectedRoute
                 }
             }
+            //var showSearchBar by remember(showSearchBar) { mutableStateOf(showSearchBar) }
+
             AnimatedVisibility(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(bottom = paddingValues.calculateBottomPadding()),
                 visible = showNavbar,
-                enter = slideInVertically { it * 2 },
-                exit = slideOutVertically { it * 2 },
+                enter = fadeIn(),
+                exit = fadeOut(),
+//                enter = slideInVertically { it * 2 },
+//                exit = slideOutVertically { it * 2 },
                 content = {
                     val modifier = remember(useNavRail) {
                         if (useNavRail) Modifier.requiredWidth((110 * bottomNavItems.size).dp)
@@ -359,6 +354,10 @@ fun AppBarContainer(
                         onClick = { navigate(navController, it) },
                         onCustomItemClick = {
                             expandedDropDown.value = true
+                        },
+                        onShowSearchBar = {
+                            toggleSearchBar.value = !toggleSearchBar.value
+                            onShowSearchBar(toggleSearchBar.value)
                         }
                     )
                 }
@@ -389,7 +388,8 @@ fun GalleryNavBar(
     backStackEntry: NavBackStackEntry?,
     navigationItems: List<NavigationItem>,
     onClick: (route: String) -> Unit,
-    onCustomItemClick: (msg: String) -> Unit
+    onCustomItemClick: (msg: String) -> Unit,
+    onShowSearchBar: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -413,7 +413,15 @@ fun GalleryNavBar(
             )
         }
 
-        // Dummy item to link the shortcuts sheet
+        GalleryNavBarItem(
+            navItem = NavigationItem(
+                name = stringResource(R.string.app_name),
+                route = "", // no route needed,
+                icon = Icons.Outlined.Search
+            ),
+            isSelected = false,
+            onClick = onShowSearchBar
+        )
         GalleryNavBarItem(
             navItem = NavigationItem(
                 name = stringResource(R.string.app_name),
@@ -536,7 +544,7 @@ fun RowScope.GalleryNavBarItem(
         Box(
             modifier = Modifier
                 .height(32.dp)
-                .width(64.dp)
+                .width(46.dp)
                 .background(
                     color = selectedColor,
                     shape = RoundedCornerShape(percent = 100)
