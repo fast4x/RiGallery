@@ -1,11 +1,7 @@
 package it.fast4x.rigallery.feature_node.presentation.common.components
 
-import android.R.attr.scaleX
-import android.R.attr.scaleY
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -14,10 +10,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
@@ -41,17 +39,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.enums.TransitionEffect
+import it.fast4x.rigallery.core.extensions.fastscrollbar.DraggableScrollbar
+import it.fast4x.rigallery.core.extensions.fastscrollbar.lazystate.rememberDraggableScroller
+import it.fast4x.rigallery.core.extensions.fastscrollbar.lazystate.scrollbarState
 import it.fast4x.rigallery.core.presentation.components.Error
 import it.fast4x.rigallery.core.presentation.components.LoadingMedia
 import it.fast4x.rigallery.core.presentation.components.MediaItemHeader
@@ -63,7 +64,6 @@ import it.fast4x.rigallery.feature_node.domain.model.isHeaderKey
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.presentation.mediaview.rememberedDerivedState
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
-import it.fast4x.rigallery.feature_node.presentation.util.mediaSharedElement
 import it.fast4x.rigallery.feature_node.presentation.util.rememberFeedbackManager
 import it.fast4x.rigallery.feature_node.presentation.util.update
 import kotlinx.coroutines.Dispatchers
@@ -308,15 +308,16 @@ private fun <T: Media> MediaGridContentWithHeaders(
         animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
     )
 
-    TimelineScroller(
-        modifier = Modifier
-            .padding(paddingValues)
-            .padding(top = 32.dp)
-            .padding(vertical = 32.dp),
-        mappedData = mappedData,
-        headers = headers,
-        state = gridState,
-    ) {
+//    TimelineScroller(
+//        modifier = Modifier
+//            .padding(paddingValues)
+//            .padding(top = 32.dp)
+//            .padding(vertical = 32.dp),
+//        mappedData = mappedData,
+//        headers = headers,
+//        state = gridState,
+//    ) {
+    Box() {
         LazyVerticalGrid(
             state = gridState,
             modifier = Modifier
@@ -432,6 +433,24 @@ private fun <T: Media> MediaGridContentWithHeaders(
 
             bottomContent()
         }
+
+        val context = LocalContext.current
+
+        gridState.DraggableScrollbar(
+            modifier = Modifier.fillMaxHeight()
+                .align(Alignment.CenterEnd),
+            state = gridState.scrollbarState(
+                itemsAvailable = mappedData.size,
+            ),
+            orientation = Orientation.Vertical,
+            isSupperSmall = mappedData.size < 100,
+            onThumbMoved = gridState.rememberDraggableScroller(
+                itemsAvailable = mappedData.size,
+            ),
+            thumbSize = 24.dp,
+            context = context
+        )
+
     }
 }
 

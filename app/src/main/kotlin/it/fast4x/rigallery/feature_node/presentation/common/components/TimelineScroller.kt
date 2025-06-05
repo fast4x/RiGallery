@@ -75,7 +75,7 @@ fun <T : Media> TimelineScroller(
     settings: ScrollbarSettings = rememberScrollbarSettings(headers),
     content: @Composable () -> Unit
 ) {
-    val transitionEffect by Settings.Misc.rememberTransitionEffect()
+    //val transitionEffect by Settings.Misc.rememberTransitionEffect()
     if (!settings.enabled) content()
     else
         Box {

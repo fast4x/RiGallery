@@ -62,6 +62,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -76,6 +77,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings.Misc.rememberAutoHideNavBar
+import it.fast4x.rigallery.core.Settings.Misc.rememberNoClassification
 
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionItem
 import it.fast4x.rigallery.feature_node.presentation.common.components.OptionSheet
@@ -87,40 +89,78 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun rememberNavigationItems(): List<NavigationItem> {
+    var noClassification by rememberNoClassification()
     val timelineTitle = stringResource(R.string.nav_timeline)
     val albumsTitle = stringResource(R.string.nav_albums)
     //val libraryTitle = stringResource(R.string.library)
     val smartCategoriesTitle = stringResource(R.string.smart_categories)
     val favoritesTitle = stringResource(R.string.favorites)
-    return remember {
-        mutableListOf(
-            NavigationItem(
-                name = timelineTitle,
-                route = Screen.TimelineScreen.route,
-                icon = Icons.Outlined.Photo,
-            ),
-            NavigationItem(
-                name = albumsTitle,
-                route = Screen.AlbumsScreen.route,
-                icon = Icons.Outlined.Album,
-            ),
-//            NavigationItem(
-//                name = libraryTitle,
-//                route = Screen.LibraryScreen(),
-//                icon = Icons.Outlined.PhotoLibrary
-//            ),
-            NavigationItem(
-                name = smartCategoriesTitle,
-                route = Screen.CategoriesScreen(),
-                icon = Icons.Outlined.Category
-            ),
-            NavigationItem(
-                name = favoritesTitle,
-                route = Screen.FavoriteScreen(),
-                icon = Icons.Outlined.Favorite
+    val navigationItems = remember { mutableListOf<NavigationItem>() }
+    navigationItems
+        .also { it.clear() }
+        .apply {
+            add(
+                NavigationItem(
+                    name = timelineTitle,
+                    route = Screen.TimelineScreen.route,
+                    icon = Icons.Outlined.Photo,
+                )
             )
-        )
-    }
+            add(
+                NavigationItem(
+                    name = albumsTitle,
+                    route = Screen.AlbumsScreen.route,
+                    icon = Icons.Outlined.Album,
+                )
+            )
+            if (noClassification == false) {
+                add(
+                    NavigationItem(
+                        name = smartCategoriesTitle,
+                        route = Screen.CategoriesScreen(),
+                        icon = Icons.Outlined.Category
+                    )
+                )
+            }
+            add(
+                NavigationItem(
+                    name = favoritesTitle,
+                    route = Screen.FavoriteScreen(),
+                    icon = Icons.Outlined.Favorite
+                )
+            )
+        }
+
+    return remember {navigationItems}
+//    return remember {
+//        mutableListOf(
+//            NavigationItem(
+//                name = timelineTitle,
+//                route = Screen.TimelineScreen.route,
+//                icon = Icons.Outlined.Photo,
+//            ),
+//            NavigationItem(
+//                name = albumsTitle,
+//                route = Screen.AlbumsScreen.route,
+//                icon = Icons.Outlined.Album,
+//            ),
+////            NavigationItem(
+////                name = libraryTitle,
+////                route = Screen.LibraryScreen(),
+////                icon = Icons.Outlined.PhotoLibrary
+////            ),
+//            NavigationItem(
+//                name = smartCategoriesTitle,
+//                route = Screen.CategoriesScreen(),
+//                icon = Icons.Outlined.Category
+//            ),
+//            NavigationItem(
+//                name = favoritesTitle,
+//                route = Screen.FavoriteScreen(),
+//                icon = Icons.Outlined.Favorite
+//            )
+//        )
+//    }
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)

@@ -335,7 +335,7 @@ object Settings {
 
         @Composable
         fun rememberNoClassification() =
-            rememberPreference(key = NO_CLASSIFICATION, defaultValue = false)
+            rememberPreference(key = NO_CLASSIFICATION, defaultValue = true)
 
         val DATE_HEADER_FORMAT = stringPreferencesKey("date_header_format")
 

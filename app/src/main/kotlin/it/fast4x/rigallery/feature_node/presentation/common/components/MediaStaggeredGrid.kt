@@ -1,11 +1,7 @@
 package it.fast4x.rigallery.feature_node.presentation.common.components
 
-import android.R.attr.scaleX
-import android.R.attr.scaleY
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -15,17 +11,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.FullLine
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan.Companion.SingleLane
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -46,18 +39,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.common.collect.Iterables.removeIf
 import it.fast4x.rigallery.R
 import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.enums.TransitionEffect
+import it.fast4x.rigallery.core.extensions.fastscrollbar.DraggableScrollbar
+import it.fast4x.rigallery.core.extensions.fastscrollbar.lazystate.rememberDraggableScroller
+import it.fast4x.rigallery.core.extensions.fastscrollbar.lazystate.scrollbarState
 import it.fast4x.rigallery.core.presentation.components.Error
 import it.fast4x.rigallery.core.presentation.components.LoadingMedia
 import it.fast4x.rigallery.core.presentation.components.MediaItemHeader
@@ -69,7 +66,6 @@ import it.fast4x.rigallery.feature_node.domain.model.isHeaderKey
 import it.fast4x.rigallery.feature_node.domain.util.isImage
 import it.fast4x.rigallery.feature_node.presentation.mediaview.rememberedDerivedState
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
-import it.fast4x.rigallery.feature_node.presentation.util.mediaSharedElement
 import it.fast4x.rigallery.feature_node.presentation.util.rememberFeedbackManager
 import it.fast4x.rigallery.feature_node.presentation.util.update
 import kotlinx.coroutines.Dispatchers
@@ -316,15 +312,16 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
         animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
     )
 
-    TimelineScroller(
-        modifier = Modifier
-            .padding(paddingValues)
-            .padding(top = 32.dp)
-            .padding(vertical = 32.dp),
-        mappedData = mappedData,
-        headers = headers,
-        state = rememberLazyGridState(),
-    ) {
+//    TimelineScroller(
+//        modifier = Modifier
+//            .padding(paddingValues)
+//            .padding(top = 32.dp)
+//            .padding(vertical = 32.dp),
+//        mappedData = mappedData,
+//        headers = headers,
+//        state = rememberLazyGridState(),
+//    ) {
+    Box() {
         LazyVerticalStaggeredGrid(
             state = gridState,
             modifier = Modifier
@@ -442,6 +439,23 @@ private fun <T: Media> MediaStaggeredGridContentWithHeaders(
 
             bottomContent()
         }
+
+        val context = LocalContext.current
+
+        gridState.DraggableScrollbar(
+            modifier = Modifier.fillMaxHeight()
+                .align(Alignment.CenterEnd),
+            state = gridState.scrollbarState(
+                itemsAvailable = mappedData.size,
+            ),
+            isSupperSmall = mappedData.size < 100,
+            thumbSize = 24.dp,
+            onThumbMoved = gridState.rememberDraggableScroller(
+                itemsAvailable = mappedData.size,
+            ),
+            context = context,
+        )
+
     }
 }
 
