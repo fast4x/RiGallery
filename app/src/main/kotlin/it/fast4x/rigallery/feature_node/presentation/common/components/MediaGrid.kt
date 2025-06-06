@@ -10,12 +10,15 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridScope
@@ -42,6 +45,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
@@ -436,20 +440,26 @@ private fun <T: Media> MediaGridContentWithHeaders(
 
         val context = LocalContext.current
 
-        gridState.DraggableScrollbar(
-            modifier = Modifier.fillMaxHeight()
-                .align(Alignment.CenterEnd),
-            state = gridState.scrollbarState(
-                itemsAvailable = mappedData.size,
-            ),
-            orientation = Orientation.Vertical,
-            isSupperSmall = mappedData.size < 100,
-            onThumbMoved = gridState.rememberDraggableScroller(
-                itemsAvailable = mappedData.size,
-            ),
-            thumbSize = 24.dp,
-            context = context
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(top = 45.dp, bottom = 70.dp)
+                .align(Alignment.CenterEnd)
+        ){
+            gridState.DraggableScrollbar(
+                modifier = Modifier.fillMaxHeight(),
+                state = gridState.scrollbarState(
+                    itemsAvailable = mappedData.size,
+                ),
+                orientation = Orientation.Vertical,
+                isSupperSmall = mappedData.size < 100,
+                onThumbMoved = gridState.rememberDraggableScroller(
+                    itemsAvailable = mappedData.size,
+                ),
+                thumbSize = 24.dp,
+                context = context
+            )
+        }
 
     }
 }

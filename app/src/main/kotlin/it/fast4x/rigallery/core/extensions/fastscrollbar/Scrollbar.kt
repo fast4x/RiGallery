@@ -233,17 +233,16 @@ fun Scrollbar(
                 }
             }
 
-            val yVerticalOffset = thumbMovedPx.roundToInt() + if (thumbMovedPx.roundToInt() <= 1800) 100 else -200
+           // val yVerticalOffset = thumbMovedPx.roundToInt() + if (thumbMovedPx.roundToInt() <= 1800) 100 else -200
 
             val y = when (orientation) {
                 Horizontal -> 0
                 Vertical -> max(
-                    a = yVerticalOffset, // 100 is added to show indication under the header in grid
+                    a = thumbMovedPx.roundToInt(),
                     b = 0,
                 )
             }
 
-            println("Scrollbar: yVerticalOffset = $yVerticalOffset")
             println("Scrollbar: thumbMovedPx = $thumbMovedPx y = $y")
             println("Scrollbar: constraints = ${constraints}")
 
