@@ -278,8 +278,7 @@ fun NavigationComp(
                     onAlbumLongClick = albumsViewModel.onAlbumLongClick,
                     filterOptions = albumsViewModel.rememberFilters(),
                     onMoveAlbumToTrash = albumsViewModel::moveAlbumToTrash,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
+                    showSearchBar = showSearchBar,
                 )
             }
             composable(

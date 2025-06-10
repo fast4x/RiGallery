@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.AppsOutage
 import androidx.compose.material.icons.outlined.SdCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -101,6 +102,7 @@ fun AlbumComponent(
                         text = pinTitle,
                         containerColor = secondaryContainer,
                         contentColor = onSecondaryContainer,
+                        icon = Icons.Outlined.AppsOutage,
                         onClick = {
                             scope.launch {
                                 appBottomSheetState.hide()
@@ -133,7 +135,7 @@ fun AlbumComponent(
                     AsyncImage(
                         modifier = Modifier
                             .size(98.dp)
-                            .clip(Shapes.large),
+                            .clip(Shapes.medium),
                         contentScale = ContentScale.Crop,
                         uri = album.uri.toString(),
                         contentDescription = album.label
@@ -202,7 +204,7 @@ fun AlbumComponent(
         Text(
             modifier = Modifier
                 .padding(top = 12.dp)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 6.dp),
             text = album.label,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
@@ -213,7 +215,7 @@ fun AlbumComponent(
             Text(
                 modifier = Modifier
                     .padding(top = 2.dp, bottom = 16.dp)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 6.dp),
                 text = pluralStringResource(
                     id = R.plurals.item_count,
                     count = album.count.toInt(),
@@ -221,7 +223,7 @@ fun AlbumComponent(
                 ) + " (${formatSize(album.size)})",
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
 
@@ -239,7 +241,7 @@ fun AlbumImage(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed = interactionSource.collectIsPressedAsState()
-    val radius = if (isPressed.value) 32.dp else 16.dp
+    val radius = if (isPressed.value) 32.dp else 8.dp
     val cornerRadius by animateDpAsState(targetValue = radius, label = "cornerRadius")
     val feedbackManager = rememberFeedbackManager()
     if (album.id == -200L && album.count == 0L) {

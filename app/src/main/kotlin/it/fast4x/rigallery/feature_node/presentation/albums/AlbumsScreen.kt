@@ -9,10 +9,8 @@ package it.fast4x.rigallery.feature_node.presentation.albums
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -22,6 +20,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -38,6 +37,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDownward
+import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowDown
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowUp
 import androidx.compose.material.icons.outlined.Settings
@@ -73,12 +74,10 @@ import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.Settings.Album.LastSort
 import it.fast4x.rigallery.core.Settings.Album.rememberLastSort
 import it.fast4x.rigallery.core.enums.AlbumsSortOrder
-import it.fast4x.rigallery.core.enums.MediaType
 import it.fast4x.rigallery.core.enums.Option
 import it.fast4x.rigallery.core.enums.TransitionEffect
 import it.fast4x.rigallery.core.presentation.components.EmptyAlbum
 import it.fast4x.rigallery.core.presentation.components.Error
-import it.fast4x.rigallery.core.presentation.components.FilterButton
 import it.fast4x.rigallery.core.presentation.components.FilterKind
 import it.fast4x.rigallery.core.presentation.components.FilterOption
 import it.fast4x.rigallery.core.presentation.components.LoadingAlbum
@@ -92,10 +91,11 @@ import it.fast4x.rigallery.feature_node.domain.util.OrderType
 import it.fast4x.rigallery.feature_node.presentation.albums.components.AlbumComponent
 import it.fast4x.rigallery.feature_node.presentation.albums.components.CarouselPinnedAlbums
 import it.fast4x.rigallery.feature_node.presentation.common.components.MediaCountInfo
+import it.fast4x.rigallery.feature_node.presentation.common.components.MultiLinedTitle
+import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
-import it.fast4x.rigallery.feature_node.presentation.util.mediaSharedElement
 import it.fast4x.rigallery.feature_node.presentation.util.rememberActivityResult
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -112,8 +112,9 @@ fun AlbumsScreen(
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
     onMoveAlbumToTrash: (ActivityResultLauncher<IntentSenderRequest>, Album) -> Unit,
+    showSearchBar: MutableState<Boolean>,
 
-) {
+    ) {
     val lastSort by rememberLastSort()
     LaunchedEffect(lastSort) {
         val selectedFilter = filterOptions.first { it.filterKind == lastSort.kind }
@@ -137,71 +138,91 @@ fun AlbumsScreen(
             end = paddingValues.calculateEndPadding(LocalLayoutDirection.current)
         ),
         topBar = {
-            MainSearchBar(
-                bottomPadding = paddingValues.calculateBottomPadding(),
-                navigate = navigate,
-                toggleNavbar = toggleNavbar,
-                isScrolling = isScrollingInProgress,
-                activeState = searchBarActive,
-
-            ) {
-                IconButton(onClick = { navigate(Screen.SettingsScreen.route) }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Settings,
-                        contentDescription = stringResource(R.string.settings_title)
-                    )
-                }
+            LaunchedEffect(isScrolling.value) {
+                showSearchBar.value = false
             }
+            AnimatedVisibility(
+//                modifier = Modifier
+//                    .padding(bottom = paddingValues.calculateTopPadding()),
+                visible = showSearchBar.value,
+                enter = fadeIn(),
+                exit = fadeOut(),
+                content = {
+                    MainSearchBar(
+                        bottomPadding = 0.dp,
+                        navigate = navigate,
+                        toggleNavbar = toggleNavbar,
+                        isScrolling = isScrollingInProgress,
+                        activeState = searchBarActive,
+
+                    )
+//                    {
+//                        IconButton(onClick = { navigate(Screen.SettingsScreen.route) }) {
+//                            Icon(
+//                                imageVector = Icons.Outlined.Settings,
+//                                contentDescription = stringResource(R.string.settings_title)
+//                            )
+//                        }
+//                    }
+                }
+            )
         }
     ) { innerPaddingValues ->
-        LaunchedEffect(innerPaddingValues) {
-            finalPaddingValues = PaddingValues(
-                top = innerPaddingValues.calculateTopPadding(),
-                bottom = paddingValues.calculateBottomPadding() + 16.dp + 64.dp
-            )
-        }
+        innerPaddingValues.calculateTopPadding()
+//        LaunchedEffect(innerPaddingValues) {
+//            finalPaddingValues = PaddingValues(
+//                top = innerPaddingValues.calculateTopPadding(),
+//                bottom = paddingValues.calculateBottomPadding() + 16.dp + 64.dp
+//            )
+//        }
 
-        val gridState = rememberLazyGridState()
+            val gridState = rememberLazyGridState()
 
-        LaunchedEffect(gridState.isScrollInProgress) {
-            isScrollingInProgress.value = gridState.isScrollInProgress
-        }
+            LaunchedEffect(gridState.isScrollInProgress) {
+                isScrollingInProgress.value = gridState.isScrollInProgress
+            }
 
-        var level by remember { mutableIntStateOf(1) }
-        AnimatedVisibility(
-            visible = level == 0,
-            enter = scaleIn() + fadeIn(),
-            exit = scaleOut() + fadeOut()
-        ) {
-            AlbumMediaGrid(
-                gridState = gridState,
-                mediaState = mediaState,
-                albumsState = albumsState,
-                finalPaddingValues = finalPaddingValues,
-                filterOptions = filterOptions,
-                onAlbumClick = onAlbumClick,
-                onAlbumLongClick = onAlbumLongClick,
-                onMoveAlbumToTrash = onMoveAlbumToTrash,
-                columns = 1, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
-            )
-        }
-        AnimatedVisibility(
-            visible = level == 1,
-            enter = scaleIn() + fadeIn(),
-            exit = scaleOut() + fadeOut()
-        ) {
-            AlbumMediaGrid(
-                gridState = gridState,
-                mediaState = mediaState,
-                albumsState = albumsState,
-                finalPaddingValues = finalPaddingValues,
-                filterOptions = filterOptions,
-                onAlbumClick = onAlbumClick,
-                onAlbumLongClick = onAlbumLongClick,
-                onMoveAlbumToTrash = onMoveAlbumToTrash,
-                columns = 2, nextLevel = 1, previousLevel = 0, onZoomLevelChange = { level = it }
-            )
-        }
+            var level by remember { mutableIntStateOf(1) }
+            AnimatedVisibility(
+                visible = level == 0,
+                enter = scaleIn() + fadeIn(),
+                exit = scaleOut() + fadeOut()
+            ) {
+                AlbumMediaGrid(
+                    gridState = gridState,
+                    mediaState = mediaState,
+                    albumsState = albumsState,
+                    finalPaddingValues = finalPaddingValues,
+                    filterOptions = filterOptions,
+                    onAlbumClick = onAlbumClick,
+                    onAlbumLongClick = onAlbumLongClick,
+                    onMoveAlbumToTrash = onMoveAlbumToTrash,
+                    columns = 1,
+                    nextLevel = 1,
+                    previousLevel = 0,
+                    onZoomLevelChange = { level = it }
+                )
+            }
+            AnimatedVisibility(
+                visible = level == 1,
+                enter = scaleIn() + fadeIn(),
+                exit = scaleOut() + fadeOut()
+            ) {
+                AlbumMediaGrid(
+                    gridState = gridState,
+                    mediaState = mediaState,
+                    albumsState = albumsState,
+                    finalPaddingValues = finalPaddingValues,
+                    filterOptions = filterOptions,
+                    onAlbumClick = onAlbumClick,
+                    onAlbumLongClick = onAlbumLongClick,
+                    onMoveAlbumToTrash = onMoveAlbumToTrash,
+                    columns = 2,
+                    nextLevel = 1,
+                    previousLevel = 0,
+                    onZoomLevelChange = { level = it }
+                )
+            }
 //        AnimatedVisibility(
 //            visible = level == 2,
 //            enter = scaleIn() + fadeIn(),
@@ -241,7 +262,8 @@ fun AlbumsScreen(
 //            )
 //        }
 
-    }
+        }
+
     val transitionEffect by Settings.Misc.rememberTransitionEffect()
     /** Error State Handling Block **/
     AnimatedVisibility(
@@ -386,17 +408,17 @@ fun AlbumMediaGrid(
                         Icon(
                             imageVector = remember(albumsOrder) {
                                 if (albumsOrder == OrderType.Descending)
-                                    Icons.Outlined.KeyboardDoubleArrowDown
-                                else Icons.Outlined.KeyboardDoubleArrowUp
+                                    Icons.Outlined.ArrowDownward
+                                else Icons.Outlined.ArrowUpward
                             },
                             tint = MaterialTheme.colorScheme.primary,
                             contentDescription = null
                         )
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    MediaCountInfo(mediaState)
+//                    Spacer(modifier = Modifier.weight(1f))
+//
+//                    MediaCountInfo(mediaState)
 
                 }
                 OptionSheetMenu(
@@ -426,7 +448,6 @@ fun AlbumMediaGrid(
             val trashResult = rememberActivityResult()
 
                 AlbumComponent(
-
                     album = item,
                     onItemClick = onAlbumClick,
                     onTogglePinClick = onAlbumLongClick,

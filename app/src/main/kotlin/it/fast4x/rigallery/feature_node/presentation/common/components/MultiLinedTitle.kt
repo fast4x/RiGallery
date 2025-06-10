@@ -9,12 +9,13 @@ import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun MultiLinedTitle(
+    modifier: Modifier = Modifier,
     title: String,
-    subtitle1: String,
-    subtitle2: String,
-    subtitle3: String
+    subtitle1: String = "",
+    subtitle2: String = "",
+    subtitle3: String = "",
 ) {
-    Column {
+    Column(modifier = modifier) {
         Text(
             text = title,
             overflow = TextOverflow.Ellipsis,
