@@ -123,7 +123,7 @@ fun MainSearchBar(
     val lastQueryIsEmpty =
         remember(mediaViewModel.lastQuery.value) { mediaViewModel.lastQuery.value.isEmpty() }
 
-    val mediaIsEmpty = remember(state) { state.value.media.isEmpty() && !state.value.isLoading }
+    //val mediaIsEmpty = remember(state) { state.value.media.isEmpty() && !state.value.isLoading }
 
 //    LaunchedEffect(query) {
 //        println("MainSearchBar: LaunchedEffect query changed: $query and canQuery: $canQuery and state.value.media: ${state.value.media}")
@@ -175,7 +175,7 @@ fun MainSearchBar(
         )
 
         SearchBar(
-            shape = MaterialTheme.shapes.medium,
+            shape = MaterialTheme.shapes.small,
             inputField = {
                 SearchBarDefaults.InputField(
                     query = query,
@@ -273,7 +273,7 @@ fun MainSearchBar(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .alpha(searchBarAlpha)
-                .fillMaxWidth(0.98f),
+                .fillMaxWidth(),
             colors = colors,
             tonalElevation = elevation,
             content = {

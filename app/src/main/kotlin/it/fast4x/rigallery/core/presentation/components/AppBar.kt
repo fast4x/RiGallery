@@ -433,7 +433,7 @@ fun GalleryNavBar(
 ) {
     Row(
         modifier = Modifier
-            .padding(all = 5.dp)
+            //.padding(all = 5.dp)
             .then(modifier)
             .height(64.dp)
             .background(
