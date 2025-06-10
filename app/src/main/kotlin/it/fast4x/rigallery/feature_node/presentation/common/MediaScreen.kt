@@ -119,7 +119,8 @@ fun <T: Media> MediaScreen(
         }
     }
 
-    println("MediaScreen: showSearch = ${showSearch.value}")
+    //println("MediaScreen: showSearch = ${showSearch.value}")
+    println("MediaScreen: showSearch = ${showSearch.value} showSearchBar = $showSearchBar target = $target albumId = $albumId")
 
     //var showMediaTypeMenu by remember { mutableStateOf(false) }
     //var showMediaType by Settings.Misc.rememberShowMediaType()
@@ -130,16 +131,16 @@ fun <T: Media> MediaScreen(
         modifier = Modifier
             .padding(
                 start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
-                end = paddingValues.calculateEndPadding(LocalLayoutDirection.current)
+                end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
             )
     ) {
         Scaffold(
-            modifier = Modifier
-                .then(
-                    if (!showSearchBar)
-                        Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-                    else Modifier
-                ),
+            modifier = Modifier,
+//                .then(
+//                    if (!showSearchBar)
+//                        Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+//                    else Modifier
+//                ),
             topBar = {
                 if (!showSearchBar) {
                     TopAppBar(
@@ -171,11 +172,43 @@ fun <T: Media> MediaScreen(
                         },
                         scrollBehavior = scrollBehavior
                     )
+
+                    LaunchedEffect(isScrolling.value) {
+                        showSearch.value = false
+                    }
+                    AnimatedVisibility(
+                        modifier = Modifier
+                            .padding(bottom = paddingValues.calculateTopPadding()),
+                        visible = showSearch.value,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                        content = {
+                            MainSearchBar(
+                                bottomPadding = paddingValues.calculateBottomPadding(),
+                                navigate = navigate,
+                                toggleNavbar = toggleNavbar,
+                                selectionState = remember(selectedMedia) {
+                                    if (selectedMedia.isNotEmpty()) selectionState else null
+                                },
+                                isScrolling = isScrolling,
+                                activeState = searchBarActive,
+                            ) {
+                                NavigationActions(
+                                    actions = navActionsContent,
+                                    onActivityResult = onActivityResult
+                                )
+                            }
+                        }
+                    )
+
                 } else {
 
                     LaunchedEffect(isScrolling.value) {
                         showSearch.value = false
                     }
+
+
+
 // TODO REMOVE IN THE FUTURE
 //                    AnimatedVisibility(
 //                        modifier = Modifier
@@ -263,7 +296,10 @@ fun <T: Media> MediaScreen(
                             PaddingValues(
                                 start = 5.dp,
                                 end = 5.dp,
-                                top = 5.dp, //it.calculateTopPadding(),
+                                top = when(target) {
+                                    TARGET_FAVORITES, TARGET_TRASH -> 65.dp
+                                    else -> 5.dp
+                                }, //it.calculateTopPadding(),
                                 bottom = 5.dp, //paddingValues.calculateBottomPadding() + 128.dp
                             )
                         },
