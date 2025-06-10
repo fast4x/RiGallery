@@ -20,11 +20,9 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,9 +37,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowDown
-import androidx.compose.material.icons.outlined.KeyboardDoubleArrowUp
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -89,12 +84,8 @@ import it.fast4x.rigallery.feature_node.domain.model.MediaState
 import it.fast4x.rigallery.feature_node.domain.util.MediaOrder
 import it.fast4x.rigallery.feature_node.domain.util.OrderType
 import it.fast4x.rigallery.feature_node.presentation.albums.components.AlbumComponent
-import it.fast4x.rigallery.feature_node.presentation.albums.components.CarouselPinnedAlbums
-import it.fast4x.rigallery.feature_node.presentation.common.components.MediaCountInfo
-import it.fast4x.rigallery.feature_node.presentation.common.components.MultiLinedTitle
-import it.fast4x.rigallery.feature_node.presentation.common.components.TwoLinedDateToolbarTitle
+import it.fast4x.rigallery.feature_node.presentation.albums.components.PinnedAlbumsPager
 import it.fast4x.rigallery.feature_node.presentation.search.MainSearchBar
-import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import it.fast4x.rigallery.feature_node.presentation.util.detectPinchGestures
 import it.fast4x.rigallery.feature_node.presentation.util.rememberActivityResult
 
@@ -358,11 +349,16 @@ fun AlbumMediaGrid(
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium
                     )
-                    CarouselPinnedAlbums(
-                        albumList = albumsState.value.albumsPinned,
+                    PinnedAlbumsPager(
+                        albums = albumsState.value.albumsPinned,
                         onAlbumClick = onAlbumClick,
                         onAlbumLongClick = onAlbumLongClick
                     )
+//                    CarouselPinnedAlbums(
+//                        albumList = albumsState.value.albumsPinned,
+//                        onAlbumClick = onAlbumClick,
+//                        onAlbumLongClick = onAlbumLongClick
+//                    )
                 }
             }
         }
@@ -380,7 +376,7 @@ fun AlbumMediaGrid(
                 )
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(horizontal = 15.dp)
@@ -450,6 +446,7 @@ fun AlbumMediaGrid(
                 AlbumComponent(
                     album = item,
                     onItemClick = onAlbumClick,
+                    onItemLongClick = onAlbumLongClick,
                     onTogglePinClick = onAlbumLongClick,
                     onMoveAlbumToTrash = {
                         onMoveAlbumToTrash(trashResult, it)

@@ -64,6 +64,7 @@ fun AlbumComponent(
     album: Album,
     isEnabled: Boolean = true,
     onItemClick: (Album) -> Unit,
+    onItemLongClick: ((Album) -> Unit)? = null,
     onMoveAlbumToTrash: ((Album) -> Unit)? = null,
     onTogglePinClick: ((Album) -> Unit)? = null,
     onToggleIgnoreClick: ((Album) -> Unit)? = null
@@ -181,13 +182,21 @@ fun AlbumComponent(
                 album = album,
                 isEnabled = isEnabled,
                 onItemClick = onItemClick,
-                onItemLongClick = if (onTogglePinClick != null) {
-                    {
+                onItemLongClick = {
+                    if (onTogglePinClick != null)
                         scope.launch {
                             appBottomSheetState.show()
                         }
-                    }
-                } else null
+                    else onItemLongClick?.invoke(it)
+                }
+
+//                onItemLongClick = if (onTogglePinClick != null) {
+//                    {
+//                        scope.launch {
+//                            appBottomSheetState.show()
+//                        }
+//                    }
+//                } else null
             )
             if (album.isOnSdcard) {
                 Icon(
