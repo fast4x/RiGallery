@@ -49,6 +49,8 @@ lifecycleProcess = "2.9.0"
 metadataExtractor = "2.19.0"
 palette = "1.0.0"
 composeCharts = "0.1.7"
+mediarouter = "1.7.0"
+cast = "22.1.0"
 
 [libraries]
 # AndroidX
@@ -166,6 +168,11 @@ tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.r
 
 palette = {group = "androidx.palette", name = "palette-ktx", version.ref = "palette"}
 compose-charts = {group = "io.github.ehsannarmani", name = "compose-charts", version.ref = "composeCharts"}
+
+#Cast
+androidx-mediarouter = { module = "androidx.mediarouter:mediarouter", version.ref = "mediarouter" }
+play-services-cast-framework = { module = "com.google.android.gms:play-services-cast-framework", version.ref = "cast" }
+
 
 
 [plugins]

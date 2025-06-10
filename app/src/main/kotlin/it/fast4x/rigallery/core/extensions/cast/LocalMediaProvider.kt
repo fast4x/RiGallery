@@ -1,6 +1,5 @@
-package it.fast4x.rigallery.core.extensions.providers
+package it.fast4x.rigallery.core.extensions.cast
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.wifi.WifiManager
@@ -22,7 +21,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
 
-class LocalMediaProvider(private val activity: Activity) {
+class LocalMediaProvider(private val context: Context) {
     fun stopMediaProvider() {
         isWebServerSunning = false
         try {
@@ -43,7 +42,7 @@ class LocalMediaProvider(private val activity: Activity) {
 
                 httpServerSocket = ServerSocket(0)
                 //println("LocalMediaProvider WebServerThread started listening ip ${httpServerSocket!!.localSocketAddress} on port ${httpServerSocket!!.localPort}")
-                ipAddress = findIPAddress(activity)
+                ipAddress = findIPAddress(context)
                 port = httpServerSocket!!.localPort.toString()
                 println("LocalMediaProvider WebServerThread started listening ip $ipAddress on port ${httpServerSocket!!.localPort}")
                 while (isWebServerSunning) {
@@ -81,13 +80,9 @@ class LocalMediaProvider(private val activity: Activity) {
 
                                 if (imageId.isNotEmpty()) {
                                     println("LocalMediaProvider HttpResponseThread received input imageId $imageId")
-//                                    val bitmap = BitmapFactory.decodeResource(
-//                                        activity.resources,
-//                                        imageId.toInt()
-//                                    )
 
-                                    val sketch = SingletonSketch.get(activity)
-                                    val request = ImageRequest(activity,
+                                    val sketch = SingletonSketch.get(context)
+                                    val request = ImageRequest(context,
                                        // "content://media/external/images/media/1000011309"
                                         imageId
                                     )
@@ -104,24 +99,9 @@ class LocalMediaProvider(private val activity: Activity) {
                                         //println("LocalMediaProvider HttpResponseThread received input imageId result $result")
                                     }
 
-
-                                    //val bitmap = (result?.image as? BitmapImage)?.bitmap
-
-                                    //val imgFile = File(imageId)
-                                    //if(imgFile.exists()){
                                     if (bitmap != null) {
                                         println("LocalMediaProvider HttpResponseThread received input imageId exists")
-                                        //var bitmap = BitmapFactory.decodeFile(imgFile.absolutePath)
 
-
-
-//                                            try {
-//                                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bitmapBytes)
-//                                            } catch (e: Exception) {
-//                                                println("LocalMediaProvider HttpResponseThread received input bitmap ERROR $e")
-//                                            }
-//                                        val imgTag =
-//                                            "<img src=\"data:image/png;base64,$bitmapBytes\" />"
                                         val imgTag = "<img src=\"data:image/png;base64,${
                                             Base64.encodeToString(
                                                 bitmapBytes.toByteArray(),
@@ -137,37 +117,9 @@ class LocalMediaProvider(private val activity: Activity) {
                                         //outputStream.write(("Content-Type: image/png").toByteArray())
                                         outputStream.write("\r\n".toByteArray())
                                         outputStream.write(bitmapBytes.toByteArray())
-                                        //outputStream.write(body.toByteArray())
-
-
-
-//                                        outputStream.write("<img src=\"data:image/png,base64:${
-//                                            android.util.Base64.encodeToString(
-//                                                bitmapBytes.toByteArray(),
-//                                                android.util.Base64.DEFAULT
-//                                            )
-//                                        } />".toByteArray())
                                     }
 
-//                                    val bitmap = try {
-//                                        BitmapFactory.decodeFile(imageId)
-//                                    } catch (e: Exception) {
-//                                        println("LocalMediaProvider HttpResponseThread received input bitmap ERROR $e")
-//                                        null
-//                                    }
-//
-//
-//                                    if (bitmap != null) {
-//                                        println("LocalMediaProvider HttpResponseThread received input bitmap NOT NULL")
-//                                        val bitmapBytes = ByteArrayOutputStream()
-//                                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bitmapBytes)
-//
-//                                        outputStream.write("HTTP/1.0 200 OK\r\n".toByteArray())
-//                                        outputStream.write("Server: Apache/0.8.4\r\n".toByteArray())
-//                                        outputStream.write(("Content-Length: " + bitmapBytes.toByteArray().size + "\r\n").toByteArray())
-//                                        outputStream.write("\r\n".toByteArray())
-//                                        outputStream.write(bitmapBytes.toByteArray())
-//                                    }
+
                                 }
                             }
                             if (input.contains(videoDelimiter)) {
@@ -196,6 +148,8 @@ class LocalMediaProvider(private val activity: Activity) {
     fun ipAddress(): String? = ipAddress
     fun isWebServerSunning(): Boolean = isWebServerSunning
     fun baseUrl(): String? = "http://$ipAddress:$port"
+    fun imageUrl(): String = "${baseUrl()}/${imageDelimiter}"
+    fun videoUrl(): String = "${baseUrl()}/${videoDelimiter}"
 
     private fun findIPAddress(context: Context): String? {
         val wifiManager =
@@ -221,7 +175,7 @@ class LocalMediaProvider(private val activity: Activity) {
         private var isWebServerSunning = false
         private var ipAddress: String? = null
         private var port: String? = null
-        const val imageDelimiter: String = "pic="
-        const val videoDelimiter: String = "vid-"
+        const val imageDelimiter: String = "image="
+        const val videoDelimiter: String = "video="
     }
 }

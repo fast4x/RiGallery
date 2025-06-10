@@ -41,6 +41,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.ArrowUpward
+import androidx.compose.material.icons.outlined.Cast
 import androidx.compose.material.icons.outlined.CopyAll
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Edit
@@ -51,6 +53,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.RestoreFromTrash
@@ -725,6 +728,7 @@ fun <T : Media> MediaViewActions2(
     infoMedia: () -> Unit,
     isAutoAdvanceEnabled: Boolean,
     onAutoAdvance: (Boolean) -> Unit,
+    onCast: () -> Unit,
     currentVault: Vault?
 ) {
     if (currentMedia != null) {
@@ -770,6 +774,10 @@ fun <T : Media> MediaViewActions2(
             if (currentMedia.readUriOnly) {
                 OpenAsButton(currentMedia, enabled = enabled)
             }
+            // Edit
+            if (!currentMedia.isEncrypted) {
+                EditButton(currentMedia, enabled = enabled)
+            }
             // Restore
             if (currentMedia.isEncrypted && restoreMedia != null && currentVault != null) {
                 RestoreButton(
@@ -780,10 +788,8 @@ fun <T : Media> MediaViewActions2(
             }
             // Share Component
             ShareButton(currentMedia, enabled = enabled)
-            // Edit
-            if (!currentMedia.isEncrypted) {
-                EditButton(currentMedia, enabled = enabled)
-            }
+            // Cast Component
+            CastButton(currentMedia, enabled = enabled, onClick = onCast )
             // Trash Component
             if (showDeleteButton) {
                 TrashButton(
@@ -963,12 +969,31 @@ fun <T : Media> InfoButton(
 ) {
     BottomBarColumn(
         currentMedia = media,
-        imageVector = Icons.Outlined.KeyboardArrowUp,
+        imageVector = Icons.Outlined.Menu,
         followTheme = followTheme,
         title = stringResource(R.string.media_info),
         enabled = enabled,
         onItemClick = {
             onInfoClick?.invoke()
+        }
+    )
+}
+
+@Composable
+fun <T : Media> CastButton(
+    media: T,
+    enabled: Boolean,
+    followTheme: Boolean = false,
+    onClick: (() -> Unit)? = null
+) {
+    BottomBarColumn(
+        currentMedia = media,
+        imageVector = Icons.Outlined.Cast,
+        followTheme = followTheme,
+        title = "Cast", //stringResource(R.string.media_info),
+        enabled = enabled,
+        onItemClick = {
+            onClick?.invoke()
         }
     )
 }

@@ -33,3 +33,28 @@
 -dontwarn com.google.auto.value.AutoValue
 -dontwarn org.tensorflow.lite.gpu.GpuDelegateFactory$Options$GpuBackend
 -dontwarn org.tensorflow.lite.gpu.GpuDelegateFactory$Options
+
+-keep class com.samsung.** { *; }
+-dontwarn com.samsung.**
+-dontwarn com.samsung.multiscreen.BuildConfig
+-dontwarn lombok.**
+
+-keep class com.samsung.** { *; }
+-dontwarn com.samsung.**
+-dontwarn com.samsung.multiscreen.BuildConfig
+-dontwarn lombok.**
+
+-keep class com.samsung.** { *; }
+-dontwarn com.samsung.**
+-dontwarn com.samsung.multiscreen.BuildConfig
+-dontwarn lombok.**
+
+-keep class com.samsung.** { *; }
+-dontwarn com.samsung.**
+-dontwarn com.samsung.multiscreen.BuildConfig
+-dontwarn lombok.**
+
+-keep class com.samsung.** { *; }
+-dontwarn com.samsung.**
+-dontwarn com.samsung.multiscreen.BuildConfig
+-dontwarn lombok.**

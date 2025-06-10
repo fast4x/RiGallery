@@ -44,6 +44,7 @@ import it.fast4x.rigallery.feature_node.presentation.util.toggleOrientation
 import it.fast4x.rigallery.ui.theme.GalleryTheme
 import dagger.hilt.android.AndroidEntryPoint
 import it.fast4x.rigallery.core.extensions.checkupdate.CheckAvailableNewVersion
+import it.fast4x.rigallery.core.extensions.cast.LocalMediaProvider
 import it.fast4x.rigallery.core.util.ext.OkHttpRequest
 import it.fast4x.rigallery.feature_node.presentation.analysis.AnalysisViewModel
 import it.fast4x.rigallery.feature_node.presentation.common.MediaViewModel
@@ -68,6 +69,13 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         enforceSecureFlag()
         enableEdgeToEdge()
+
+        // TODO Improve MediaProvider in the future
+        val mediaProvider = LocalMediaProvider(this)
+        mediaProvider.startMediaProvider()
+        println("LocalMediaProvider baseUrl ${mediaProvider.baseUrl()}/image=/storage/emulated/0/DCIM/Camera/IMG_20250503_115721.jpg")
+
+
         setContent {
 
             val analyzerViewModel = hiltViewModel<AnalysisViewModel>()
@@ -123,12 +131,6 @@ class MainActivity : AppCompatActivity() {
                         updateAvailable = {}
                     )
             }
-
-            // TODO MediaProvider
-            //val mediaProvider = LocalMediaProvider(this)
-            //mediaProvider.startMediaProvider()
-            //println("LocalMediaProvider baseUrl ${mediaProvider.baseUrl()}/pic=/storage/emulated/0/DCIM/Camera/IMG_20250503_115721.jpg")
-
 
             GalleryTheme {
                 val navController = rememberNavController()

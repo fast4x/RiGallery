@@ -233,8 +233,6 @@ fun Scrollbar(
                 }
             }
 
-           // val yVerticalOffset = thumbMovedPx.roundToInt() + if (thumbMovedPx.roundToInt() <= 1800) 100 else -200
-
             val y = when (orientation) {
                 Horizontal -> 0
                 Vertical -> max(

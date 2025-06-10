@@ -10,10 +10,8 @@ package it.fast4x.rigallery.feature_node.presentation.mediaview
 import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -37,6 +35,10 @@ import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.DisposableEffect
@@ -97,7 +99,6 @@ import it.fast4x.rigallery.feature_node.presentation.util.getDate
 import it.fast4x.rigallery.feature_node.presentation.util.normalize
 import it.fast4x.rigallery.feature_node.presentation.util.printWarning
 import it.fast4x.rigallery.feature_node.presentation.util.rememberGestureNavigationEnabled
-import it.fast4x.rigallery.feature_node.presentation.util.rememberNavigationBarHeight
 import it.fast4x.rigallery.feature_node.presentation.util.rememberWindowInsetsController
 import it.fast4x.rigallery.feature_node.presentation.util.setHdrMode
 import it.fast4x.rigallery.feature_node.presentation.util.toggleSystemBars
@@ -107,10 +108,16 @@ import com.github.panpf.sketch.request.ImageRequest
 import com.github.panpf.sketch.sketch
 import it.fast4x.rigallery.core.Settings
 import it.fast4x.rigallery.core.enums.TransitionEffect
+import it.fast4x.rigallery.core.extensions.cast.Cast
+import it.fast4x.rigallery.core.extensions.cast.CastMediaType
+import it.fast4x.rigallery.core.presentation.components.DragHandle
+import it.fast4x.rigallery.core.presentation.components.ModalSheet
 import it.fast4x.rigallery.feature_node.domain.model.Event
 import it.fast4x.rigallery.feature_node.domain.model.rememberLocationData
+import it.fast4x.rigallery.feature_node.presentation.common.components.OptionLayout
 import it.fast4x.rigallery.feature_node.presentation.statistics.StatisticsViewModel
 import it.fast4x.rigallery.feature_node.presentation.util.ViewScreenConstants.FullyExpanded
+import it.fast4x.rigallery.feature_node.presentation.util.rememberAppBottomSheetState
 import it.fast4x.rigallery.feature_node.presentation.util.rememberExifInterface
 import it.fast4x.rigallery.feature_node.presentation.util.rememberExifMetadata
 import kotlinx.coroutines.Dispatchers
@@ -141,7 +148,7 @@ fun <T> rememberedDerivedState(
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun <T : Media> MediaViewScreen(
     navigateUp: () -> Unit,
@@ -252,6 +259,9 @@ fun <T : Media> MediaViewScreen(
         initialDetent = imageOnlyDetent,
         detents = listOf(imageOnlyDetent, FullyExpanded { sheetHeightDp = it })
     )
+
+    //val sheetStateCast = rememberAppBottomSheetState()
+    val sheetStateCast = rememberModalBottomSheetState()
 
     val userScrollEnabled by rememberedDerivedState { sheetState.currentDetent != FullyExpanded }
 
@@ -688,6 +698,9 @@ fun <T : Media> MediaViewScreen(
                 label = "MediaViewActionsAlpha"
             )
             val transitionEffect by Settings.Misc.rememberTransitionEffect()
+
+            var showCast by remember { mutableStateOf(false) }
+
             BottomSheet(
                 state = sheetState,
                 enabled = showUI && target != TARGET_TRASH && showInfo,
@@ -710,6 +723,7 @@ fun <T : Media> MediaViewScreen(
                         targetValue = 1f - normalizedOffset,
                         label = "MediaViewActions2Alpha"
                     )
+
                     AnimatedVisibility(
                         visible = currentMedia != null,
                         enter =  TransitionEffect.enter(
@@ -759,7 +773,12 @@ fun <T : Media> MediaViewScreen(
                                     }
                                 },
                                 isAutoAdvanceEnabled = isAutoAdvanceEnabled,
-                                onAutoAdvance = { isAutoAdvanceEnabled = it }
+                                onAutoAdvance = { isAutoAdvanceEnabled = it },
+                                onCast = {
+                                    scope.launch {
+                                        sheetStateCast.show()
+                                    }
+                                }
                             )
                         }
                     }
@@ -776,6 +795,25 @@ fun <T : Media> MediaViewScreen(
                     )
                 }
             }
+
+            if (sheetStateCast.isVisible)
+                ModalBottomSheet(
+                    sheetState = sheetStateCast,
+                    onDismissRequest = {
+                        scope.launch {
+                            sheetStateCast.hide()
+                        }
+                    },
+                    dragHandle = { DragHandle() }
+                ) {
+                    Cast(
+                        currentMedia!!.path,
+                        when {
+                            currentMedia!!.isVideo -> CastMediaType.VIDEO
+                            else -> CastMediaType.PHOTO
+                        }
+                    )
+                }
         }
     }
 

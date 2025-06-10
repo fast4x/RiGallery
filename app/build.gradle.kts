@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.implementation
 import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import java.io.FileInputStream
 import java.util.Properties
@@ -194,6 +195,7 @@ android {
 }
 
 dependencies {
+
     implementation(libs.androidx.lifecycle.process)
     runtimeOnly(libs.androidx.profileinstaller)
     implementation(project(":libs:cropper"))
@@ -319,6 +321,14 @@ dependencies {
 
     implementation(libs.palette)
     implementation(libs.compose.charts)
+
+    // Cast
+    implementation(libs.androidx.mediarouter)
+    implementation(libs.play.services.cast.framework)
+
+    // SmartView
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+
 
     // Tests
     testImplementation(libs.junit)
