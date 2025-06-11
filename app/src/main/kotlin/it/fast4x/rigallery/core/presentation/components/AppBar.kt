@@ -366,12 +366,15 @@ fun AppBarContainer(
             val anySelectedRoute = remember(backStackEntry) {
                 bottomNavItems.any { it.route == navController.currentDestination?.route }
             }
-            val showNavbar by remember(bottomBarState, isScrolling, hideNavBarSetting, anySelectedRoute) {
-                derivedStateOf {
-                    bottomBarState && (!isScrolling || !hideNavBarSetting) && anySelectedRoute
-                }
-            }
+//            val showNavbar by remember(bottomBarState, isScrolling, hideNavBarSetting, anySelectedRoute) {
+//                derivedStateOf {
+//                    bottomBarState && (!isScrolling || !hideNavBarSetting) && anySelectedRoute
+//                }
+//            }
+            val showNavbar = bottomBarState && (!isScrolling || !hideNavBarSetting) && anySelectedRoute
             //var showSearchBar by remember(showSearchBar) { mutableStateOf(showSearchBar) }
+
+            println("AppBarContainer showNavbar $showNavbar bottomBarState $bottomBarState isScrolling: $isScrolling hideNavBarSetting: $hideNavBarSetting anySelectedRoute: $anySelectedRoute")
 
             AnimatedVisibility(
                 modifier = Modifier
@@ -380,8 +383,6 @@ fun AppBarContainer(
                 visible = showNavbar,
                 enter = fadeIn(),
                 exit = fadeOut(),
-//                enter = slideInVertically { it * 2 },
-//                exit = slideOutVertically { it * 2 },
                 content = {
                     val modifier = remember(useNavRail) {
                         if (useNavRail) Modifier.requiredWidth((110 * bottomNavItems.size).dp)

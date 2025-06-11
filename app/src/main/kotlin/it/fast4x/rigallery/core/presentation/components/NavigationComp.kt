@@ -115,21 +115,21 @@ fun NavigationComp(
         }
     }
 
-    var lastShouldDisplay by rememberSaveable {
-        mutableStateOf(bottomNavEntries.find { item -> item.route == currentDest } != null)
-    }
+//    var lastShouldDisplay by rememberSaveable {
+//        mutableStateOf(bottomNavEntries.find { item -> item.route == currentDest } != null)
+//    }
     val shouldSkipAuth = rememberSaveable {
         mutableStateOf(false)
     }
 
     LaunchedEffect(navBackStackEntry) {
         navBackStackEntry?.destination?.route?.let {
-            val shouldDisplayBottomBar =
-                bottomNavEntries.find { item -> item.route == it } != null && !searchBarActive.value
-            if (lastShouldDisplay != shouldDisplayBottomBar) {
-                bottomBarState.value = shouldDisplayBottomBar
-                lastShouldDisplay = shouldDisplayBottomBar
-            }
+//            val shouldDisplayBottomBar =
+//                bottomNavEntries.find { item -> item.route == it } != null && !searchBarActive.value
+//            if (lastShouldDisplay != shouldDisplayBottomBar) {
+//                bottomBarState.value = shouldDisplayBottomBar
+//                lastShouldDisplay = shouldDisplayBottomBar
+//            }
             if (it != Screen.VaultScreen()) {
                 shouldSkipAuth.value = false
             }
@@ -261,6 +261,7 @@ fun NavigationComp(
                     navigateUp = navPipe::navigateUp,
                     toggleNavbar = navPipe::toggleNavbar,
                     showSearch = showSearchBar,
+                    isScrolling = isScrolling,
                 )
             }
             composable(
@@ -325,8 +326,6 @@ fun NavigationComp(
                     toggleNavbar = navPipe::toggleNavbar,
                     isScrolling = isScrolling,
                     showSearchBar = showSearchBar,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
                 )
             }
             composable(
@@ -377,8 +376,6 @@ fun NavigationComp(
                     addMedia = vm::addMedia,
                     vaultState = vaultState,
                     navigate = navPipe::navigate,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
                 )
             }
             composable(
@@ -428,8 +425,6 @@ fun NavigationComp(
                     addMedia = viewModel::addMedia,
                     vaultState = vaultState,
                     navigate = navPipe::navigate,
-                    //sharedTransitionScope = this@SharedTransitionLayout,
-                    //animatedContentScope = this
                 )
             }
             composable(

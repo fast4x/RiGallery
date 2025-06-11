@@ -41,6 +41,7 @@ fun FavoriteScreen(
     navigateUp: () -> Unit,
     toggleNavbar: (Boolean) -> Unit,
     showSearch: MutableState<Boolean>,
+    isScrolling: MutableState<Boolean>,
 ) = MediaScreen(
     paddingValues = paddingValues,
     target = TARGET_FAVORITES,
@@ -66,4 +67,5 @@ fun FavoriteScreen(
         }
     },
     showSearch = showSearch,
+    isScrolling = isScrolling
 )

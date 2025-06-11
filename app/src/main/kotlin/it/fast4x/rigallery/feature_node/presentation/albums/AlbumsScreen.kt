@@ -118,7 +118,7 @@ fun AlbumsScreen(
         )
     }
 
-    var isScrollingInProgress: MutableState<Boolean> = remember { mutableStateOf(false) }
+    //var isScrollingInProgress: MutableState<Boolean> = remember { mutableStateOf(false) }
 
     var finalPaddingValues by remember(paddingValues) { mutableStateOf(paddingValues) }
 
@@ -144,7 +144,7 @@ fun AlbumsScreen(
                         bottomPadding = 0.dp,
                         navigate = navigate,
                         toggleNavbar = toggleNavbar,
-                        isScrolling = isScrollingInProgress,
+                        isScrolling = isScrolling,
                         activeState = searchBarActive,
 
                     )
@@ -171,7 +171,7 @@ fun AlbumsScreen(
             val gridState = rememberLazyGridState()
 
             LaunchedEffect(gridState.isScrollInProgress) {
-                isScrollingInProgress.value = gridState.isScrollInProgress
+                isScrolling.value = gridState.isScrollInProgress
             }
 
             var level by remember { mutableIntStateOf(1) }
