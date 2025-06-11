@@ -103,6 +103,7 @@ fun AlbumsScreen(
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
     onMoveAlbumToTrash: (ActivityResultLauncher<IntentSenderRequest>, Album) -> Unit,
+    onToggleIgnoreClick: (Album) -> Unit,
     showSearchBar: MutableState<Boolean>,
 
     ) {
@@ -191,7 +192,8 @@ fun AlbumsScreen(
                     columns = 1,
                     nextLevel = 1,
                     previousLevel = 0,
-                    onZoomLevelChange = { level = it }
+                    onZoomLevelChange = { level = it },
+                    onToggleIgnoreClick = onToggleIgnoreClick
                 )
             }
             AnimatedVisibility(
@@ -211,7 +213,8 @@ fun AlbumsScreen(
                     columns = 2,
                     nextLevel = 1,
                     previousLevel = 0,
-                    onZoomLevelChange = { level = it }
+                    onZoomLevelChange = { level = it },
+                    onToggleIgnoreClick = onToggleIgnoreClick
                 )
             }
 //        AnimatedVisibility(
@@ -282,6 +285,7 @@ fun AlbumMediaGrid(
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
     onMoveAlbumToTrash: (ActivityResultLauncher<IntentSenderRequest>, Album) -> Unit,
+    onToggleIgnoreClick: (Album) -> Unit,
     columns: Int, nextLevel: Int, previousLevel: Int, onZoomLevelChange: (Int) -> Unit
 ){
     val displayMode by remember { mutableStateOf(1) }
@@ -450,7 +454,8 @@ fun AlbumMediaGrid(
                     onTogglePinClick = onAlbumLongClick,
                     onMoveAlbumToTrash = {
                         onMoveAlbumToTrash(trashResult, it)
-                    }
+                    },
+                    onToggleIgnoreClick = onToggleIgnoreClick
                 )
 
         }

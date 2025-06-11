@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.AddCircleOutline
 import androidx.compose.material.icons.outlined.AppsOutage
+import androidx.compose.material.icons.outlined.HideImage
 import androidx.compose.material.icons.outlined.SdCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -80,34 +81,34 @@ fun AlbumComponent(
             val trashTitle = stringResource(R.string.move_album_to_trash)
             val pinTitle = stringResource(R.string.pin)
             val ignoredTitle = stringResource(id = R.string.add_to_ignored)
-            val secondaryContainer = MaterialTheme.colorScheme.secondaryContainer
-            val onSecondaryContainer = MaterialTheme.colorScheme.onSecondaryContainer
-            val primaryContainer = MaterialTheme.colorScheme.primaryContainer
-            val onPrimaryContainer = MaterialTheme.colorScheme.onPrimaryContainer
+//            val secondaryContainer = MaterialTheme.colorScheme.secondaryContainer
+//            val onSecondaryContainer = MaterialTheme.colorScheme.onSecondaryContainer
+//            val primaryContainer = MaterialTheme.colorScheme.primaryContainer
+//            val onPrimaryContainer = MaterialTheme.colorScheme.onPrimaryContainer
             val optionList = remember {
                 mutableListOf(
                     OptionItem(
+                        text = pinTitle,
+                        //containerColor = secondaryContainer,
+                        //contentColor = onSecondaryContainer,
+                        icon = Icons.Outlined.AppsOutage,
+                        onClick = {
+                            scope.launch {
+                                appBottomSheetState.hide()
+                                onTogglePinClick(album)
+                            }
+                        }
+                    ),
+                    OptionItem(
                         text = trashTitle,
-                        containerColor = primaryContainer,
-                        contentColor = onPrimaryContainer,
+                        //containerColor = primaryContainer,
+                        //contentColor = onPrimaryContainer,
                         enabled = onMoveAlbumToTrash != null,
                         icon = Icons.Filled.Delete,
                         onClick = {
                             scope.launch {
                                 appBottomSheetState.hide()
                                 onMoveAlbumToTrash?.invoke(album)
-                            }
-                        }
-                    ),
-                    OptionItem(
-                        text = pinTitle,
-                        containerColor = secondaryContainer,
-                        contentColor = onSecondaryContainer,
-                        icon = Icons.Outlined.AppsOutage,
-                        onClick = {
-                            scope.launch {
-                                appBottomSheetState.hide()
-                                onTogglePinClick(album)
                             }
                         }
                     )
@@ -118,6 +119,7 @@ fun AlbumComponent(
                     optionList.add(
                         OptionItem(
                             text = ignoredTitle,
+                            icon = Icons.Outlined.HideImage,
                             onClick = {
                                 scope.launch {
                                     appBottomSheetState.hide()

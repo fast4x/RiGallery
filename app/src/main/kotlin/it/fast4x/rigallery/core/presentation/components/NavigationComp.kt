@@ -278,6 +278,7 @@ fun NavigationComp(
                     onAlbumLongClick = albumsViewModel.onAlbumLongClick,
                     filterOptions = albumsViewModel.rememberFilters(),
                     onMoveAlbumToTrash = albumsViewModel::moveAlbumToTrash,
+                    onToggleIgnoreClick = albumsViewModel::blacklistAlbum,
                     showSearchBar = showSearchBar,
                 )
             }

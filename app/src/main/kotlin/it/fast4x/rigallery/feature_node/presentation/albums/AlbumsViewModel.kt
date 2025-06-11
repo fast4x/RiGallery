@@ -30,6 +30,7 @@ import it.fast4x.rigallery.feature_node.domain.util.MediaOrder
 import it.fast4x.rigallery.feature_node.domain.util.OrderType
 import it.fast4x.rigallery.feature_node.presentation.util.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import it.fast4x.rigallery.feature_node.domain.model.IgnoredAlbum.Companion.ALBUMS_AND_TIMELINE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -58,6 +59,22 @@ class AlbumsViewModel @Inject constructor(
             val data = response?.data ?: emptyList()
             repository.trashMedia(result, data, true)
         }
+    }
+
+    fun blacklistAlbum(album: Album) {
+        println("AlbumsViewModel: Blacklisted album: ${album.label}")
+        viewModelScope.launch {
+            repository.addBlacklistedAlbum(
+                IgnoredAlbum(
+                    id = album.id,
+                    label = album.label,
+                    location = ALBUMS_AND_TIMELINE,
+                    matchedAlbums = listOf(album.label)
+                )
+            )
+
+        }
+
     }
 
     @Composable
