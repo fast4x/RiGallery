@@ -66,6 +66,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -437,8 +438,14 @@ fun GalleryNavBar(
             //.padding(all = 5.dp)
             .then(modifier)
             .height(64.dp)
+//            .background(
+//                color = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp),
+//                shape = RoundedCornerShape(percent = 12)
+//            ),
             .background(
-                color = MaterialTheme.colorScheme.surfaceColorAtElevation(2.dp),
+                Brush.verticalGradient(
+                    colors = listOf(MaterialTheme.colorScheme.surface.copy(alpha = 0.8f), MaterialTheme.colorScheme.surface)
+                ),
                 shape = RoundedCornerShape(percent = 12)
             ),
         verticalAlignment = Alignment.CenterVertically

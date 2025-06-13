@@ -69,6 +69,7 @@ import it.fast4x.rigallery.feature_node.domain.model.isIgnoredKey
 import it.fast4x.rigallery.feature_node.presentation.mediaview.rememberedDerivedState
 import it.fast4x.rigallery.feature_node.presentation.util.roundDpToPx
 import it.fast4x.rigallery.feature_node.presentation.util.roundSpToPx
+import it.fast4x.rigallery.ui.theme.BlackScrim
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 
@@ -190,8 +191,13 @@ fun <T : Media> MediaGridView(
                             color = MaterialTheme.colorScheme.onBackground,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
+//                                .background(
+//                                    MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+//                                )
                                 .background(
-                                    MaterialTheme.colorScheme.background.copy(alpha = 0.8f)
+                                    Brush.verticalGradient(
+                                        colors = listOf(MaterialTheme.colorScheme.background, Color.Transparent)
+                                    )
                                 )
                                 //.padding(horizontal = 5.dp)
                                 .padding(paddingValues)

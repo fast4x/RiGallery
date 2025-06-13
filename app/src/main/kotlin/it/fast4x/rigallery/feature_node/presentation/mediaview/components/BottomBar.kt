@@ -788,8 +788,9 @@ fun <T : Media> MediaViewActions2(
             }
             // Share Component
             ShareButton(currentMedia, enabled = enabled)
-            // Cast Component
-            CastButton(currentMedia, enabled = enabled, onClick = onCast )
+            //TODO Improve cast dlna ot chromecast
+//            // Cast Component
+//            CastButton(currentMedia, enabled = enabled, onClick = onCast )
             // Trash Component
             if (showDeleteButton) {
                 TrashButton(
