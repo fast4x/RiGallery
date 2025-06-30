@@ -87,7 +87,7 @@ RiGallery is currently available in:
 - 🇺🇦 **Ukrainian**
 - 🇻🇳 **Vietnamese**
 
-> 🌍 **Want to help?** [Translate on Crowdin](https://crowdin.com/project/rigallery/)
+> 🌍 **Want to help?** [Translate on Crowdin](https://crowdin.com/project/rigallery)
 
 ---
 
@@ -102,7 +102,7 @@ RiGallery is currently available in:
 ### 💁 Pull requests are welcome
 
 - 🛠️ Add new features or fix bugs → fork the repo & send a PR.
-- 🌐 Improve or add translations → [Join Crowdin](https://crowdin.com/project/rigallery/).
+- 🌐 Improve or add translations → [Join Crowdin](https://crowdin.com/project/rigallery).
 
 ### 💖 Support RiGallery
 
@@ -115,7 +115,7 @@ If you enjoy RiGallery, you can support its development:
 
 # 🔤 Translate into your language
 
-➡️ [Help translate on Crowdin](https://crowdin.com/project/rigallery/)
+➡️ [Help translate on Crowdin](https://crowdin.com/project/rigallery)
 
 ---
 
