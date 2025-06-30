@@ -1,106 +1,138 @@
 <div align="center">
-<img src ="/docs/assets/logo/rigallery_logo_transparent.webp" width="170" height="170" />
+  <img src="/docs/assets/logo/rigallery_logo_transparent.webp" width="170" alt="RiGallery Logo" />
 
-# RiGallery
-**An Advanced Android Media Gallery**
+  <p>
+    <b>RiGallery</b> is an advanced, open-source Android media gallery with multilingual support, modern UI, and powerful features.
+  </p>
 
-<br>
+  <p>
+    Built for users who want more control, privacy, and flexibility than default gallery apps.
+  </p>
 
-<a href="https://github.com/fast4x/RiGallery/releases"><img src="https://img.shields.io/github/downloads/fast4x/RiGallery/total?label=Total%20Downloads"></a>
-<a href="https://github.com/fast4x/RiGallery/releases/latest"><img src="https://img.shields.io/github/downloads/fast4x/RiGallery/latest/total?label=Downloads%20of%20latest%20Release"></a>
-<a href="https://github.com/fast4x/RiGallery/releases/latest"><img src="https://img.shields.io/github/v/release/fast4x/RiGallery?label=Release"></a>
+  <br>
+
+
+
+[![Latest Version](https://img.shields.io/github/v/release/fast4x/RiGallery?label=Latest%20Version)](https://github.com/fast4x/RiGallery/releases/latest) 
+
+[![Total Downloads](https://img.shields.io/github/downloads/fast4x/RiGallery/total?label=Total%20Downloads)](https://github.com/fast4x/RiGallery/releases) [![Latest Release Downloads](https://img.shields.io/github/downloads/fast4x/RiGallery/latest/total?label=Latest%20Release%20Downloads)](https://github.com/fast4x/RiGallery/releases/latest) 
+
+[![License: GPL v3](https://img.shields.io/github/license/fast4x/RiGallery?color=blue)](https://www.gnu.org/licenses/gpl-3.0)
+
 
 </div>
 
-## ✨ Features
-- Multilanguages, support system language but can change it in other language from settings
-- Supports many video and image formats
-- Check for update
-- Grid or mosaic display
-- Slideshow
-- Modify images
-- Add effects
-- Vault
-- Favorites
-- Smart categories
-- Albums
-- Search all media with terms and/or tags  also support multiple tags
-- Ignored media and/or albums
-- Trash
-- Statistics
-<br><br>
+---
 
+# ✨ Features
 
-## 🌐 Languages available
-- Afrikaans
-- Arabic
-- Belarusian
-- Bengali
-- Bulgarian
-- Catalan
-- Chinese Simplified
-- Chinese Traditional
-- Czech
-- Danish
-- Dutch
-- English
-- Finnish
-- French
-- Galician
-- German
-- Greek
-- Hebrew
-- Hindi
-- Hungarian
-- Indonesian
-- Interlingua
-- Irish
-- Italian
-- Japanese
-- Korean
-- Norwegian
-- Odia
-- Polish
-- Portughese
-- Portughese, Brasilian
-- Romanian
-- Russian
-- Serbian (Cyrillic)
-- Spanish
-- Swedish
-- Turkish
-- Ukrainian
-- Vietnamese
-<br><br>
+- 🌍 **Multi-language** — Supports your system language or custom choice.
+- 📸 **Image & video support** — Many formats.
+- 🧩 **Grid & mosaic views**
+- 🎞️ **Slideshow**
+- 🖌️ **Edit & add effects**
+- 🔒 **Vault** — Private media.
+- ⭐ **Favorites**
+- 📂 **Smart categories & albums**
+- 🔍 **Advanced search** — Terms & multiple tags.
+- 🚫 **Ignore folders/media**
+- 🗑️ **Trash bin**
+- 📊 **Statistics**
+- 🔄 **Update checker**
 
-## 📲 Installation
-[<img src="./docs/assets/images/getItGithub.png" alt="GitHub" height="80">](https://github.com/fast4x/RiGallery/releases/latest)
-<br><br>
+---
 
-## 🤝 Contributing
-### Pull requests are welcome
-If you want:
-* to develop new functions or fix a bug, fork the repository, send a pull request.
-* to translate or improve a translation go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8b330e379e2097692431908),
+# 🌐 Supported Languages
 
-### Donations are welcome
-If you like RiGallery, you can **make a small donation** to support the development and maintenance of the app:
-* Click on the **Sponsor button** at the top of this page
-* Or in the link you find in the **Sponsor this Project** section
-* Or from the **settings page** directly in the app you installed.
+Thanks to our amazing contributors!  
+RiGallery is currently available in:
 
-<br>
+- 🇿🇦 **Afrikaans**
+- 🇸🇦 **Arabic**
+- 🇧🇾 **Belarusian**
+- 🇧🇩 **Bengali**
+- 🇧🇬 **Bulgarian**
+- 🇪🇸 **Catalan**
+- 🇨🇳 **Chinese (Simplified)**
+- 🇹🇼 **Chinese (Traditional)**
+- 🇨🇿 **Czech**
+- 🇩🇰 **Danish**
+- 🇳🇱 **Dutch**
+- 🇺🇸 **English**
+- 🇫🇮 **Finnish**
+- 🇫🇷 **French**
+- 🇪🇸 **Galician**
+- 🇩🇪 **German**
+- 🇬🇷 **Greek**
+- 🇮🇱 **Hebrew**
+- 🇮🇳 **Hindi**
+- 🇭🇺 **Hungarian**
+- 🇮🇩 **Indonesian**
+- 🌐 **Interlingua**
+- 🇮🇪 **Irish**
+- 🇮🇹 **Italian**
+- 🇯🇵 **Japanese**
+- 🇰🇷 **Korean**
+- 🇳🇴 **Norwegian**
+- 🇮🇳 **Odia**
+- 🇵🇱 **Polish**
+- 🇵🇹 **Portuguese**
+- 🇧🇷 **Portuguese (Brazilian)**
+- 🇷🇴 **Romanian**
+- 🇷🇺 **Russian**
+- 🇷🇸 **Serbian (Cyrillic)**
+- 🇪🇸 **Spanish**
+- 🇸🇪 **Swedish**
+- 🇹🇷 **Turkish**
+- 🇺🇦 **Ukrainian**
+- 🇻🇳 **Vietnamese**
 
-## 🔤 Translate into your language
-Go to [Crowdin](https://crowdin.com/project/rigallery/invite?h=b33f24d63f12879f8b330e379e2097692431908), help with the translations.
-<br><br>
+> 🌍 **Want to help?** [Translate on Crowdin](https://crowdin.com/project/rigallery)
 
-## ❓ Support
-- [Group on Telegram ](https://t.me/rigallery_app)
-<br><br>
+---
 
-## 🫂 Acknowledgments
-- [**Gallery**](https://github.com/IacobIonut01/Gallery)
-- [**Website** by Rohith Pai](https://github.com/chayotic)
-- [**Logo** by dAtA-TRoN](https://github.com/dAtA-TRoN)
-- [**FlatIcon.com**](https://www.flaticon.com/): Download Free Icons, Stickers for your projects. Resources made by, for designers.
+# 📲 Installation
+
+[<img src="./docs/assets/images/getItGithub.png" alt="Download on GitHub" height="80">](https://github.com/fast4x/RiGallery/releases/latest)
+
+---
+
+# 🤝 Contributing
+
+### 💁 Pull requests are welcome
+
+- 🛠️ Add new features or fix bugs → fork the repo & send a PR.
+- 🌐 Improve or add translations → [Join Crowdin](https://crowdin.com/project/rigallery).
+
+### 💖 Support RiGallery
+
+If you enjoy RiGallery, you can support its development:
+- Click the **Sponsor** button on GitHub.
+- Use the **Sponsor this project** link.
+- Or donate directly in the app’s **settings**.
+
+---
+
+# 🔤 Translate into your language
+
+➡️ [Help translate on Crowdin](https://crowdin.com/project/rigallery)
+
+---
+
+# ❓ Support
+
+💬 [Join our Telegram group](https://t.me/rigallery_app) for help & discussions.
+
+---
+
+# 🫂 Acknowledgments
+
+- [**Gallery**](https://github.com/IacobIonut01/Gallery) — Base inspiration
+- [**Website by Rohith Pai**](https://github.com/chayotic)
+- [**Logo by dAtA-TRoN**](https://github.com/dAtA-TRoN)
+- [**FlatIcon.com**](https://www.flaticon.com) — Free icons & stickers for your projects.
+
+---
+
+Made with ❤️ by [fast4x](https://github.com/fast4x)  
+Licensed under GPLv3 - see [LICENSE](LICENSE)  
