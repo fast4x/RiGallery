@@ -42,6 +42,19 @@
 
 ---
 
+# 👀 Preview
+<div align="center">
+  <img src="/docs/assets/images/dark/1_dark-portrait.png" height="350px" alt="RiGallery" />
+  <img src="/docs/assets/images/dark/2_dark-portrait.png" height="350px" alt="RiGallery" />
+  <img src="/docs/assets/images/dark/3_dark-portrait.png" height="350px" alt="RiGallery" />
+  
+  <img src="/docs/assets/images/light/1_light-portrait.png" height="350px" alt="RiGallery" />
+  <img src="/docs/assets/images/light/2_light-portrait.png" height="350px" alt="RiGallery" />
+  <img src="/docs/assets/images/light/3_light-portrait.png" height="350px" alt="RiGallery" />
+</div>
+---
+
+
 # 🌐 Supported Languages
 
 Thanks to our amazing contributors!  
