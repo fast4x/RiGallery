@@ -42,7 +42,7 @@
 
 ---
 
-# 👀 Preview
+# 📷 Screenshots
 
   ### ⚫ Dark
 <div align="center">
